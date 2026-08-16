@@ -1,31 +1,89 @@
+// ==========================================
+// FIREBASE
+// ==========================================
+
+import { initializeApp } from
+    "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+import {
+    getFirestore,
+    collection,
+    doc,
+    setDoc,
+    deleteDoc,
+    onSnapshot,
+    runTransaction
+} from
+    "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+// ==========================================
+// CONFIGURACIÓN DE FIREBASE
+// ==========================================
+//
+// PEGA AQUÍ tu firebaseConfig
+// que te proporciona Firebase.
+//
+// NO compartas este bloque por el chat.
+//
+
+const firebaseConfig = {
+
+    // EJEMPLO:
+    //
+    // apiKey: "TU_API_KEY",
+    // authDomain: "TU_PROYECTO.firebaseapp.com",
+    // projectId: "TU_PROJECT_ID",
+    // storageBucket: "TU_STORAGE_BUCKET",
+    // messagingSenderId: "TU_SENDER_ID",
+    // appId: "TU_APP_ID"
+
+};
+
+
+// Inicializamos Firebase
+
+const app = initializeApp(firebaseConfig);
+
+
+// Conectamos con Firestore
+
+const db = getFirestore(app);
+
+
+// ==========================================
+// ELEMENTOS DE LA PÁGINA
+// ==========================================
+
 const botones = document.querySelectorAll(".anadir");
 
 const miLista = document.getElementById("miLista");
 
 
-// Recuperamos la lista guardada anteriormente
-const listaGuardada = localStorage.getItem("listaCompra");
+// ==========================================
+// COLECCIÓN DE FIRESTORE
+// ==========================================
+
+const listaRef = collection(db, "listaCompra");
 
 
-// Si existe una lista guardada,
-// la convertimos de texto a objeto
-const listaCompra = listaGuardada
-    ? JSON.parse(listaGuardada)
-    : {};
+// ==========================================
+// LISTA LOCAL EN MEMORIA
+// ==========================================
+//
+// Aquí tendremos una copia de lo que hay
+// actualmente en Firestore.
+//
+// La fuente oficial será Firestore.
+//
+
+const listaCompra = {};
 
 
-// Guardamos la lista en el navegador
-function guardarLista() {
+// ==========================================
+// MOSTRAR LA LISTA
+// ==========================================
 
-    localStorage.setItem(
-        "listaCompra",
-        JSON.stringify(listaCompra)
-    );
-
-}
-
-
-// Dibujamos la lista en pantalla
 function mostrarLista() {
 
     miLista.innerHTML = "";
@@ -35,83 +93,120 @@ function mostrarLista() {
 
         const informacion = listaCompra[producto];
 
-        const nuevoProducto = document.createElement("li");
+
+        // --------------------------------------
+        // FILA DEL PRODUCTO
+        // --------------------------------------
+
+        const nuevoProducto =
+            document.createElement("li");
 
 
-        // Nombre del producto
-        const nombre = document.createElement("span");
+        // --------------------------------------
+        // NOMBRE
+        // --------------------------------------
+
+        const nombre =
+            document.createElement("span");
 
         nombre.textContent =
             informacion.emoji + " " + producto;
 
 
-        // Botón -
-        const botonMenos = document.createElement("button");
+        // --------------------------------------
+        // BOTÓN -
+        // --------------------------------------
+
+        const botonMenos =
+            document.createElement("button");
 
         botonMenos.textContent = "−";
 
 
-        // Cantidad
-        const cantidad = document.createElement("span");
+        // --------------------------------------
+        // CANTIDAD
+        // --------------------------------------
 
-        cantidad.textContent = informacion.cantidad;
+        const cantidad =
+            document.createElement("span");
+
+        cantidad.textContent =
+            informacion.cantidad;
 
 
-        // Botón +
-        const botonMas = document.createElement("button");
+        // --------------------------------------
+        // BOTÓN +
+        // --------------------------------------
+
+        const botonMas =
+            document.createElement("button");
 
         botonMas.textContent = "+";
 
 
-        // Botón eliminar
-        const botonEliminar = document.createElement("button");
+        // --------------------------------------
+        // BOTÓN ELIMINAR
+        // --------------------------------------
+
+        const botonEliminar =
+            document.createElement("button");
 
         botonEliminar.textContent = "Eliminar";
 
 
+        // ======================================
         // BOTÓN -
-        botonMenos.addEventListener("click", function() {
+        // ======================================
 
-            informacion.cantidad--;
+        botonMenos.addEventListener(
+            "click",
+            async function() {
 
-
-            if (informacion.cantidad <= 0) {
-
-                delete listaCompra[producto];
+                await cambiarCantidad(
+                    producto,
+                    -1
+                );
 
             }
+        );
 
 
-            guardarLista();
-
-            mostrarLista();
-
-        });
-
-
+        // ======================================
         // BOTÓN +
-        botonMas.addEventListener("click", function() {
+        // ======================================
 
-            informacion.cantidad++;
+        botonMas.addEventListener(
+            "click",
+            async function() {
 
-            guardarLista();
+                await cambiarCantidad(
+                    producto,
+                    1
+                );
 
-            mostrarLista();
+            }
+        );
 
-        });
+
+        // ======================================
+        // ELIMINAR
+        // ======================================
+
+        botonEliminar.addEventListener(
+            "click",
+            async function() {
+
+                await eliminarProducto(
+                    producto
+                );
+
+            }
+        );
 
 
-        // BOTÓN ELIMINAR
-        botonEliminar.addEventListener("click", function() {
-
-            delete listaCompra[producto];
-
-            guardarLista();
-
-            mostrarLista();
-
-        });
-
+        // ======================================
+        // CONSTRUIR FILA
+        // ======================================
 
         nuevoProducto.appendChild(nombre);
 
@@ -131,43 +226,296 @@ function mostrarLista() {
 }
 
 
-// Botones de productos habituales
-botones.forEach(function(boton) {
+// ==========================================
+// AÑADIR PRODUCTO
+// ==========================================
 
-    boton.addEventListener("click", function() {
+async function añadirProducto(
+    producto,
+    emoji
+) {
 
-        const producto = boton.dataset.producto;
+    const referencia =
+        doc(db, "listaCompra", convertirId(producto));
 
-        const emoji = boton.dataset.emoji;
+
+    try {
+
+        await runTransaction(
+            db,
+            async (transaction) => {
+
+                const documento =
+                    await transaction.get(referencia);
 
 
-        if (!listaCompra[producto]) {
+                // Si no existe todavía
 
-            listaCompra[producto] = {
+                if (!documento.exists()) {
 
-                emoji: emoji,
+                    transaction.set(
+                        referencia,
+                        {
+                            nombre: producto,
+                            emoji: emoji,
+                            cantidad: 1
+                        }
+                    );
 
-                cantidad: 1
+                }
 
-            };
+                // Si ya existe
+
+                else {
+
+                    const datos =
+                        documento.data();
+
+
+                    transaction.update(
+                        referencia,
+                        {
+                            cantidad:
+                                datos.cantidad + 1
+                        }
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Error al añadir producto:",
+            error
+        );
+
+    }
+
+}
+
+
+// ==========================================
+// CAMBIAR CANTIDAD
+// ==========================================
+
+async function cambiarCantidad(
+    producto,
+    cambio
+) {
+
+    const referencia =
+        doc(
+            db,
+            "listaCompra",
+            convertirId(producto)
+        );
+
+
+    try {
+
+        await runTransaction(
+            db,
+            async (transaction) => {
+
+                const documento =
+                    await transaction.get(referencia);
+
+
+                if (!documento.exists()) {
+
+                    return;
+
+                }
+
+
+                const datos =
+                    documento.data();
+
+
+                const nuevaCantidad =
+                    datos.cantidad + cambio;
+
+
+                // Si llega a 0,
+                // eliminamos el producto.
+
+                if (nuevaCantidad <= 0) {
+
+                    transaction.delete(
+                        referencia
+                    );
+
+                }
+
+                else {
+
+                    transaction.update(
+                        referencia,
+                        {
+                            cantidad:
+                                nuevaCantidad
+                        }
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Error cambiando cantidad:",
+            error
+        );
+
+    }
+
+}
+
+
+// ==========================================
+// ELIMINAR PRODUCTO
+// ==========================================
+
+async function eliminarProducto(
+    producto
+) {
+
+    const referencia =
+        doc(
+            db,
+            "listaCompra",
+            convertirId(producto)
+        );
+
+
+    try {
+
+        await deleteDoc(
+            referencia
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Error eliminando producto:",
+            error
+        );
+
+    }
+
+}
+
+
+// ==========================================
+// CONVERTIR NOMBRE → ID
+// ==========================================
+
+function convertirId(
+    producto
+) {
+
+    return producto
+        .toLowerCase()
+        .replaceAll(" ", "-")
+        .replaceAll("á", "a")
+        .replaceAll("é", "e")
+        .replaceAll("í", "i")
+        .replaceAll("ó", "o")
+        .replaceAll("ú", "u");
+
+}
+
+
+// ==========================================
+// BOTONES DE PRODUCTOS HABITUALES
+// ==========================================
+
+botones.forEach(
+    function(boton) {
+
+        boton.addEventListener(
+            "click",
+            function() {
+
+                const producto =
+                    boton.dataset.producto;
+
+                const emoji =
+                    boton.dataset.emoji;
+
+
+                añadirProducto(
+                    producto,
+                    emoji
+                );
+
+            }
+        );
+
+    }
+);
+
+
+// ==========================================
+// ESCUCHAR FIRESTORE EN TIEMPO REAL
+// ==========================================
+//
+// Esta es una de las partes MÁS importantes.
+//
+// Si alguien modifica la lista desde otro móvil,
+// Firestore nos avisa automáticamente.
+//
+
+onSnapshot(
+    listaRef,
+    function(snapshot) {
+
+        // Limpiamos nuestra copia
+
+        for (
+            const producto in listaCompra
+        ) {
+
+            delete listaCompra[producto];
 
         }
 
-        else {
 
-            listaCompra[producto].cantidad++;
+        // Volvemos a cargar los documentos
 
-        }
+        snapshot.forEach(
+            function(documento) {
+
+                const datos =
+                    documento.data();
 
 
-        guardarLista();
+                listaCompra[datos.nombre] = {
+
+                    emoji: datos.emoji,
+
+                    cantidad: datos.cantidad
+
+                };
+
+            }
+        );
+
+
+        // Actualizamos la pantalla
 
         mostrarLista();
 
-    });
-
-});
-
-
-// Mostrar la lista al abrir la página
-mostrarLista();
+    }
+);
