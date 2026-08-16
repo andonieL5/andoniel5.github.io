@@ -18,11 +18,17 @@ h1 {
 h2 {
     font-size: 14px;
     margin-top: 30px;
+    letter-spacing: 0.5px;
 }
 
 p {
     color: #777;
 }
+
+
+/* ----------------------------- */
+/* PRODUCTOS HABITUALES */
+/* ----------------------------- */
 
 .producto {
     display: flex;
@@ -36,6 +42,8 @@ p {
     margin-bottom: 10px;
 
     border-radius: 15px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .producto p {
@@ -51,26 +59,67 @@ p {
 .anadir {
     border: none;
 
-    width: 35px;
-    height: 35px;
+    width: 38px;
+    height: 38px;
 
     border-radius: 50%;
+
+    background-color: #f2f2f2;
 
     font-size: 22px;
 
     cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: transform 0.15s ease,
+                background-color 0.15s ease;
 }
+
+.anadir:hover {
+    background-color: #e8e8e8;
+}
+
+.anadir:active {
+    transform: scale(0.9);
+}
+
+
+/* ----------------------------- */
+/* BOTÓN COMPRA HECHA */
+/* ----------------------------- */
 
 #compraHecha {
     width: 100%;
 
-    padding: 12px;
+    padding: 14px;
 
     border: none;
 
     border-radius: 15px;
 
+    background-color: #222;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
     cursor: pointer;
+
+    transition: transform 0.15s ease,
+                opacity 0.15s ease;
+}
+
+#compraHecha:hover {
+    opacity: 0.9;
+}
+
+#compraHecha:active {
+    transform: scale(0.98);
 }
 
 
@@ -80,46 +129,113 @@ p {
 
 #miLista {
     list-style: none;
+
     padding: 0;
+
+    margin: 0;
 }
+
+
+/* Cada producto de MI LISTA */
 
 #miLista li {
     display: flex;
+
     align-items: center;
-    gap: 10px;
+
+    gap: 8px;
 
     background-color: white;
 
-    padding: 12px;
+    padding: 10px 12px;
 
     margin-bottom: 10px;
 
     border-radius: 15px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
+
+
+/* Nombre del producto */
 
 #miLista li span:first-child {
     flex: 1;
+
+    color: #333;
+
+    font-size: 15px;
+
+    font-weight: 500;
 }
 
-#miLista button {
+
+/* Botones - y + */
+
+#miLista li button {
     border: none;
+
+    width: 34px;
+
+    height: 34px;
 
     border-radius: 50%;
 
-    width: 32px;
-    height: 32px;
+    background-color: #f2f2f2;
+
+    color: #333;
+
+    font-size: 20px;
+
+    font-weight: 500;
 
     cursor: pointer;
 
-    font-size: 18px;
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    transition: transform 0.15s ease,
+                background-color 0.15s ease;
 }
+
+
+/* Efecto al pasar el dedo/mouse */
+
+#miLista li button:hover {
+    background-color: #e8e8e8;
+}
+
+
+/* Efecto al pulsar */
+
+#miLista li button:active {
+    transform: scale(0.88);
+}
+
+
+/* Botón ELIMINAR */
 
 #miLista li button:last-child {
     width: auto;
 
+    height: 34px;
+
+    padding: 0 12px;
+
     border-radius: 10px;
 
-    padding: 6px 10px;
+    background-color: #f2f2f2;
+
+    color: #666;
 
     font-size: 12px;
+
+    font-weight: 500;
+}
+
+#miLista li button:last-child:hover {
+    background-color: #e8e8e8;
 }
