@@ -1,15 +1,34 @@
 // ==========================================
-// FIREBASE
+// FIREBASE APP
 // ==========================================
 
-import { initializeApp } from
+import {
+    initializeApp
+} from
     "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+
+// ==========================================
+// FIREBASE AUTHENTICATION
+// ==========================================
+
+import {
+    getAuth,
+    GoogleAuthProvider,
+    signInWithPopup,
+    onAuthStateChanged
+} from
+    "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+// ==========================================
+// FIRESTORE
+// ==========================================
 
 import {
     getFirestore,
     collection,
     doc,
-    setDoc,
     deleteDoc,
     onSnapshot,
     runTransaction
@@ -20,65 +39,89 @@ import {
 // ==========================================
 // CONFIGURACIÓN DE FIREBASE
 // ==========================================
+
+// PEGA AQUÍ TU CONFIGURACIÓN REAL
+// que Firebase te proporcionó.
 //
-// PEGA AQUÍ tu firebaseConfig
-// que te proporciona Firebase.
-//
-// NO compartas este bloque por el chat.
-//
+// NO la compartas por el chat.
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCqTIkaoO62UIMZPcRpaQdbdTvE5ZXYKE8",
-  authDomain: "lista-familiar-3a05d.firebaseapp.com",
-  projectId: "lista-familiar-3a05d",
-  storageBucket: "lista-familiar-3a05d.firebasestorage.app",
-  messagingSenderId: "343672850288",
-  appId: "1:343672850288:web:771de65690748505b0b1b5"
+
+    // apiKey: "...",
+    // authDomain: "...",
+    // projectId: "...",
+    // storageBucket: "...",
+    // messagingSenderId: "...",
+    // appId: "..."
 
 };
 
 
-// Inicializamos Firebase
+// ==========================================
+// INICIALIZAR FIREBASE
+// ==========================================
 
-const app = initializeApp(firebaseConfig);
-
-
-// Conectamos con Firestore
-
-const db = getFirestore(app);
+const app =
+    initializeApp(firebaseConfig);
 
 
 // ==========================================
-// ELEMENTOS DE LA PÁGINA
+// FIREBASE AUTH
 // ==========================================
 
-const botones = document.querySelectorAll(".anadir");
+const auth =
+    getAuth(app);
 
-const miLista = document.getElementById("miLista");
+
+// Proveedor Google
+
+const proveedorGoogle =
+    new GoogleAuthProvider();
 
 
 // ==========================================
-// COLECCIÓN DE FIRESTORE
+// FIRESTORE
 // ==========================================
 
-const listaRef = collection(db, "listaCompra");
+const db =
+    getFirestore(app);
+
+
+// Colección de nuestra lista
+
+const listaRef =
+    collection(
+        db,
+        "listaCompra"
+    );
+
+
+// ==========================================
+// ELEMENTOS HTML
+// ==========================================
+
+const botones =
+    document.querySelectorAll(".anadir");
+
+const miLista =
+    document.getElementById("miLista");
+
+const loginGoogle =
+    document.getElementById("loginGoogle");
+
+const usuarioActual =
+    document.getElementById("usuarioActual");
 
 
 // ==========================================
 // LISTA LOCAL EN MEMORIA
 // ==========================================
-//
-// Aquí tendremos una copia de lo que hay
-// actualmente en Firestore.
-//
-// La fuente oficial será Firestore.
-//
 
 const listaCompra = {};
 
 
 // ==========================================
-// MOSTRAR LA LISTA
+// MOSTRAR LISTA
 // ==========================================
 
 function mostrarLista() {
@@ -86,43 +129,41 @@ function mostrarLista() {
     miLista.innerHTML = "";
 
 
-    for (const producto in listaCompra) {
+    for (
+        const producto in listaCompra
+    ) {
 
-        const informacion = listaCompra[producto];
+        const informacion =
+            listaCompra[producto];
 
 
-        // --------------------------------------
-        // FILA DEL PRODUCTO
-        // --------------------------------------
+        // Crear elemento
 
         const nuevoProducto =
             document.createElement("li");
 
 
-        // --------------------------------------
-        // NOMBRE
-        // --------------------------------------
+        // Nombre
 
         const nombre =
             document.createElement("span");
 
         nombre.textContent =
-            informacion.emoji + " " + producto;
+            informacion.emoji +
+            " " +
+            producto;
 
 
-        // --------------------------------------
-        // BOTÓN -
-        // --------------------------------------
+        // Botón -
 
         const botonMenos =
             document.createElement("button");
 
-        botonMenos.textContent = "−";
+        botonMenos.textContent =
+            "−";
 
 
-        // --------------------------------------
-        // CANTIDAD
-        // --------------------------------------
+        // Cantidad
 
         const cantidad =
             document.createElement("span");
@@ -131,33 +172,31 @@ function mostrarLista() {
             informacion.cantidad;
 
 
-        // --------------------------------------
-        // BOTÓN +
-        // --------------------------------------
+        // Botón +
 
         const botonMas =
             document.createElement("button");
 
-        botonMas.textContent = "+";
+        botonMas.textContent =
+            "+";
 
 
-        // --------------------------------------
-        // BOTÓN ELIMINAR
-        // --------------------------------------
+        // Botón eliminar
 
         const botonEliminar =
             document.createElement("button");
 
-        botonEliminar.textContent = "Eliminar";
+        botonEliminar.textContent =
+            "Eliminar";
 
 
         // ======================================
-        // BOTÓN -
+        // BOTÓN MENOS
         // ======================================
 
         botonMenos.addEventListener(
             "click",
-            async function() {
+            async function () {
 
                 await cambiarCantidad(
                     producto,
@@ -169,12 +208,12 @@ function mostrarLista() {
 
 
         // ======================================
-        // BOTÓN +
+        // BOTÓN MÁS
         // ======================================
 
         botonMas.addEventListener(
             "click",
-            async function() {
+            async function () {
 
                 await cambiarCantidad(
                     producto,
@@ -186,12 +225,12 @@ function mostrarLista() {
 
 
         // ======================================
-        // ELIMINAR
+        // BOTÓN ELIMINAR
         // ======================================
 
         botonEliminar.addEventListener(
             "click",
-            async function() {
+            async function () {
 
                 await eliminarProducto(
                     producto
@@ -202,21 +241,33 @@ function mostrarLista() {
 
 
         // ======================================
-        // CONSTRUIR FILA
+        // CONSTRUIR PRODUCTO
         // ======================================
 
-        nuevoProducto.appendChild(nombre);
+        nuevoProducto.appendChild(
+            nombre
+        );
 
-        nuevoProducto.appendChild(botonMenos);
+        nuevoProducto.appendChild(
+            botonMenos
+        );
 
-        nuevoProducto.appendChild(cantidad);
+        nuevoProducto.appendChild(
+            cantidad
+        );
 
-        nuevoProducto.appendChild(botonMas);
+        nuevoProducto.appendChild(
+            botonMas
+        );
 
-        nuevoProducto.appendChild(botonEliminar);
+        nuevoProducto.appendChild(
+            botonEliminar
+        );
 
 
-        miLista.appendChild(nuevoProducto);
+        miLista.appendChild(
+            nuevoProducto
+        );
 
     }
 
@@ -233,7 +284,11 @@ async function añadirProducto(
 ) {
 
     const referencia =
-        doc(db, "listaCompra", convertirId(producto));
+        doc(
+            db,
+            "listaCompra",
+            convertirId(producto)
+        );
 
 
     try {
@@ -243,10 +298,12 @@ async function añadirProducto(
             async (transaction) => {
 
                 const documento =
-                    await transaction.get(referencia);
+                    await transaction.get(
+                        referencia
+                    );
 
 
-                // Si no existe todavía
+                // Producto nuevo
 
                 if (!documento.exists()) {
 
@@ -261,7 +318,8 @@ async function añadirProducto(
 
                 }
 
-                // Si ya existe
+
+                // Producto existente
 
                 else {
 
@@ -320,7 +378,9 @@ async function cambiarCantidad(
             async (transaction) => {
 
                 const documento =
-                    await transaction.get(referencia);
+                    await transaction.get(
+                        referencia
+                    );
 
 
                 if (!documento.exists()) {
@@ -338,7 +398,7 @@ async function cambiarCantidad(
                     datos.cantidad + cambio;
 
 
-                // Si llega a 0,
+                // Si llega a cero,
                 // eliminamos el producto.
 
                 if (nuevaCantidad <= 0) {
@@ -415,7 +475,7 @@ async function eliminarProducto(
 
 
 // ==========================================
-// CONVERTIR NOMBRE → ID
+// CONVERTIR PRODUCTO EN ID
 // ==========================================
 
 function convertirId(
@@ -435,15 +495,15 @@ function convertirId(
 
 
 // ==========================================
-// BOTONES DE PRODUCTOS HABITUALES
+// BOTONES DE PRODUCTOS
 // ==========================================
 
 botones.forEach(
-    function(boton) {
+    function (boton) {
 
         boton.addEventListener(
             "click",
-            function() {
+            function () {
 
                 const producto =
                     boton.dataset.producto;
@@ -467,18 +527,13 @@ botones.forEach(
 // ==========================================
 // ESCUCHAR FIRESTORE EN TIEMPO REAL
 // ==========================================
-//
-// Esta es una de las partes MÁS importantes.
-//
-// Si alguien modifica la lista desde otro móvil,
-// Firestore nos avisa automáticamente.
-//
 
 onSnapshot(
     listaRef,
-    function(snapshot) {
 
-        // Limpiamos nuestra copia
+    function (snapshot) {
+
+        // Limpiar lista local
 
         for (
             const producto in listaCompra
@@ -489,20 +544,24 @@ onSnapshot(
         }
 
 
-        // Volvemos a cargar los documentos
+        // Cargar datos de Firestore
 
         snapshot.forEach(
-            function(documento) {
+            function (documento) {
 
                 const datos =
                     documento.data();
 
 
-                listaCompra[datos.nombre] = {
+                listaCompra[
+                    datos.nombre
+                ] = {
 
-                    emoji: datos.emoji,
+                    emoji:
+                        datos.emoji,
 
-                    cantidad: datos.cantidad
+                    cantidad:
+                        datos.cantidad
 
                 };
 
@@ -510,9 +569,105 @@ onSnapshot(
         );
 
 
-        // Actualizamos la pantalla
+        // Actualizar pantalla
 
         mostrarLista();
+
+    }
+);
+
+
+// ==========================================
+// LOGIN CON GOOGLE
+// ==========================================
+
+loginGoogle.addEventListener(
+    "click",
+    async function () {
+
+        try {
+
+            const resultado =
+                await signInWithPopup(
+                    auth,
+                    proveedorGoogle
+                );
+
+
+            const usuario =
+                resultado.user;
+
+
+            console.log(
+                "Usuario conectado:",
+                usuario
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Error al iniciar sesión:",
+                error
+            );
+
+        }
+
+    }
+);
+
+
+// ==========================================
+// SABER SI HAY UN USUARIO CONECTADO
+// ==========================================
+
+onAuthStateChanged(
+    auth,
+
+    function (usuario) {
+
+        if (usuario) {
+
+            console.log(
+                "Usuario autenticado:",
+                usuario.email
+            );
+
+
+            usuarioActual.textContent =
+                "Conectado como " +
+                usuario.email;
+
+
+            loginGoogle.textContent =
+                "Sesión iniciada";
+
+
+            loginGoogle.disabled =
+                true;
+
+        }
+
+        else {
+
+            console.log(
+                "No hay usuario conectado"
+            );
+
+
+            usuarioActual.textContent =
+                "No has iniciado sesión";
+
+
+            loginGoogle.textContent =
+                "Continuar con Google";
+
+
+            loginGoogle.disabled =
+                false;
+
+        }
 
     }
 );
