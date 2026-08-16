@@ -3,17 +3,34 @@ const botones = document.querySelectorAll(".anadir");
 const miLista = document.getElementById("miLista");
 
 
-// Aquí guardaremos los productos que hemos añadido
-const listaCompra = {};
+// Recuperamos la lista guardada anteriormente
+const listaGuardada = localStorage.getItem("listaCompra");
 
 
-// Esta función dibuja nuestra lista en pantalla
+// Si existe una lista guardada,
+// la convertimos de texto a objeto
+const listaCompra = listaGuardada
+    ? JSON.parse(listaGuardada)
+    : {};
+
+
+// Guardamos la lista en el navegador
+function guardarLista() {
+
+    localStorage.setItem(
+        "listaCompra",
+        JSON.stringify(listaCompra)
+    );
+
+}
+
+
+// Dibujamos la lista en pantalla
 function mostrarLista() {
 
     miLista.innerHTML = "";
 
 
-    // Recorremos todos los productos de la lista
     for (const producto in listaCompra) {
 
         const informacion = listaCompra[producto];
@@ -52,10 +69,11 @@ function mostrarLista() {
         botonEliminar.textContent = "Eliminar";
 
 
-        // Cuando pulsamos -
+        // BOTÓN -
         botonMenos.addEventListener("click", function() {
 
             informacion.cantidad--;
+
 
             if (informacion.cantidad <= 0) {
 
@@ -63,32 +81,38 @@ function mostrarLista() {
 
             }
 
+
+            guardarLista();
+
             mostrarLista();
 
         });
 
 
-        // Cuando pulsamos +
+        // BOTÓN +
         botonMas.addEventListener("click", function() {
 
             informacion.cantidad++;
 
+            guardarLista();
+
             mostrarLista();
 
         });
 
 
-        // Cuando pulsamos eliminar
+        // BOTÓN ELIMINAR
         botonEliminar.addEventListener("click", function() {
 
             delete listaCompra[producto];
 
+            guardarLista();
+
             mostrarLista();
 
         });
 
 
-        // Añadimos todos los elementos a la fila
         nuevoProducto.appendChild(nombre);
 
         nuevoProducto.appendChild(botonMenos);
@@ -100,7 +124,6 @@ function mostrarLista() {
         nuevoProducto.appendChild(botonEliminar);
 
 
-        // Añadimos la fila a MI LISTA
         miLista.appendChild(nuevoProducto);
 
     }
@@ -108,7 +131,7 @@ function mostrarLista() {
 }
 
 
-// Detectamos los botones + de productos habituales
+// Botones de productos habituales
 botones.forEach(function(boton) {
 
     boton.addEventListener("click", function() {
@@ -118,7 +141,6 @@ botones.forEach(function(boton) {
         const emoji = boton.dataset.emoji;
 
 
-        // Si el producto todavía no está en la lista
         if (!listaCompra[producto]) {
 
             listaCompra[producto] = {
@@ -131,7 +153,6 @@ botones.forEach(function(boton) {
 
         }
 
-        // Si ya existe, aumentamos la cantidad
         else {
 
             listaCompra[producto].cantidad++;
@@ -139,8 +160,14 @@ botones.forEach(function(boton) {
         }
 
 
+        guardarLista();
+
         mostrarLista();
 
     });
 
 });
+
+
+// Mostrar la lista al abrir la página
+mostrarLista();
