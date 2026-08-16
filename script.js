@@ -1,14 +1,21 @@
-const botonTomate = document.getElementById("botonTomate");
+const botones = document.querySelectorAll(".anadir");
 
 const miLista = document.getElementById("miLista");
 
 
-botonTomate.addEventListener("click", function() {
+botones.forEach(function(boton) {
 
-    const nuevoProducto = document.createElement("li");
+    boton.addEventListener("click", function() {
 
-    nuevoProducto.textContent = "🍅 Tomate";
+        const producto = boton.dataset.producto;
+        const emoji = boton.dataset.emoji;
 
-    miLista.appendChild(nuevoProducto);
+        const nuevoProducto = document.createElement("li");
+
+        nuevoProducto.textContent = emoji + " " + producto;
+
+        miLista.appendChild(nuevoProducto);
+
+    });
 
 });
