@@ -28,15 +28,12 @@ import {
 //
 
 const firebaseConfig = {
-
-    // EJEMPLO:
-    //
-    // apiKey: "TU_API_KEY",
-    // authDomain: "TU_PROYECTO.firebaseapp.com",
-    // projectId: "TU_PROJECT_ID",
-    // storageBucket: "TU_STORAGE_BUCKET",
-    // messagingSenderId: "TU_SENDER_ID",
-    // appId: "TU_APP_ID"
+    apiKey: "AIzaSyCqTIkaoO62UIMZPcRpaQdbdTvE5ZXYKE8",
+  authDomain: "lista-familiar-3a05d.firebaseapp.com",
+  projectId: "lista-familiar-3a05d",
+  storageBucket: "lista-familiar-3a05d.firebasestorage.app",
+  messagingSenderId: "343672850288",
+  appId: "1:343672850288:web:771de65690748505b0b1b5"
 
 };
 
