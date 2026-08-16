@@ -47,13 +47,12 @@ import {
 
 const firebaseConfig = {
 
-    // apiKey: "...",
-    // authDomain: "...",
-    // projectId: "...",
-    // storageBucket: "...",
-    // messagingSenderId: "...",
-    // appId: "..."
-
+    apiKey: "AIzaSyCqTIkaoO62UIMZPcRpaQdbdTvE5ZXYKE8",
+  authDomain: "lista-familiar-3a05d.firebaseapp.com",
+  projectId: "lista-familiar-3a05d",
+  storageBucket: "lista-familiar-3a05d.firebasestorage.app",
+  messagingSenderId: "343672850288",
+  appId: "1:343672850288:web:771de65690748505b0b1b5"
 };
 
 
