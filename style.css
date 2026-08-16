@@ -72,6 +72,12 @@ p {
 
     cursor: pointer;
 }
+
+
+/* ----------------------------- */
+/* MI LISTA */
+/* ----------------------------- */
+
 #miLista {
     list-style: none;
     padding: 0;
