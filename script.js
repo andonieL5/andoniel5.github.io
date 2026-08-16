@@ -46,8 +46,7 @@ import {
 // NO la compartas por el chat.
 
 const firebaseConfig = {
-
-    apiKey: "AIzaSyCqTIkaoO62UIMZPcRpaQdbdTvE5ZXYKE8",
+  apiKey: "AIzaSyCqTIkaoO62UIMZPcRpaQdbdTvE5ZXYKE8",
   authDomain: "lista-familiar-3a05d.firebaseapp.com",
   projectId: "lista-familiar-3a05d",
   storageBucket: "lista-familiar-3a05d.firebasestorage.app",
