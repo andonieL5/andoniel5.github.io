@@ -1,0 +1,74 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fff8f5;
+    margin: 0;
+    padding: 25px;
+}
+
+main {
+    max-width: 500px;
+    margin: auto;
+}
+
+h1 {
+    font-size: 32px;
+    margin-top: 5px;
+}
+
+h2 {
+    font-size: 14px;
+    margin-top: 30px;
+}
+
+p {
+    color: #777;
+}
+
+.producto {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    background-color: white;
+
+    padding: 10px;
+
+    margin-bottom: 10px;
+
+    border-radius: 15px;
+}
+
+.producto p {
+    flex: 1;
+    margin: 0;
+    color: #333;
+}
+
+.producto span {
+    font-size: 25px;
+}
+
+.anadir {
+    border: none;
+
+    width: 35px;
+    height: 35px;
+
+    border-radius: 50%;
+
+    font-size: 22px;
+
+    cursor: pointer;
+}
+
+#compraHecha {
+    width: 100%;
+
+    padding: 12px;
+
+    border: none;
+
+    border-radius: 15px;
+
+    cursor: pointer;
+}
