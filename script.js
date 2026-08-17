@@ -31,36 +31,22 @@ import {
     doc,
     deleteDoc,
     onSnapshot,
-    runTransaction,
-    getDocs
+    runTransaction
 } from
     "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
 // ==========================================
-// CONFIGURACIÓN DE FIREBASE
+// CONFIGURACIÓN FIREBASE
 // ==========================================
 
 const firebaseConfig = {
-
-    apiKey:
-        "AIzaSyCqTIkaoO62UIMZPcRpaQdbdTvE5ZXYKE8",
-
-    authDomain:
-        "lista-familiar-3a05d.firebaseapp.com",
-
-    projectId:
-        "lista-familiar-3a05d",
-
-    storageBucket:
-        "lista-familiar-3a05d.firebasestorage.app",
-
-    messagingSenderId:
-        "343672850288",
-
-    appId:
-        "1:343672850288:web:771de65690748505b0b1b5"
-
+    apiKey: "AIzaSyCqTIkaoO62UIMZPcRpaQdbdTvE5ZXYKE8",
+    authDomain: "lista-familiar-3a05d.firebaseapp.com",
+    projectId: "lista-familiar-3a05d",
+    storageBucket: "lista-familiar-3a05d.firebasestorage.app",
+    messagingSenderId: "343672850288",
+    appId: "1:343672850288:web:771de65690748505b0b1b5"
 };
 
 
@@ -89,16 +75,11 @@ const app =
 
 
 // ==========================================
-// FIREBASE AUTH
+// AUTH
 // ==========================================
 
 const auth =
     getAuth(app);
-
-
-// ==========================================
-// GOOGLE
-// ==========================================
 
 const proveedorGoogle =
     new GoogleAuthProvider();
@@ -121,19 +102,6 @@ const FAMILIA_ID =
 
 
 // ==========================================
-// REFERENCIA A LA LISTA
-// ==========================================
-
-const listaRef =
-    collection(
-        db,
-        "familias",
-        FAMILIA_ID,
-        "listaCompra"
-    );
-
-
-// ==========================================
 // ELEMENTOS HTML
 // ==========================================
 
@@ -152,17 +120,14 @@ const usuarioActual =
 const compraHecha =
     document.getElementById("compraHecha");
 
-const productosCantidad =
-    document.getElementById("produktuKopurua");
+const modalConfirmacion =
+    document.getElementById("modalConfirmacion");
 
-const confirmModal =
-    document.getElementById("confirmModal");
+const confirmarCompra =
+    document.getElementById("confirmarCompra");
 
-const confirmBai =
-    document.getElementById("confirmBai");
-
-const confirmEz =
-    document.getElementById("confirmEz");
+const cancelarCompra =
+    document.getElementById("cancelarCompra");
 
 
 // ==========================================
@@ -173,139 +138,78 @@ const listaCompra = {};
 
 
 // ==========================================
-// CATEGORÍAS DEL SUPERMERCADO
+// LISTENER DE FIRESTORE
 // ==========================================
 
-const categorias = {
-
-    "DESPENTSA": [
-
-        "Espagetiak",
-        "Makarroiak",
-        "Fideoak",
-        "Maria Doradas",
-        "Príncipe",
-        "Galleta tostatuak",
-        "Chiquilín",
-        "Arroza",
-        "Lekaleak",
-        "Atuna",
-        "Olivek",
-        "Piperreak",
-        "Zainzuriak",
-        "Tomate birrindua",
-        "Oliba-olioa",
-        "Ekilore-olioa",
-        "Mahats-ozpina",
-        "Nesquik",
-        "ColaCao"
-
-    ],
-
-
-    "ESNEKIAK": [
-
-        "Esnea",
-        "Jogurta",
-        "Gazta",
-        "Gurina",
-        "Esnegaina"
-
-    ],
-
-
-    "FRUTA ETA BARAZKIAK": [
-
-        "Sagarrak",
-        "Platanoak",
-        "Udareak",
-        "Mandarinak",
-        "Laranjak",
-        "Mahatsak",
-        "Tomateak",
-        "Aguakateak",
-        "Letxuga",
-        "Azenarioak",
-        "Tipulak",
-        "Patatak"
-
-    ],
-
-
-    "HARAGIA": [
-
-        "Oilaskoa",
-        "Txerri-haragia",
-        "Behi-haragia",
-        "Haragi xehatua"
-
-    ],
-
-
-    "ARRAINA": [
-
-        "Izokina",
-        "Legatza",
-        "Atuna freskoa"
-
-    ],
-
-
-    "IZOZTUAK": [
-
-        "Sandwich izozkia",
-        "Magnum",
-        "Pizza izoztua"
-
-    ],
-
-
-    "EDARIAK": [
-
-        "Ura",
-        "Coca-Cola",
-        "Fanta",
-        "Sprite",
-        "Aquarius"
-
-    ],
-
-
-    "GARBIKETA": [
-
-        "Ontzi-garbigarria",
-        "Garbigailurako detergentea",
-        "Lixiba",
-        "Komuneko papera"
-
-    ]
-
-};
+let cancelarListener = null;
 
 
 // ==========================================
-// ENCONTRAR CATEGORÍA
+// CATEGORÍAS DESPLEGABLES
 // ==========================================
 
-function obtenerCategoria(producto) {
+document
+    .querySelectorAll(".kategoria-btn")
+    .forEach(
+        function (boton) {
 
-    for (
-        const categoria in categorias
-    ) {
+            boton.addEventListener(
+                "click",
+                function () {
 
-        if (
-            categorias[categoria].includes(producto)
-        ) {
+                    const contenido =
+                        boton.parentElement
+                            .querySelector(
+                                ".kategoria-edukia"
+                            );
 
-            return categoria;
+                    contenido.classList.toggle(
+                        "abierta"
+                    );
+
+                    boton.classList.toggle(
+                        "abierta"
+                    );
+
+                }
+            );
 
         }
+    );
 
-    }
 
-    return "BESTE BATZUK";
+// ==========================================
+// SUBCATEGORÍAS DESPLEGABLES
+// ==========================================
 
-}
+document
+    .querySelectorAll(".azpikategoria-btn")
+    .forEach(
+        function (boton) {
+
+            boton.addEventListener(
+                "click",
+                function () {
+
+                    const contenido =
+                        boton.parentElement
+                            .querySelector(
+                                ".azpikategoria-edukia"
+                            );
+
+                    contenido.classList.toggle(
+                        "abierta"
+                    );
+
+                    boton.classList.toggle(
+                        "abierta"
+                    );
+
+                }
+            );
+
+        }
+    );
 
 
 // ==========================================
@@ -318,45 +222,23 @@ function mostrarLista() {
 
 
     const productos =
-        Object.keys(listaCompra);
+        Object.entries(listaCompra);
 
-
-    // ======================================
-    // CONTADOR
-    // ======================================
-
-    let total = 0;
-
-    productos.forEach(
-        producto => {
-
-            total +=
-                listaCompra[producto].cantidad;
-
-        }
-    );
-
-
-    productosCantidad.textContent =
-        total;
-
-
-    // ======================================
-    // LISTA VACÍA
-    // ======================================
 
     if (productos.length === 0) {
 
         const vacia =
-            document.createElement("div");
+            document.createElement("p");
 
         vacia.className =
-            "zerrenda-hutsik";
+            "lista-vacia";
 
         vacia.textContent =
-            "Zure zerrenda hutsik dago.";
+            "Zerrenda hutsik dago.";
 
-        miLista.appendChild(vacia);
+        miLista.appendChild(
+            vacia
+        );
 
         return;
 
@@ -364,27 +246,301 @@ function mostrarLista() {
 
 
     // ======================================
-    // AGRUPAR POR CATEGORÍA
+    // SECCIONES
     // ======================================
 
-    const agrupado = {};
+    const secciones = {
+
+        "Despentsa": [
+            "Pasta",
+            "Galletak",
+            "Arroza",
+            "Kontserbak",
+            "Olioak eta ozpinak",
+            "Nesquik",
+            "Colacao"
+        ],
+
+        "Esnekiak": [
+            "Esne osoa",
+            "Esne erdigaingabetua",
+            "Yogur",
+            "Gazta",
+            "Gurina"
+        ],
+
+        "Frutak eta Barazkiak": [
+            "Sagarra",
+            "Platanoa",
+            "Laranja",
+            "Udarea",
+            "Tomatea",
+            "Ahuakatea",
+            "Letxuga",
+            "Azenarioa",
+            "Patata"
+        ],
+
+        "Haragia eta Arraina": [
+            "Oilaskoa",
+            "Txerri-haragia",
+            "Behi-haragia",
+            "Izokina",
+            "Legatza"
+        ],
+
+        "Izoztuak": [
+            "Sandwich izozkia",
+            "Magnum",
+            "Pizza"
+        ],
+
+        "Edariak": [
+            "Esnea",
+            "Koka-kola",
+            "Fanta",
+            "Sprite"
+        ],
+
+        "Garbiketa": [
+            "Komuneko papera",
+            "Sukaldeko papera",
+            "Ontzi-garbigailua",
+            "Garbigarria"
+        ]
+
+    };
 
 
-    productos.forEach(
-        producto => {
+    // ======================================
+    // ORDENATU PRODUKTUAK
+    // ======================================
 
-            const categoria =
-                obtenerCategoria(producto);
+    for (
+        const [seccion, nombres]
+        of Object.entries(secciones)
+    ) {
+
+        const productosSeccion =
+            productos.filter(
+                ([nombre]) =>
+                    nombres.includes(nombre)
+            );
 
 
-            if (!agrupado[categoria]) {
+        if (
+            productosSeccion.length === 0
+        ) {
+            continue;
+        }
 
-                agrupado[categoria] = [];
+
+        const seccionElemento =
+            document.createElement("div");
+
+        seccionElemento.className =
+            "lista-sekzioa";
+
+
+        const titulo =
+            document.createElement("div");
+
+        titulo.className =
+            "lista-sekzioa-titulua";
+
+        titulo.textContent =
+            seccion.toUpperCase();
+
+
+        seccionElemento.appendChild(
+            titulo
+        );
+
+
+        productosSeccion.forEach(
+            function ([producto, informacion]) {
+
+                crearProductoLista(
+                    seccionElemento,
+                    producto,
+                    informacion
+                );
 
             }
+        );
 
 
-            agrupado[categoria].push(
+        miLista.appendChild(
+            seccionElemento
+        );
+
+    }
+
+
+    // ======================================
+    // PRODUCTOS NO CLASIFICADOS
+    // ======================================
+
+    const productosClasificados =
+        Object.values(secciones)
+            .flat();
+
+
+    const otros =
+        productos.filter(
+            ([nombre]) =>
+                !productosClasificados
+                    .includes(nombre)
+        );
+
+
+    if (otros.length > 0) {
+
+        const seccionElemento =
+            document.createElement("div");
+
+        seccionElemento.className =
+            "lista-sekzioa";
+
+
+        const titulo =
+            document.createElement("div");
+
+        titulo.className =
+            "lista-sekzioa-titulua";
+
+        titulo.textContent =
+            "BESTELAKOAK";
+
+
+        seccionElemento.appendChild(
+            titulo
+        );
+
+
+        otros.forEach(
+            function ([producto, informacion]) {
+
+                crearProductoLista(
+                    seccionElemento,
+                    producto,
+                    informacion
+                );
+
+            }
+        );
+
+
+        miLista.appendChild(
+            seccionElemento
+        );
+
+    }
+
+}
+
+
+// ==========================================
+// CREAR PRODUCTO EN LISTA
+// ==========================================
+
+function crearProductoLista(
+    contenedor,
+    producto,
+    informacion
+) {
+
+    const elemento =
+        document.createElement("div");
+
+    elemento.className =
+        "lista-produktua";
+
+
+    // Nombre
+
+    const nombre =
+        document.createElement("span");
+
+    nombre.className =
+        "lista-izena";
+
+    nombre.textContent =
+        informacion.emoji +
+        " " +
+        producto;
+
+
+    // Botón -
+
+    const menos =
+        document.createElement("button");
+
+    menos.textContent =
+        "−";
+
+    menos.addEventListener(
+        "click",
+        async function () {
+
+            await cambiarCantidad(
+                producto,
+                -1
+            );
+
+        }
+    );
+
+
+    // Cantidad
+
+    const cantidad =
+        document.createElement("span");
+
+    cantidad.className =
+        "lista-kopurua";
+
+    cantidad.textContent =
+        informacion.cantidad;
+
+
+    // Botón +
+
+    const mas =
+        document.createElement("button");
+
+    mas.textContent =
+        "+";
+
+    mas.addEventListener(
+        "click",
+        async function () {
+
+            await cambiarCantidad(
+                producto,
+                1
+            );
+
+        }
+    );
+
+
+    // Botón eliminar
+
+    const eliminar =
+        document.createElement("button");
+
+    eliminar.className =
+        "ezabatu-btn";
+
+    eliminar.textContent =
+        "Ezabatu";
+
+    eliminar.addEventListener(
+        "click",
+        async function () {
+
+            await eliminarProducto(
                 producto
             );
 
@@ -392,227 +548,29 @@ function mostrarLista() {
     );
 
 
-    // ======================================
-    // ORDEN DE LAS CATEGORÍAS
-    // ======================================
+    elemento.appendChild(
+        nombre
+    );
 
-    const ordenCategorias = [
+    elemento.appendChild(
+        menos
+    );
 
-        "DESPENTSA",
+    elemento.appendChild(
+        cantidad
+    );
 
-        "ESNEKIAK",
+    elemento.appendChild(
+        mas
+    );
 
-        "FRUTA ETA BARAZKIAK",
+    elemento.appendChild(
+        eliminar
+    );
 
-        "HARAGIA",
 
-        "ARRAINA",
-
-        "IZOZTUAK",
-
-        "EDARIAK",
-
-        "GARBIKETA",
-
-        "BESTE BATZUK"
-
-    ];
-
-
-    // ======================================
-    // CREAR SECCIONES
-    // ======================================
-
-    ordenCategorias.forEach(
-        categoria => {
-
-            if (
-                !agrupado[categoria] ||
-                agrupado[categoria].length === 0
-            ) {
-
-                return;
-
-            }
-
-
-            const seccion =
-                document.createElement("div");
-
-            seccion.className =
-                "lista-sekzioa";
-
-
-            const titulo =
-                document.createElement("div");
-
-            titulo.className =
-                "lista-sekzioa-titulua";
-
-            titulo.textContent =
-                categoria;
-
-
-            const ul =
-                document.createElement("ul");
-
-
-            agrupado[categoria].forEach(
-                producto => {
-
-                    const informacion =
-                        listaCompra[producto];
-
-
-                    const li =
-                        document.createElement("li");
-
-
-                    // ==================================
-                    // NOMBRE
-                    // ==================================
-
-                    const nombre =
-                        document.createElement("span");
-
-                    nombre.className =
-                        "nombre";
-
-                    nombre.textContent =
-                        informacion.emoji +
-                        " " +
-                        producto;
-
-
-                    // ==================================
-                    // MENOS
-                    // ==================================
-
-                    const botonMenos =
-                        document.createElement("button");
-
-                    botonMenos.textContent =
-                        "−";
-
-
-                    botonMenos.addEventListener(
-                        "click",
-                        () => {
-
-                            cambiarCantidad(
-                                producto,
-                                -1
-                            );
-
-                        }
-                    );
-
-
-                    // ==================================
-                    // CANTIDAD
-                    // ==================================
-
-                    const cantidad =
-                        document.createElement("span");
-
-                    cantidad.className =
-                        "cantidad";
-
-                    cantidad.textContent =
-                        informacion.cantidad;
-
-
-                    // ==================================
-                    // MÁS
-                    // ==================================
-
-                    const botonMas =
-                        document.createElement("button");
-
-                    botonMas.textContent =
-                        "+";
-
-
-                    botonMas.addEventListener(
-                        "click",
-                        () => {
-
-                            cambiarCantidad(
-                                producto,
-                                1
-                            );
-
-                        }
-                    );
-
-
-                    // ==================================
-                    // ELIMINAR
-                    // ==================================
-
-                    const botonEliminar =
-                        document.createElement("button");
-
-                    botonEliminar.className =
-                        "ezabatu";
-
-                    botonEliminar.textContent =
-                        "Ezabatu";
-
-
-                    botonEliminar.addEventListener(
-                        "click",
-                        () => {
-
-                            eliminarProducto(
-                                producto
-                            );
-
-                        }
-                    );
-
-
-                    // ==================================
-                    // AÑADIR ELEMENTOS
-                    // ==================================
-
-                    li.appendChild(nombre);
-
-                    li.appendChild(
-                        botonMenos
-                    );
-
-                    li.appendChild(
-                        cantidad
-                    );
-
-                    li.appendChild(
-                        botonMas
-                    );
-
-                    li.appendChild(
-                        botonEliminar
-                    );
-
-
-                    ul.appendChild(li);
-
-                }
-            );
-
-
-            seccion.appendChild(
-                titulo
-            );
-
-            seccion.appendChild(ul);
-
-
-            miLista.appendChild(
-                seccion
-            );
-
-        }
+    contenedor.appendChild(
+        elemento
     );
 
 }
@@ -641,7 +599,7 @@ async function añadirProducto(
 
         await runTransaction(
             db,
-            async transaction => {
+            async function (transaction) {
 
                 const documento =
                     await transaction.get(
@@ -654,16 +612,9 @@ async function añadirProducto(
                     transaction.set(
                         referencia,
                         {
-
-                            nombre:
-                                producto,
-
-                            emoji:
-                                emoji,
-
-                            cantidad:
-                                1
-
+                            nombre: producto,
+                            emoji: emoji,
+                            cantidad: 1
                         }
                     );
 
@@ -674,14 +625,11 @@ async function añadirProducto(
                     const datos =
                         documento.data();
 
-
                     transaction.update(
                         referencia,
                         {
-
                             cantidad:
                                 datos.cantidad + 1
-
                         }
                     );
 
@@ -727,7 +675,7 @@ async function cambiarCantidad(
 
         await runTransaction(
             db,
-            async transaction => {
+            async function (transaction) {
 
                 const documento =
                     await transaction.get(
@@ -736,9 +684,7 @@ async function cambiarCantidad(
 
 
                 if (!documento.exists()) {
-
                     return;
-
                 }
 
 
@@ -763,10 +709,8 @@ async function cambiarCantidad(
                     transaction.update(
                         referencia,
                         {
-
                             cantidad:
                                 nuevaCantidad
-
                         }
                     );
 
@@ -828,7 +772,7 @@ async function eliminarProducto(
 
 
 // ==========================================
-// CONVERTIR PRODUCTO EN ID
+// CONVERTIR NOMBRE EN ID
 // ==========================================
 
 function convertirId(
@@ -837,28 +781,25 @@ function convertirId(
 
     return producto
         .toLowerCase()
-        .replaceAll(" ", "-")
-        .replaceAll("á", "a")
-        .replaceAll("é", "e")
-        .replaceAll("í", "i")
-        .replaceAll("ó", "o")
-        .replaceAll("ú", "u")
-        .replaceAll("ñ", "n")
-        .replaceAll("ü", "u");
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/ñ/g, "n")
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9-]/g, "");
 
 }
 
 
 // ==========================================
-// BOTONES DE PRODUCTOS
+// BOTONES +
 // ==========================================
 
 botones.forEach(
-    boton => {
+    function (boton) {
 
         boton.addEventListener(
             "click",
-            () => {
+            function () {
 
                 const producto =
                     boton.dataset.producto;
@@ -880,95 +821,82 @@ botones.forEach(
 
 
 // ==========================================
-// SUBCATEGORÍAS DESPLEGABLES
+// ESCUCHAR FIRESTORE
 // ==========================================
 
-const subcategorias =
-    document.querySelectorAll(
-        ".subcategoria-boton"
-    );
+function iniciarListenerFirestore() {
+
+    if (cancelarListener) {
+
+        cancelarListener();
+
+    }
 
 
-subcategorias.forEach(
-    boton => {
-
-        boton.addEventListener(
-            "click",
-            () => {
-
-                const contenedor =
-                    boton.parentElement;
+    const listaRef =
+        collection(
+            db,
+            "familias",
+            FAMILIA_ID,
+            "listaCompra"
+        );
 
 
-                contenedor.classList.toggle(
-                    "abierto"
+    cancelarListener =
+        onSnapshot(
+            listaRef,
+
+            function (snapshot) {
+
+                for (
+                    const producto in listaCompra
+                ) {
+
+                    delete listaCompra[
+                        producto
+                    ];
+
+                }
+
+
+                snapshot.forEach(
+                    function (documento) {
+
+                        const datos =
+                            documento.data();
+
+
+                        listaCompra[
+                            datos.nombre
+                        ] = {
+
+                            emoji:
+                                datos.emoji,
+
+                            cantidad:
+                                datos.cantidad
+
+                        };
+
+                    }
+                );
+
+
+                mostrarLista();
+
+            },
+
+            function (error) {
+
+                console.error(
+                    "Errorea zerrenda kargatzean:",
+                    error
                 );
 
             }
         );
 
-    }
-);
-
-
-// ==========================================
-// FIRESTORE EN TIEMPO REAL
-// ==========================================
-
-onSnapshot(
-    listaRef,
-
-    snapshot => {
-
-        // Limpiar lista local
-
-        for (
-            const producto in listaCompra
-        ) {
-
-            delete listaCompra[producto];
-
-        }
-
-
-        // Cargar productos
-
-        snapshot.forEach(
-            documento => {
-
-                const datos =
-                    documento.data();
-
-
-                listaCompra[
-                    datos.nombre
-                ] = {
-
-                    emoji:
-                        datos.emoji,
-
-                    cantidad:
-                        datos.cantidad
-
-                };
-
-            }
-        );
-
-
-        mostrarLista();
-
-    },
-
-    error => {
-
-        console.error(
-            "Errorea zerrenda kargatzean:",
-            error
-        );
-
-    }
-);
+}
 
 
 // ==========================================
@@ -977,9 +905,13 @@ onSnapshot(
 
 loginGoogle.addEventListener(
     "click",
-    async () => {
+    async function () {
 
         try {
+
+            loginGoogle.disabled =
+                true;
+
 
             const resultado =
                 await signInWithPopup(
@@ -988,19 +920,9 @@ loginGoogle.addEventListener(
                 );
 
 
-            const usuario =
-                resultado.user;
-
-
             console.log(
                 "Usuario conectado:",
-                usuario
-            );
-
-
-            console.log(
-                "ID del usuario:",
-                usuario.uid
+                resultado.user.email
             );
 
         }
@@ -1011,6 +933,10 @@ loginGoogle.addEventListener(
                 "Errorea saioa hastean:",
                 error
             );
+
+
+            loginGoogle.disabled =
+                false;
 
         }
 
@@ -1025,7 +951,7 @@ loginGoogle.addEventListener(
 onAuthStateChanged(
     auth,
 
-    usuario => {
+    function (usuario) {
 
         if (usuario) {
 
@@ -1047,18 +973,22 @@ onAuthStateChanged(
 
 
             loginGoogle.textContent =
-                "Saioa hasita ✓";
+                "Saioa hasita";
 
 
             loginGoogle.disabled =
                 true;
+
+
+            // Iniciar Firestore
+            iniciarListenerFirestore();
 
         }
 
         else {
 
             console.log(
-                "No hay usuario conectado"
+                "Ez dago erabiltzailerik konektatuta"
             );
 
 
@@ -1073,6 +1003,33 @@ onAuthStateChanged(
             loginGoogle.disabled =
                 false;
 
+
+            // Parar listener
+            if (cancelarListener) {
+
+                cancelarListener();
+
+                cancelarListener =
+                    null;
+
+            }
+
+
+            // Limpiar pantalla
+
+            for (
+                const producto in listaCompra
+            ) {
+
+                delete listaCompra[
+                    producto
+                ];
+
+            }
+
+
+            mostrarLista();
+
         }
 
     }
@@ -1080,24 +1037,15 @@ onAuthStateChanged(
 
 
 // ==========================================
-// EROSKETA EGINDA
+// MODAL: EROSKETA EGINDA
 // ==========================================
 
 compraHecha.addEventListener(
     "click",
-    () => {
+    function () {
 
-        if (
-            Object.keys(listaCompra).length === 0
-        ) {
-
-            return;
-
-        }
-
-
-        confirmModal.classList.add(
-            "erakutsi"
+        modalConfirmacion.classList.add(
+            "visible"
         );
 
     }
@@ -1105,15 +1053,15 @@ compraHecha.addEventListener(
 
 
 // ==========================================
-// MODALA - EZ
+// MODAL: EZ
 // ==========================================
 
-confirmEz.addEventListener(
+cancelarCompra.addEventListener(
     "click",
-    () => {
+    function () {
 
-        confirmModal.classList.remove(
-            "erakutsi"
+        modalConfirmacion.classList.remove(
+            "visible"
         );
 
     }
@@ -1121,47 +1069,32 @@ confirmEz.addEventListener(
 
 
 // ==========================================
-// MODALA - BAI
+// MODAL: BAI
 // ==========================================
 
-confirmBai.addEventListener(
+confirmarCompra.addEventListener(
     "click",
-    async () => {
+    async function () {
 
         try {
 
-            const snapshot =
-                await getDocs(listaRef);
+            const productos =
+                Object.keys(listaCompra);
 
 
-            const eliminaciones = [];
+            for (
+                const producto of productos
+            ) {
+
+                await eliminarProducto(
+                    producto
+                );
+
+            }
 
 
-            snapshot.forEach(
-                documento => {
-
-                    eliminaciones.push(
-                        deleteDoc(
-                            documento.ref
-                        )
-                    );
-
-                }
-            );
-
-
-            await Promise.all(
-                eliminaciones
-            );
-
-
-            confirmModal.classList.remove(
-                "erakutsi"
-            );
-
-
-            console.log(
-                "Erosketa-zerrenda garbituta."
+            modalConfirmacion.classList.remove(
+                "visible"
             );
 
         }
@@ -1169,8 +1102,31 @@ confirmBai.addEventListener(
         catch (error) {
 
             console.error(
-                "Errorea zerrenda ezabatzean:",
+                "Errorea erosketa amaitzean:",
                 error
+            );
+
+        }
+
+    }
+);
+
+
+// ==========================================
+// CERRAR MODAL AL PULSAR FUERA
+// ==========================================
+
+modalConfirmacion.addEventListener(
+    "click",
+    function (evento) {
+
+        if (
+            evento.target ===
+            modalConfirmacion
+        ) {
+
+            modalConfirmacion.classList.remove(
+                "visible"
             );
 
         }
