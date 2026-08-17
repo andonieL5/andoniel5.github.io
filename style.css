@@ -1,59 +1,134 @@
 /* ==========================================
-   GENERAL
+   OROKORRA
 ========================================== */
 
 * {
     box-sizing: border-box;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #fff8f5;
-    margin: 0;
-    padding: 25px;
-    color: #222;
+html {
+    scroll-behavior: smooth;
 }
+
+body {
+
+    margin: 0;
+
+    padding: 24px 16px 50px;
+
+    background: #f8f7f4;
+
+    color: #222;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+}
+
+
+/* ==========================================
+   CONTENEDOR
+========================================== */
 
 main {
-    max-width: 520px;
+
+    width: 100%;
+
+    max-width: 620px;
+
     margin: auto;
-    padding-bottom: 30px;
 }
 
-.etiketa {
-    font-size: 12px;
+
+/* ==========================================
+   CABECERA
+========================================== */
+
+.cabecera {
+
+    padding: 15px 4px 25px;
+}
+
+.etiqueta {
+
+    display: inline-block;
+
+    font-size: 11px;
+
     font-weight: 700;
-    letter-spacing: 1px;
-    color: #999;
-    margin-bottom: 5px;
-}
 
-h1 {
-    font-size: 34px;
-    line-height: 1.08;
-    margin: 5px 0 20px;
-}
+    letter-spacing: 1.5px;
 
-h2 {
-    font-size: 14px;
-    letter-spacing: .6px;
-    margin-top: 32px;
+    color: #888;
+
     margin-bottom: 8px;
 }
 
-p {
-    color: #777;
+h1 {
+
+    margin: 0 0 18px;
+
+    font-size: 38px;
+
+    line-height: 1.04;
+
+    letter-spacing: -1.5px;
+
+    font-weight: 750;
 }
 
-.descripcion {
-    font-size: 14px;
-    margin-top: 0;
-    margin-bottom: 15px;
+
+/* ==========================================
+   USUARIO
+========================================== */
+
+.usuario {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    font-size: 13px;
+
+    color: #666;
+
+    margin-bottom: 12px;
 }
 
-.astea {
-    font-size: 14px;
-    margin-bottom: 25px;
+.usuario::before {
+
+    content: "";
+
+    width: 8px;
+
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #bbb;
+
+    flex-shrink: 0;
+}
+
+
+/* Usuario conectado */
+
+.usuario.konektatuta {
+
+    color: #333;
+}
+
+.usuario.konektatuta::before {
+
+    background: #35b65b;
+
+    box-shadow:
+        0 0 0 3px rgba(53, 182, 91, 0.12);
 }
 
 
@@ -62,325 +137,695 @@ p {
 ========================================== */
 
 .login-btn {
+
     width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 15px;
-    background: #222;
-    color: white;
-    font-size: 16px;
+
+    padding: 13px 16px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 14px;
+
+    background: white;
+
+    color: #222;
+
+    font-size: 14px;
+
     font-weight: 600;
+
     cursor: pointer;
-    transition: .15s;
+
+    transition:
+        transform .15s ease,
+        background .15s ease,
+        opacity .15s ease;
 }
 
 .login-btn:hover {
-    opacity: .9;
+
+    background: #f4f4f4;
 }
 
 .login-btn:active {
+
     transform: scale(.98);
 }
 
 .login-btn:disabled {
+
     opacity: .65;
+
     cursor: default;
 }
 
-.usuario {
-    font-size: 13px;
-    margin: 10px 0 20px;
-}
-
 
 /* ==========================================
-   CATEGORÍAS PRINCIPALES
+   ASTEA
 ========================================== */
 
-.kategoria {
-    margin-bottom: 10px;
-}
+.astea {
 
-.kategoria-btn {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 13px;
+    margin-bottom: 28px;
 
-    border: none;
-    border-radius: 16px;
+    padding: 13px 16px;
 
     background: white;
 
-    padding: 15px;
-
-    font-size: 16px;
-    font-weight: 600;
-
-    cursor: pointer;
-
-    box-shadow: 0 2px 8px rgba(0,0,0,.04);
-
-    text-align: left;
-
-    transition: background-color .15s,
-                transform .15s;
-}
-
-.kategoria-btn:hover {
-    background: #fafafa;
-}
-
-.kategoria-btn:active {
-    transform: scale(.99);
-}
-
-.kategoria-btn span:nth-child(2) {
-    flex: 1;
-}
-
-.gezi {
-    font-size: 24px;
-    color: #999;
-
-    transition: transform .2s;
-}
-
-.kategoria-btn.abierta .gezi,
-.azpikategoria-btn.abierta .gezi {
-    transform: rotate(90deg);
-}
-
-
-/* ==========================================
-   CONTENIDO DE CATEGORÍA
-========================================== */
-
-.kategoria-edukia {
-    display: none;
-    padding-top: 8px;
-}
-
-.kategoria-edukia.abierta {
-    display: block;
-}
-
-
-/* ==========================================
-   SUBCATEGORÍAS
-========================================== */
-
-.azpikategoria {
-    margin-bottom: 8px;
-}
-
-.azpikategoria-btn {
-    width: 100%;
-
-    display: flex;
-    align-items: center;
-    gap: 12px;
-
-    border: none;
     border-radius: 14px;
 
-    background: #f3f1ef;
-
-    padding: 12px 14px;
-
-    font-size: 15px;
-    font-weight: 600;
-
-    cursor: pointer;
-
-    text-align: left;
+    border: 1px solid #eee;
 }
 
-.azpikategoria-btn span:nth-child(2) {
-    flex: 1;
-}
-
-.azpikategoria-edukia {
-    display: none;
-    padding: 7px 0 0;
-}
-
-.azpikategoria-edukia.abierta {
-    display: block;
-}
-
-
-/* ==========================================
-   PRODUCTOS
-========================================== */
-
-.producto {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-
-    background: white;
-
-    padding: 10px 12px;
-
-    margin-bottom: 8px;
-
-    border-radius: 14px;
-
-    box-shadow: 0 2px 8px rgba(0,0,0,.04);
-}
-
-.producto > span {
-    font-size: 23px;
-}
-
-.producto p {
-    flex: 1;
+.astea p {
 
     margin: 0;
 
-    color: #333;
+    color: #777;
 
-    font-size: 15px;
-}
-
-.anadir {
-    border: none;
-
-    width: 38px;
-    height: 38px;
-
-    border-radius: 50%;
-
-    background: #f2f2f2;
-
-    font-size: 22px;
-
-    cursor: pointer;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    transition: transform .15s,
-                background-color .15s;
-}
-
-.anadir:hover {
-    background: #e8e8e8;
-}
-
-.anadir:active {
-    transform: scale(.9);
+    font-size: 13px;
 }
 
 
 /* ==========================================
-   MI LISTA
+   TITULOS
 ========================================== */
 
-.nire-zerrenda {
-    margin-top: 35px;
+.titulo-seccion {
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    margin-bottom: 14px;
 }
 
-#miLista {
-    margin-top: 15px;
-}
+.mini-etiqueta {
 
-.lista-sekzioa {
-    margin-bottom: 20px;
-}
+    display: block;
 
-.lista-sekzioa-titulua {
-    font-size: 12px;
-    font-weight: 700;
+    margin-bottom: 4px;
+
     color: #999;
 
-    letter-spacing: .7px;
+    font-size: 10px;
 
-    margin: 18px 4px 8px;
+    font-weight: 700;
+
+    letter-spacing: 1.4px;
 }
 
-#miLista .lista-produktua {
+h2 {
+
+    margin: 0;
+
+    font-size: 24px;
+
+    letter-spacing: -.5px;
+}
+
+.produktu-kopurua {
+
+    min-width: 30px;
+
+    height: 30px;
+
     display: flex;
+
     align-items: center;
 
-    gap: 8px;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #222;
+
+    color: white;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+/* ==========================================
+   KATEGORIA NAGUSIA
+========================================== */
+
+.kategoria {
+
+    margin-bottom: 10px;
+
+    border-radius: 18px;
+
+    overflow: hidden;
 
     background: white;
 
-    padding: 10px 12px;
+    border: 1px solid #e9e7e3;
 
-    margin-bottom: 8px;
-
-    border-radius: 14px;
-
-    box-shadow: 0 2px 8px rgba(0,0,0,.04);
-}
-
-.lista-izena {
-    flex: 1;
-
-    font-size: 15px;
-    font-weight: 500;
-
-    color: #333;
-}
-
-.lista-kopurua {
-    min-width: 24px;
-
-    text-align: center;
-
-    font-weight: 600;
-}
-
-#miLista .lista-produktua button {
-    border: none;
-
-    width: 34px;
-    height: 34px;
-
-    border-radius: 50%;
-
-    background: #f2f2f2;
-
-    font-size: 19px;
-
-    cursor: pointer;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#miLista .lista-produktua button:active {
-    transform: scale(.88);
+    box-shadow:
+        0 3px 12px rgba(0,0,0,.035);
 }
 
 
 /* ==========================================
-   BOTÓN ELIMINAR
+   BOTÓN CATEGORIA
 ========================================== */
 
-.ezabatu-btn {
-    width: auto !important;
+.kategoria-botoia {
 
-    padding: 0 11px;
+    width: 100%;
 
-    border-radius: 10px !important;
+    display: flex;
 
-    background: #ffe5e5 !important;
+    align-items: center;
 
-    color: #d62828 !important;
+    gap: 14px;
 
-    font-size: 12px !important;
+    padding: 17px;
 
-    font-weight: 600;
+    border: 0;
+
+    background: white;
+
+    color: #222;
+
+    cursor: pointer;
+
+    text-align: left;
 }
 
-.ezabatu-btn:hover {
-    background: #ffd6d6 !important;
+.kategoria-botoia:hover {
+
+    background: #fafafa;
+}
+
+.kategoria-emoji {
+
+    width: 46px;
+
+    height: 46px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: #f1f0ed;
+
+    font-size: 24px;
+}
+
+.kategoria-info {
+
+    flex: 1;
+}
+
+.kategoria-izena {
+
+    display: block;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    margin-bottom: 3px;
+}
+
+.kategoria-deskribapena {
+
+    display: block;
+
+    font-size: 12px;
+
+    color: #999;
+}
+
+.gezia {
+
+    font-size: 20px;
+
+    color: #aaa;
+
+    transition: transform .2s ease;
+}
+
+.kategoria-zabalik .gezia {
+
+    transform: rotate(180deg);
+}
+
+
+/* ==========================================
+   EDUKIA
+========================================== */
+
+.kategoria-edukia {
+
+    display: none;
+
+    padding: 0 12px 12px;
+
+    border-top: 1px solid #f0efec;
+}
+
+.kategoria-zabalik .kategoria-edukia {
+
+    display: block;
+}
+
+
+/* ==========================================
+   AZPITALDEAK
+========================================== */
+
+.azpitaldea {
+
+    margin-top: 10px;
+
+    border-radius: 14px;
+
+    background: #f7f6f3;
+
+    overflow: hidden;
+}
+
+.azpitalde-botoia {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 13px;
+
+    border: 0;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    text-align: left;
+
+    color: #333;
+
+    font-size: 14px;
+
+    font-weight: 650;
+}
+
+.azpitalde-botoia:hover {
+
+    background: #f0efeb;
+}
+
+.azpitalde-emoji {
+
+    margin-right: 10px;
+
+    font-size: 18px;
+}
+
+.azpitalde-izena {
+
+    flex: 1;
+}
+
+.azpitalde-gezi {
+
+    color: #aaa;
+
+    transition: transform .2s ease;
+}
+
+.azpitalde-zabalik .azpitalde-gezi {
+
+    transform: rotate(180deg);
+}
+
+.azpitalde-edukia {
+
+    display: none;
+
+    padding: 0 8px 8px;
+}
+
+.azpitalde-zabalik .azpitalde-edukia {
+
+    display: block;
+}
+
+
+/* ==========================================
+   PRODUKTUAK
+========================================== */
+
+.produktuak {
+
+    display: grid;
+
+    gap: 6px;
+}
+
+
+/* Produktu arrunta */
+
+.produktu-botoia {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 10px 11px;
+
+    border: 0;
+
+    border-radius: 11px;
+
+    background: white;
+
+    cursor: pointer;
+
+    color: #333;
+
+    text-align: left;
+
+    transition:
+        background .15s ease,
+        transform .1s ease;
+}
+
+.produktu-botoia:hover {
+
+    background: #f1f1ef;
+}
+
+.produktu-botoia:active {
+
+    transform: scale(.985);
+}
+
+.produktu-emoji {
+
+    width: 30px;
+
+    height: 30px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 18px;
+
+    border-radius: 8px;
+
+    background: #f5f4f1;
+}
+
+.produktu-izena {
+
+    flex: 1;
+
+    font-size: 13px;
+
+    font-weight: 500;
+}
+
+.produktu-plus {
+
+    width: 29px;
+
+    height: 29px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f0f0ee;
+
+    color: #333;
+
+    font-size: 18px;
+
+    font-weight: 500;
+}
+
+
+/* ==========================================
+   PRODUKTUAREN 250G BOTOIA
+========================================== */
+
+.produktu-gramoak {
+
+    padding: 8px 10px;
+
+    border: 0;
+
+    border-radius: 9px;
+
+    background: #222;
+
+    color: white;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.produktu-gramoak:hover {
+
+    opacity: .85;
+}
+
+
+/* ==========================================
+   NIRE ZERRENDA
+========================================== */
+
+.nire-zerrenda-section {
+
+    margin-top: 38px;
+
+    padding-bottom: 20px;
+}
+
+#miLista {
+
+    display: grid;
+
+    gap: 8px;
+}
+
+
+/* ==========================================
+   ZERRENDAKO PRODUKTUA
+========================================== */
+
+.lista-produktua {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 11px;
+
+    background: white;
+
+    border: 1px solid #ebe9e5;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,.025);
+}
+
+.lista-emoji {
+
+    width: 36px;
+
+    height: 36px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #f4f3f0;
+
+    font-size: 19px;
+
+    flex-shrink: 0;
+}
+
+.lista-info {
+
+    flex: 1;
+
+    min-width: 0;
+}
+
+.lista-izena {
+
+    display: block;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #333;
+}
+
+.lista-kategoria {
+
+    display: block;
+
+    font-size: 10px;
+
+    color: #aaa;
+
+    margin-top: 2px;
+}
+
+.lista-kantitatea {
+
+    min-width: 28px;
+
+    text-align: center;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+
+/* ==========================================
+   BOTONES + -
+========================================== */
+
+.lista-kontrola {
+
+    width: 31px;
+
+    height: 31px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: 0;
+
+    border-radius: 50%;
+
+    background: #f1f1ef;
+
+    color: #333;
+
+    font-size: 18px;
+
+    cursor: pointer;
+}
+
+.lista-kontrola:hover {
+
+    background: #e6e6e3;
+}
+
+
+/* ==========================================
+   ELIMINAR - ROJO
+========================================== */
+
+.lista-ezabatu {
+
+    height: 31px;
+
+    padding: 0 10px;
+
+    border: 0;
+
+    border-radius: 9px;
+
+    background: #fff0f0;
+
+    color: #d93636;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background .15s ease,
+        transform .1s ease;
+}
+
+.lista-ezabatu:hover {
+
+    background: #ffe1e1;
+}
+
+.lista-ezabatu:active {
+
+    transform: scale(.96);
+}
+
+
+/* ==========================================
+   ZERRENDA HUTSIK
+========================================== */
+
+.zerrenda-hutsa {
+
+    padding: 30px 15px;
+
+    text-align: center;
+
+    color: #aaa;
+}
+
+.zerrenda-hutsa span {
+
+    display: block;
+
+    font-size: 34px;
+
+    margin-bottom: 8px;
+}
+
+.zerrenda-hutsa p {
+
+    margin: 0;
+
+    font-size: 13px;
 }
 
 
@@ -388,147 +833,224 @@ p {
    EROSKETA EGINDA
 ========================================== */
 
-#compraHecha {
+.erosketa-eginda {
+
     width: 100%;
 
-    padding: 15px;
+    margin-top: 14px;
 
-    margin-top: 20px;
+    padding: 16px;
 
-    border: none;
+    border: 0;
 
-    border-radius: 15px;
+    border-radius: 16px;
 
     background: #222;
 
     color: white;
 
-    font-size: 16px;
+    font-size: 15px;
 
-    font-weight: 600;
+    font-weight: 700;
 
     cursor: pointer;
 
-    transition: transform .15s,
-                opacity .15s;
+    transition:
+        transform .15s ease,
+        opacity .15s ease;
 }
 
-#compraHecha:hover {
+.erosketa-eginda:hover {
+
     opacity: .9;
 }
 
-#compraHecha:active {
+.erosketa-eginda:active {
+
     transform: scale(.98);
 }
 
 
 /* ==========================================
-   MODAL
+   MODALA
 ========================================== */
 
-.modal {
+.modal-overlay {
+
     position: fixed;
 
     inset: 0;
 
+    z-index: 1000;
+
     display: none;
 
     align-items: center;
+
     justify-content: center;
 
     padding: 20px;
 
-    background: rgba(0,0,0,.35);
+    background: rgba(0,0,0,.38);
 
-    z-index: 1000;
+    backdrop-filter: blur(5px);
 }
 
-.modal.visible {
+.modal-overlay.zabalik {
+
     display: flex;
 }
 
-.modal-contenido {
+.modal {
+
     width: 100%;
-    max-width: 400px;
 
-    background: #fff8f5;
+    max-width: 390px;
 
-    border-radius: 22px;
+    padding: 28px 22px 22px;
 
-    padding: 25px;
+    background: #fff;
 
-    box-shadow: 0 15px 50px rgba(0,0,0,.18);
+    border-radius: 24px;
 
     text-align: center;
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.18);
+
+    animation:
+        modalAgertu .2s ease;
 }
 
-.modal-contenido h2 {
-    margin-top: 0;
+@keyframes modalAgertu {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(10px) scale(.97);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0) scale(1);
+
+    }
+}
+
+.modal-icon {
+
+    width: 58px;
+
+    height: 58px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin: 0 auto 14px;
+
+    border-radius: 18px;
+
+    background: #f3f2ef;
+
+    font-size: 28px;
+}
+
+.modal h2 {
+
+    margin-bottom: 8px;
 
     font-size: 22px;
 }
 
-.modal-contenido p {
-    line-height: 1.5;
+.modal p {
 
-    font-size: 14px;
+    margin: 0 0 22px;
+
+    color: #888;
+
+    font-size: 13px;
 }
 
-.modal-botones {
-    display: flex;
+.modal-botoiak {
 
-    gap: 10px;
+    display: grid;
 
-    margin-top: 22px;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 9px;
 }
 
-.modal-botones button {
-    flex: 1;
-
-    border: none;
+.modal-botoiak button {
 
     padding: 13px;
 
+    border: 0;
+
     border-radius: 13px;
 
-    font-size: 15px;
+    font-size: 13px;
 
-    font-weight: 600;
+    font-weight: 700;
 
     cursor: pointer;
 }
 
-.bai-btn {
-    background: #222;
-    color: white;
+.modal-ez {
+
+    background: #f1f1ef;
+
+    color: #333;
 }
 
-.ez-btn {
-    background: #e9e9e9;
-    color: #333;
+.modal-bai {
+
+    background: #222;
+
+    color: white;
 }
 
 
 /* ==========================================
-   MÓVIL
+   MOBILE
 ========================================== */
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
 
     body {
-        padding: 18px;
+
+        padding:
+            16px
+            12px
+            40px;
     }
 
     h1 {
-        font-size: 31px;
+
+        font-size: 34px;
     }
 
-    .kategoria-btn {
-        padding: 14px;
+    .kategoria-botoia {
+
+        padding: 15px;
     }
 
-    .producto {
-        padding: 10px;
+    .kategoria-emoji {
+
+        width: 43px;
+
+        height: 43px;
+    }
+
+    .lista-ezabatu {
+
+        padding: 0 8px;
     }
 
 }
