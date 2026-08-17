@@ -94,9 +94,15 @@ const FAMILIA_ID = "familia-andoni";
 
 // Colección de nuestra lista
 
+// ==========================================
+// COLECCIÓN DE LA LISTA FAMILIAR
+// ==========================================
+
 const listaRef =
     collection(
         db,
+        "familias",
+        FAMILIA_ID,
         "listaCompra"
     );
 
