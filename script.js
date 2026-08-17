@@ -619,6 +619,11 @@ loginGoogle.addEventListener(
                 usuario
             );
 
+            console.log(
+                "ID del usuario:",
+                 usuario.uid
+);
+
         }
 
         catch (error) {
