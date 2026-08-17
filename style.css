@@ -1,38 +1,422 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #fff8f5;
-    margin: 0;
-    padding: 25px;
+/* ================================= */
+/* CONFIGURACIÓN GENERAL */
+/* ================================= */
+
+* {
+    box-sizing: border-box;
 }
+
+
+body {
+
+    font-family: Arial, sans-serif;
+
+    background-color: #fff8f5;
+
+    margin: 0;
+
+    padding: 25px;
+
+    color: #222;
+
+}
+
 
 main {
+
     max-width: 500px;
+
     margin: auto;
+
 }
 
-h1 {
-    font-size: 32px;
-    margin-top: 5px;
+
+
+/* ================================= */
+/* CABECERA */
+/* ================================= */
+
+.cabecera {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 45px;
+
 }
+
+
+.logo {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+}
+
+
+.logo-icono {
+
+    width: 42px;
+
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: white;
+
+    border-radius: 13px;
+
+    font-size: 22px;
+
+    box-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.06);
+
+}
+
+
+.logo-texto {
+
+    display: block;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+
+    line-height: 1.1;
+
+}
+
+
+.estado {
+
+    font-size: 11px;
+
+    color: #777;
+
+    background: white;
+
+    padding: 7px 10px;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.04);
+
+}
+
+
+
+/* ================================= */
+/* PRESENTACIÓN */
+/* ================================= */
+
+.presentacion {
+
+    margin-bottom: 25px;
+
+}
+
+
+.etiqueta {
+
+    margin: 0 0 8px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    color: #999;
+
+}
+
+
+.presentacion h1 {
+
+    margin: 0;
+
+    font-size: 36px;
+
+    line-height: 1.08;
+
+    letter-spacing: -1.2px;
+
+    color: #171717;
+
+}
+
+
+.descripcion {
+
+    margin-top: 15px;
+
+    max-width: 420px;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    color: #888;
+
+}
+
+
+
+/* ================================= */
+/* LOGIN GOOGLE */
+/* ================================= */
+
+.zona-login {
+
+    margin-bottom: 12px;
+
+}
+
+
+#loginGoogle {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 13px 16px;
+
+    border: 1px solid #e7e7e7;
+
+    border-radius: 14px;
+
+    background: white;
+
+    color: #333;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.04);
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        background-color 0.15s ease;
+
+}
+
+
+#loginGoogle:hover {
+
+    background-color: #fafafa;
+
+    box-shadow:
+        0 5px 16px rgba(0, 0, 0, 0.07);
+
+}
+
+
+#loginGoogle:active {
+
+    transform: scale(0.98);
+
+}
+
+
+#loginGoogle:disabled {
+
+    opacity: 0.7;
+
+    cursor: default;
+
+}
+
+
+.google-icono {
+
+    width: 22px;
+
+    height: 22px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    background: #f5f5f5;
+
+}
+
+
+#usuarioActual {
+
+    margin: 8px 0 0;
+
+    text-align: center;
+
+    font-size: 11px;
+
+    color: #999;
+
+}
+
+
+
+/* ================================= */
+/* FECHA */
+/* ================================= */
+
+.fecha {
+
+    margin: 10px 0 15px;
+
+    font-size: 13px;
+
+    color: #888;
+
+}
+
+
+
+/* ================================= */
+/* BOTÓN COMPRA HECHA */
+/* ================================= */
+
+.boton-compra {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 14px;
+
+    margin-bottom: 35px;
+
+    border: none;
+
+    border-radius: 15px;
+
+    background-color: #222;
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
+
+}
+
+
+.boton-compra:hover {
+
+    opacity: 0.9;
+
+}
+
+
+.boton-compra:active {
+
+    transform: scale(0.98);
+
+}
+
+
+.boton-compra span:first-child {
+
+    font-size: 17px;
+
+}
+
+
+
+/* ================================= */
+/* TÍTULOS DE SECCIÓN */
+/* ================================= */
 
 h2 {
-    font-size: 14px;
-    margin-top: 30px;
-    letter-spacing: 0.5px;
+
+    font-size: 13px;
+
+    margin: 0;
+
+    letter-spacing: 1px;
+
+    font-weight: 800;
+
+    color: #333;
+
 }
 
-p {
-    color: #777;
+
+.texto-seccion {
+
+    margin-top: 7px;
+
+    margin-bottom: 15px;
+
+    font-size: 13px;
+
+    color: #999;
+
 }
 
 
-/* ----------------------------- */
+
+/* ================================= */
 /* PRODUCTOS HABITUALES */
-/* ----------------------------- */
+/* ================================= */
+
+.seccion-productos {
+
+    margin-bottom: 40px;
+
+}
+
 
 .producto {
+
     display: flex;
+
     align-items: center;
+
     gap: 15px;
 
     background-color: white;
@@ -43,102 +427,174 @@ p {
 
     border-radius: 15px;
 
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.04);
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+
 }
+
+
+.producto:hover {
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.07);
+
+}
+
 
 .producto p {
+
     flex: 1;
+
     margin: 0;
+
     color: #333;
+
+    font-size: 15px;
+
+    font-weight: 500;
+
 }
 
-.producto span {
-    font-size: 25px;
+
+.producto-emoji {
+
+    width: 40px;
+
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #fafafa;
+
+    border-radius: 12px;
+
+    font-size: 23px;
+
 }
+
 
 .anadir {
+
     border: none;
 
     width: 38px;
+
     height: 38px;
 
     border-radius: 50%;
 
     background-color: #f2f2f2;
 
+    color: #222;
+
     font-size: 22px;
 
     cursor: pointer;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
-    transition: transform 0.15s ease,
-                background-color 0.15s ease;
+    transition:
+        transform 0.15s ease,
+        background-color 0.15s ease;
+
 }
+
 
 .anadir:hover {
+
     background-color: #e8e8e8;
+
 }
+
 
 .anadir:active {
+
     transform: scale(0.9);
+
 }
 
 
-/* ----------------------------- */
-/* BOTÓN COMPRA HECHA */
-/* ----------------------------- */
 
-#compraHecha {
-    width: 100%;
-
-    padding: 14px;
-
-    border: none;
-
-    border-radius: 15px;
-
-    background-color: #222;
-
-    color: white;
-
-    font-size: 16px;
-
-    font-weight: 600;
-
-    cursor: pointer;
-
-    transition: transform 0.15s ease,
-                opacity 0.15s ease;
-}
-
-#compraHecha:hover {
-    opacity: 0.9;
-}
-
-#compraHecha:active {
-    transform: scale(0.98);
-}
-
-
-/* ----------------------------- */
+/* ================================= */
 /* MI LISTA */
-/* ----------------------------- */
+/* ================================= */
+
+.seccion-lista {
+
+    margin-bottom: 40px;
+
+}
+
+
+.titulo-lista {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 15px;
+
+}
+
+
+.contador-lista {
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    color: #aaa;
+
+    background: white;
+
+    padding: 6px 9px;
+
+    border-radius: 10px;
+
+}
+
+
+
+/* ================================= */
+/* LISTA */
+/* ================================= */
 
 #miLista {
+
     list-style: none;
 
     padding: 0;
 
     margin: 0;
+
 }
 
 
-/* Cada producto de MI LISTA */
+
+/* ================================= */
+/* PRODUCTOS DE MI LISTA */
+/* ================================= */
 
 #miLista li {
+
     display: flex;
 
     align-items: center;
@@ -153,13 +609,19 @@ p {
 
     border-radius: 15px;
 
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.04);
+
 }
 
 
-/* Nombre del producto */
+
+/* ================================= */
+/* NOMBRE PRODUCTO */
+/* ================================= */
 
 #miLista li span:first-child {
+
     flex: 1;
 
     color: #333;
@@ -167,12 +629,17 @@ p {
     font-size: 15px;
 
     font-weight: 500;
+
 }
 
 
-/* Botones - y + */
+
+/* ================================= */
+/* BOTONES + Y - */
+/* ================================= */
 
 #miLista li button {
+
     border: none;
 
     width: 34px;
@@ -197,28 +664,34 @@ p {
 
     justify-content: center;
 
-    transition: transform 0.15s ease,
-                background-color 0.15s ease;
+    transition:
+        transform 0.15s ease,
+        background-color 0.15s ease;
+
 }
 
-
-/* Efecto al pasar el dedo/mouse */
 
 #miLista li button:hover {
+
     background-color: #e8e8e8;
+
 }
 
-
-/* Efecto al pulsar */
 
 #miLista li button:active {
+
     transform: scale(0.88);
+
 }
 
 
-/* Botón ELIMINAR */
+
+/* ================================= */
+/* BOTÓN ELIMINAR */
+/* ================================= */
 
 #miLista li button:last-child {
+
     width: auto;
 
     height: 34px;
@@ -234,8 +707,63 @@ p {
     font-size: 12px;
 
     font-weight: 500;
+
 }
 
+
 #miLista li button:last-child:hover {
+
     background-color: #e8e8e8;
+
+}
+
+
+
+/* ================================= */
+/* MÓVIL */
+/* ================================= */
+
+@media (max-width: 600px) {
+
+    body {
+
+        padding: 20px 16px;
+
+    }
+
+
+    .cabecera {
+
+        margin-bottom: 35px;
+
+    }
+
+
+    .presentacion h1 {
+
+        font-size: 32px;
+
+    }
+
+
+    .descripcion {
+
+        font-size: 13px;
+
+    }
+
+
+    .producto {
+
+        padding: 9px;
+
+    }
+
+
+    #miLista li {
+
+        padding: 9px 10px;
+
+    }
+
 }
