@@ -40,22 +40,30 @@ import {
 // CONFIGURACIÓN DE FIREBASE
 // ==========================================
 
-// PEGA AQUÍ TU CONFIGURACIÓN REAL
-// que Firebase te proporcionó.
-//
-// NO la compartas por el chat.
-
 const firebaseConfig = {
-  apiKey: "AIzaSyCqTIkaoO62UIMZPcRpaQdbdTvE5ZXYKE8",
-  authDomain: "lista-familiar-3a05d.firebaseapp.com",
-  projectId: "lista-familiar-3a05d",
-  storageBucket: "lista-familiar-3a05d.firebasestorage.app",
-  messagingSenderId: "343672850288",
-  appId: "1:343672850288:web:771de65690748505b0b1b5"
+    apiKey: "AIzaSyCqTIkaoO62UIMZPcRpaQdbdTvE5ZXYKE8",
+    authDomain: "lista-familiar-3a05d.firebaseapp.com",
+    projectId: "lista-familiar-3a05d",
+    storageBucket: "lista-familiar-3a05d.firebasestorage.app",
+    messagingSenderId: "343672850288",
+    appId: "1:343672850288:web:771de65690748505b0b1b5"
 };
-console.log("Firebase projectId:", firebaseConfig.projectId);
-console.log("Firebase apiKey:", firebaseConfig.apiKey);
-console.log("Firebase appId:", firebaseConfig.appId);
+
+console.log(
+    "Firebase projectId:",
+    firebaseConfig.projectId
+);
+
+console.log(
+    "Firebase apiKey:",
+    firebaseConfig.apiKey
+);
+
+console.log(
+    "Firebase appId:",
+    firebaseConfig.appId
+);
+
 
 // ==========================================
 // INICIALIZAR FIREBASE
@@ -73,7 +81,9 @@ const auth =
     getAuth(app);
 
 
-// Proveedor Google
+// ==========================================
+// PROVEEDOR GOOGLE
+// ==========================================
 
 const proveedorGoogle =
     new GoogleAuthProvider();
@@ -85,14 +95,15 @@ const proveedorGoogle =
 
 const db =
     getFirestore(app);
+
+
 // ==========================================
 // IDENTIFICADOR DE LA FAMILIA
 // ==========================================
 
-const FAMILIA_ID = "familia-andoni";
+const FAMILIA_ID =
+    "familia-andoni";
 
-
-// Colección de nuestra lista
 
 // ==========================================
 // COLECCIÓN DE LA LISTA FAMILIAR
@@ -148,13 +159,17 @@ function mostrarLista() {
             listaCompra[producto];
 
 
-        // Crear elemento
+        // ======================================
+        // CREAR ELEMENTO
+        // ======================================
 
         const nuevoProducto =
             document.createElement("li");
 
 
-        // Nombre
+        // ======================================
+        // NOMBRE
+        // ======================================
 
         const nombre =
             document.createElement("span");
@@ -165,7 +180,9 @@ function mostrarLista() {
             producto;
 
 
-        // Botón -
+        // ======================================
+        // BOTÓN -
+        // ======================================
 
         const botonMenos =
             document.createElement("button");
@@ -174,7 +191,9 @@ function mostrarLista() {
             "−";
 
 
-        // Cantidad
+        // ======================================
+        // CANTIDAD
+        // ======================================
 
         const cantidad =
             document.createElement("span");
@@ -183,7 +202,9 @@ function mostrarLista() {
             informacion.cantidad;
 
 
-        // Botón +
+        // ======================================
+        // BOTÓN +
+        // ======================================
 
         const botonMas =
             document.createElement("button");
@@ -192,7 +213,9 @@ function mostrarLista() {
             "+";
 
 
-        // Botón eliminar
+        // ======================================
+        // BOTÓN ELIMINAR
+        // ======================================
 
         const botonEliminar =
             document.createElement("button");
@@ -295,13 +318,13 @@ async function añadirProducto(
 ) {
 
     const referencia =
-    doc(
-        db,
-        "familias",
-        FAMILIA_ID,
-        "listaCompra",
-        convertirId(producto)
-    );
+        doc(
+            db,
+            "familias",
+            FAMILIA_ID,
+            "listaCompra",
+            convertirId(producto)
+        );
 
 
     try {
@@ -316,7 +339,9 @@ async function añadirProducto(
                     );
 
 
-                // Producto nuevo
+                // ==================================
+                // PRODUCTO NUEVO
+                // ==================================
 
                 if (!documento.exists()) {
 
@@ -332,7 +357,9 @@ async function añadirProducto(
                 }
 
 
-                // Producto existente
+                // ==================================
+                // PRODUCTO EXISTENTE
+                // ==================================
 
                 else {
 
@@ -377,13 +404,14 @@ async function cambiarCantidad(
 ) {
 
     const referencia =
-    doc(
-        db,
-        "familias",
-        FAMILIA_ID,
-        "listaCompra",
-        convertirId(producto)
-    );
+        doc(
+            db,
+            "familias",
+            FAMILIA_ID,
+            "listaCompra",
+            convertirId(producto)
+        );
+
 
     try {
 
@@ -412,8 +440,9 @@ async function cambiarCantidad(
                     datos.cantidad + cambio;
 
 
-                // Si llega a cero,
-                // eliminamos el producto.
+                // ==================================
+                // SI LLEGA A CERO
+                // ==================================
 
                 if (nuevaCantidad <= 0) {
 
@@ -461,13 +490,13 @@ async function eliminarProducto(
 ) {
 
     const referencia =
-    doc(
-        db,
-        "familias",
-        FAMILIA_ID,
-        "listaCompra",
-        convertirId(producto)
-    );
+        doc(
+            db,
+            "familias",
+            FAMILIA_ID,
+            "listaCompra",
+            convertirId(producto)
+        );
 
 
     try {
@@ -549,7 +578,9 @@ onSnapshot(
 
     function (snapshot) {
 
-        // Limpiar lista local
+        // ======================================
+        // LIMPIAR LISTA LOCAL
+        // ======================================
 
         for (
             const producto in listaCompra
@@ -560,7 +591,9 @@ onSnapshot(
         }
 
 
-        // Cargar datos de Firestore
+        // ======================================
+        // CARGAR DATOS DE FIRESTORE
+        // ======================================
 
         snapshot.forEach(
             function (documento) {
@@ -585,7 +618,9 @@ onSnapshot(
         );
 
 
-        // Actualizar pantalla
+        // ======================================
+        // ACTUALIZAR PANTALLA
+        // ======================================
 
         mostrarLista();
 
@@ -619,10 +654,11 @@ loginGoogle.addEventListener(
                 usuario
             );
 
+
             console.log(
                 "ID del usuario:",
-                 usuario.uid
-);
+                usuario.uid
+            );
 
         }
 
@@ -650,9 +686,19 @@ onAuthStateChanged(
 
         if (usuario) {
 
+            // ==================================
+            // USUARIO AUTENTICADO
+            // ==================================
+
             console.log(
                 "Usuario autenticado:",
                 usuario.email
+            );
+
+
+            console.log(
+                "ID del usuario:",
+                usuario.uid
             );
 
 
@@ -671,6 +717,10 @@ onAuthStateChanged(
         }
 
         else {
+
+            // ==================================
+            // NO HAY USUARIO
+            // ==================================
 
             console.log(
                 "No hay usuario conectado"
