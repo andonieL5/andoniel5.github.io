@@ -3,40 +3,38 @@
 
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Aste honetako erosketa</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
 
-
 <body>
 
-<main>
+    <main>
 
-    <!-- =====================================
-         CABECERA
-    ====================================== -->
+        <!-- ==========================================
+             GOIBURUA
+        =========================================== -->
 
-    <section class="cabecera">
-
-        <p class="etiqueta">
-            ASTEKO PLANA
-        </p>
+        <p class="etiketa">ASTELEHENEKO PLANA</p>
 
         <h1>
             Datorren asteko<br>
             erosketa
         </h1>
 
-        <div class="saioa">
 
-            <div class="konexio-puntua" id="konexioPuntua"></div>
+        <!-- ==========================================
+             LOGIN
+        =========================================== -->
+
+        <div class="login-area">
+
+            <button id="loginGoogle">
+                Google-rekin sartu
+            </button>
 
             <p id="usuarioActual">
                 Ez duzu saiorik hasi
@@ -44,632 +42,854 @@
 
         </div>
 
-        <button id="loginGoogle" class="google-btn">
-            Google-rekin sartu
-        </button>
 
-    </section>
+        <!-- ==========================================
+             ASTEA
+        =========================================== -->
 
-
-    <!-- =====================================
-         PRODUKTU OHIKOAK
-    ====================================== -->
-
-    <section class="ohikoak">
-
-        <div class="section-header">
-
-            <div>
-                <p class="section-label">
-                    PRODUKTU OHIKOAK
-                </p>
-
-                <p class="section-description">
-                    Aukeratu produktu bat zerrendara gehitzeko.
-                </p>
-            </div>
-
-        </div>
-
-
-        <!-- =================================
-             FRUTA ETA BARAZKIAK
-        ================================== -->
-
-        <div class="kategoria">
-
-            <button class="kategoria-burua">
-
-                <span class="kategoria-izena">
-                    🥬 Fruta eta barazkiak
-                </span>
-
-                <span class="gezi">
-                    ›
-                </span>
-
-            </button>
-
-
-            <div class="produktuak">
-
-                <button
-                    class="produktu-botoia anadir"
-                    data-producto="Tomatea"
-                    data-emoji="🍅"
-                    data-categoria="fruta-barazkiak"
-                    data-subcategoria=""
-                >
-                    <span>🍅</span>
-                    <span>Tomatea</span>
-                    <strong>+</strong>
-                </button>
-
-
-                <button
-                    class="produktu-botoia anadir"
-                    data-producto="Ahuakatea"
-                    data-emoji="🥑"
-                    data-categoria="fruta-barazkiak"
-                    data-subcategoria=""
-                >
-                    <span>🥑</span>
-                    <span>Ahuakatea</span>
-                    <strong>+</strong>
-                </button>
-
-
-                <button
-                    class="produktu-botoia anadir"
-                    data-producto="Platanoa"
-                    data-emoji="🍌"
-                    data-categoria="fruta-barazkiak"
-                    data-subcategoria=""
-                >
-                    <span>🍌</span>
-                    <span>Platanoa</span>
-                    <strong>+</strong>
-                </button>
-
-
-                <button
-                    class="produktu-botoia anadir"
-                    data-producto="Sagarra"
-                    data-emoji="🍎"
-                    data-categoria="fruta-barazkiak"
-                    data-subcategoria=""
-                >
-                    <span>🍎</span>
-                    <span>Sagarra</span>
-                    <strong>+</strong>
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- =================================
-             HOZKAILUA
-        ================================== -->
-
-        <div class="kategoria">
-
-            <button class="kategoria-burua">
-
-                <span class="kategoria-izena">
-                    🥛 Hozkailua
-                </span>
-
-                <span class="gezi">
-                    ›
-                </span>
-
-            </button>
-
-
-            <div class="produktuak">
-
-                <button
-                    class="produktu-botoia anadir"
-                    data-producto="Gazta"
-                    data-emoji="🧀"
-                    data-categoria="hozkailua"
-                    data-subcategoria=""
-                >
-                    <span>🧀</span>
-                    <span>Gazta</span>
-                    <strong>+</strong>
-                </button>
-
-
-                <button
-                    class="produktu-botoia anadir"
-                    data-producto="Esnea"
-                    data-emoji="🥛"
-                    data-categoria="hozkailua"
-                    data-subcategoria=""
-                >
-                    <span>🥛</span>
-                    <span>Esnea</span>
-                    <strong>+</strong>
-                </button>
-
-
-                <button
-                    class="produktu-botoia anadir"
-                    data-producto="Arrautzak"
-                    data-emoji="🥚"
-                    data-categoria="hozkailua"
-                    data-subcategoria=""
-                >
-                    <span>🥚</span>
-                    <span>Arrautzak</span>
-                    <strong>+</strong>
-                </button>
-
-
-                <button
-                    class="produktu-botoia anadir"
-                    data-producto="Jogurta"
-                    data-emoji="🥣"
-                    data-categoria="hozkailua"
-                    data-subcategoria=""
-                >
-                    <span>🥣</span>
-                    <span>Jogurta</span>
-                    <strong>+</strong>
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- =================================
-             DESPENTSA
-        ================================== -->
-
-        <div class="kategoria">
-
-            <button class="kategoria-burua">
-
-                <span class="kategoria-izena">
-                    🥫 Despentsa
-                </span>
-
-                <span class="gezi">
-                    ›
-                </span>
-
-            </button>
-
-
-            <div class="produktuak">
-
-
-                <!-- PASTA -->
-
-                <div class="azpikategoria">
-
-                    <div class="azpikategoria-izenburua">
-                        🍝 Pasta
-                    </div>
-
-
-                    <button
-                        class="produktu-botoia anadir"
-                        data-producto="Espagetiak"
-                        data-emoji="🍝"
-                        data-categoria="despentsa"
-                        data-subcategoria="pasta"
-                    >
-                        <span>🍝</span>
-                        <span>Espagetiak</span>
-                        <strong>+</strong>
-                    </button>
-
-
-                    <button
-                        class="produktu-botoia anadir"
-                        data-producto="Makarroiak"
-                        data-emoji="🍝"
-                        data-categoria="despentsa"
-                        data-subcategoria="pasta"
-                    >
-                        <span>🍝</span>
-                        <span>Makarroiak</span>
-                        <strong>+</strong>
-                    </button>
-
-
-                    <button
-                        class="produktu-botoia anadir"
-                        data-producto="Fideoak"
-                        data-emoji="🍜"
-                        data-categoria="despentsa"
-                        data-subcategoria="pasta"
-                    >
-                        <span>🍜</span>
-                        <span>Fideoak</span>
-                        <strong>+</strong>
-                    </button>
-
-                </div>
-
-
-                <!-- LEKALEAK -->
-
-                <div class="azpikategoria">
-
-                    <div class="azpikategoria-izenburua">
-                        🫘 Lekaleak
-                    </div>
-
-
-                    <button
-                        class="produktu-botoia anadir"
-                        data-producto="Dilistak"
-                        data-emoji="🫘"
-                        data-categoria="despentsa"
-                        data-subcategoria="lekaleak"
-                    >
-                        <span>🫘</span>
-                        <span>Dilistak</span>
-                        <strong>+</strong>
-                    </button>
-
-
-                    <button
-                        class="produktu-botoia anadir"
-                        data-producto="Garbantzuak"
-                        data-emoji="🫘"
-                        data-categoria="despentsa"
-                        data-subcategoria="lekaleak"
-                    >
-                        <span>🫘</span>
-                        <span>Garbantzuak</span>
-                        <strong>+</strong>
-                    </button>
-
-
-                    <button
-                        class="produktu-botoia anadir"
-                        data-producto="Babarrunak"
-                        data-emoji="🫘"
-                        data-categoria="despentsa"
-                        data-subcategoria="lekaleak"
-                    >
-                        <span>🫘</span>
-                        <span>Babarrunak</span>
-                        <strong>+</strong>
-                    </button>
-
-                </div>
-
-
-                <!-- OLIOAK -->
-
-                <div class="azpikategoria">
-
-                    <div class="azpikategoria-izenburua">
-                        🫒 Olioak
-                    </div>
-
-
-                    <button
-                        class="produktu-botoia anadir"
-                        data-producto="Oliba-olioa"
-                        data-emoji="🫒"
-                        data-categoria="despentsa"
-                        data-subcategoria="olioak"
-                    >
-                        <span>🫒</span>
-                        <span>Oliba-olioa</span>
-                        <strong>+</strong>
-                    </button>
-
-
-                    <button
-                        class="produktu-botoia anadir"
-                        data-producto="Ekilore-olioa"
-                        data-emoji="🌻"
-                        data-categoria="despentsa"
-                        data-subcategoria="olioak"
-                    >
-                        <span>🌻</span>
-                        <span>Ekilore-olioa</span>
-                        <strong>+</strong>
-                    </button>
-
-                </div>
-
-
-                <!-- GAILETAK -->
-
-                <button
-                    class="produktu-botoia anadir"
-                    data-producto="Gailetak"
-                    data-emoji="🍪"
-                    data-categoria="despentsa"
-                    data-subcategoria="gailetak"
-                >
-                    <span>🍪</span>
-                    <span>Gailetak</span>
-                    <strong>+</strong>
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- =================================
-             HARAGIA ETA ARRAINA
-        ================================== -->
-
-        <div class="kategoria">
-
-            <button class="kategoria-burua">
-
-                <span class="kategoria-izena">
-                    🥩 Haragia eta arraina
-                </span>
-
-                <span class="gezi">
-                    ›
-                </span>
-
-            </button>
-
-
-            <div class="produktuak">
-
-                <button
-                    class="produktu-botoia anadir"
-                    data-producto="Oilaskoa"
-                    data-emoji="🍗"
-                    data-categoria="haragia-arraina"
-                    data-subcategoria=""
-                >
-                    <span>🍗</span>
-                    <span>Oilaskoa</span>
-                    <strong>+</strong>
-                </button>
-
-
-                <button
-                    class="produktu-botoia anadir"
-                    data-producto="Haragia"
-                    data-emoji="🥩"
-                    data-categoria="haragia-arraina"
-                    data-subcategoria=""
-                >
-                    <span>🥩</span>
-                    <span>Haragia</span>
-                    <strong>+</strong>
-                </button>
-
-
-                <button
-                    class="produktu-botoia anadir"
-                    data-producto="Arraina"
-                    data-emoji="🐟"
-                    data-categoria="haragia-arraina"
-                    data-subcategoria=""
-                >
-                    <span>🐟</span>
-                    <span>Arraina</span>
-                    <strong>+</strong>
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- =================================
-             IZOZTUAK
-        ================================== -->
-
-        <div class="kategoria">
-
-            <button class="kategoria-burua">
-
-                <span class="kategoria-izena">
-                    ❄️ Izoztuak
-                </span>
-
-                <span class="gezi">
-                    ›
-                </span>
-
-            </button>
-
-
-            <div class="produktuak">
-
-                <button
-                    class="produktu-botoia anadir"
-                    data-producto="Izozkia"
-                    data-emoji="🍦"
-                    data-categoria="izoztuak"
-                    data-subcategoria=""
-                >
-                    <span>🍦</span>
-                    <span>Izozkia</span>
-                    <strong>+</strong>
-                </button>
-
-
-                <button
-                    class="produktu-botoia anadir"
-                    data-producto="Pizza"
-                    data-emoji="🍕"
-                    data-categoria="izoztuak"
-                    data-subcategoria=""
-                >
-                    <span>🍕</span>
-                    <span>Pizza</span>
-                    <strong>+</strong>
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- =================================
-             OKINDEGIA
-        ================================== -->
-
-        <div class="kategoria">
-
-            <button class="kategoria-burua">
-
-                <span class="kategoria-izena">
-                    🍞 Okindegia
-                </span>
-
-                <span class="gezi">
-                    ›
-                </span>
-
-            </button>
-
-
-            <div class="produktuak">
-
-                <button
-                    class="produktu-botoia anadir"
-                    data-producto="Ogia"
-                    data-emoji="🍞"
-                    data-categoria="okindegia"
-                    data-subcategoria=""
-                >
-                    <span>🍞</span>
-                    <span>Ogia</span>
-                    <strong>+</strong>
-                </button>
-
-            </div>
-
-        </div>
-
-
-    </section>
-
-
-    <!-- =====================================
-         NIRE ZERRENDA
-    ====================================== -->
-
-    <section class="nire-zerrenda">
-
-        <div class="section-header">
-
-            <div>
-
-                <p class="section-label">
-                    NIRE ZERRENDA
-                </p>
-
-                <p
-                    class="section-description"
-                    id="laburpena"
-                >
-                    Ez dago produkturik.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div id="miLista">
-
-            <div class="lista-hutsa">
-                <span>🛒</span>
-                <p>
-                    Oraindik ez duzu ezer gehitu.
-                </p>
-            </div>
-
-        </div>
-
-
-        <!-- =================================
-             EROSKETA EGINDA
-        ================================== -->
-
-        <button
-            id="compraHecha"
-            class="compra-btn"
-        >
-            Erosketa eginda
-        </button>
-
-    </section>
-
-
-</main>
-
-
-<!-- =====================================
-     MODALA
-====================================== -->
-
-<div
-    id="modalCompra"
-    class="modal"
->
-
-    <div class="modal-contenido">
-
-        <div class="modal-icono">
-            🛒
-        </div>
-
-        <h2>
-            Erosketa eginda dago?
-        </h2>
-
-        <p>
-            Zerrendako produktu guztiak
-            ezabatuko dira.
+        <p class="astea">
+            Aste honetako erosketa-zerrenda
         </p>
 
-        <div class="modal-botoiak">
 
-            <button
-                id="modalEz"
-                class="modal-ez"
-            >
-                Ez
+        <!-- ==========================================
+             EROSKETA EGINDA
+        =========================================== -->
+
+        <button id="compraHecha">
+            ✓ Erosketa eginda
+        </button>
+
+
+        <!-- ==========================================
+             DESPENTSA
+        =========================================== -->
+
+        <section class="categoria">
+
+            <div class="categoria-titulo">
+                <span>🥫</span>
+                <div>
+                    <h2>DESPENTSA</h2>
+                    <p>Oinarrizko elikagaiak</p>
+                </div>
+            </div>
+
+
+            <!-- PASTA -->
+
+            <div class="subcategoria">
+
+                <button class="subcategoria-boton">
+                    <span>🍝</span>
+                    <span>Pasta</span>
+                    <span class="gezi">›</span>
+                </button>
+
+                <div class="opciones">
+
+                    <button class="anadir"
+                        data-producto="Espagetiak"
+                        data-emoji="🍝">
+                        Espagetiak
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Makarroiak"
+                        data-emoji="🍝">
+                        Makarroiak
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Fideoak"
+                        data-emoji="🍜">
+                        Fideoak
+                        <span>+</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- GALLETAK -->
+
+            <div class="subcategoria">
+
+                <button class="subcategoria-boton">
+                    <span>🍪</span>
+                    <span>Galletak</span>
+                    <span class="gezi">›</span>
+                </button>
+
+                <div class="opciones">
+
+                    <button class="anadir"
+                        data-producto="Maria Doradas"
+                        data-emoji="🍪">
+                        Maria Doradas
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Príncipe"
+                        data-emoji="🍪">
+                        Príncipe
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Galleta tostatuak"
+                        data-emoji="🍪">
+                        Galleta tostatuak
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Chiquilín"
+                        data-emoji="🍪">
+                        Chiquilín
+                        <span>+</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ARROZA -->
+
+            <button class="producto-simple anadir"
+                data-producto="Arroza"
+                data-emoji="🍚">
+
+                <span>🍚</span>
+                <span>Arroza</span>
+                <span>+</span>
+
             </button>
 
-            <button
-                id="modalBai"
-                class="modal-bai"
-            >
-                Bai, amaitu
+
+            <!-- LEKALEAK -->
+
+            <button class="producto-simple anadir"
+                data-producto="Lekaleak"
+                data-emoji="🫘">
+
+                <span>🫘</span>
+                <span>Lekaleak</span>
+                <span>+</span>
+
             </button>
+
+
+            <!-- KONTserbak -->
+
+            <div class="subcategoria">
+
+                <button class="subcategoria-boton">
+                    <span>🥫</span>
+                    <span>Kontserbak</span>
+                    <span class="gezi">›</span>
+                </button>
+
+                <div class="opciones">
+
+                    <button class="anadir"
+                        data-producto="Atuna"
+                        data-emoji="🐟">
+                        Atuna
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Olivek"
+                        data-emoji="🫒">
+                        Olivek
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Piperreak"
+                        data-emoji="🌶️">
+                        Piperreak
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Zainzuriak"
+                        data-emoji="🥫">
+                        Zainzuriak
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Tomate birrindua"
+                        data-emoji="🍅">
+                        Tomate birrindua
+                        <span>+</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- OLIOAK ETA OZPINAK -->
+
+            <div class="subcategoria">
+
+                <button class="subcategoria-boton">
+                    <span>🫒</span>
+                    <span>Olioak eta ozpinak</span>
+                    <span class="gezi">›</span>
+                </button>
+
+                <div class="opciones">
+
+                    <button class="anadir"
+                        data-producto="Oliba-olioa"
+                        data-emoji="🫒">
+                        Oliba-olioa
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Ekilore-olioa"
+                        data-emoji="🌻">
+                        Ekilore-olioa
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Mahats-ozpina"
+                        data-emoji="🍇">
+                        Mahats-ozpina
+                        <span>+</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- NESQUIK -->
+
+            <button class="producto-simple anadir"
+                data-producto="Nesquik"
+                data-emoji="🥛">
+
+                <span>🥛</span>
+                <span>Nesquik</span>
+                <span>+</span>
+
+            </button>
+
+
+            <!-- COLACAO -->
+
+            <button class="producto-simple anadir"
+                data-producto="ColaCao"
+                data-emoji="🥛">
+
+                <span>🥛</span>
+                <span>ColaCao</span>
+                <span>+</span>
+
+            </button>
+
+        </section>
+
+
+        <!-- ==========================================
+             ESNEKIAK
+        =========================================== -->
+
+        <section class="categoria">
+
+            <div class="categoria-titulo">
+                <span>🥛</span>
+
+                <div>
+                    <h2>ESNEKIAK</h2>
+                    <p>Esnea eta esnekiak</p>
+                </div>
+            </div>
+
+
+            <button class="producto-simple anadir"
+                data-producto="Esnea"
+                data-emoji="🥛">
+
+                <span>🥛</span>
+                <span>Esnea</span>
+                <span>+</span>
+
+            </button>
+
+
+            <button class="producto-simple anadir"
+                data-producto="Jogurta"
+                data-emoji="🥛">
+
+                <span>🥛</span>
+                <span>Jogurta</span>
+                <span>+</span>
+
+            </button>
+
+
+            <button class="producto-simple anadir"
+                data-producto="Gazta"
+                data-emoji="🧀">
+
+                <span>🧀</span>
+                <span>Gazta</span>
+                <span>+</span>
+
+            </button>
+
+
+            <button class="producto-simple anadir"
+                data-producto="Gurina"
+                data-emoji="🧈">
+
+                <span>🧈</span>
+                <span>Gurina</span>
+                <span>+</span>
+
+            </button>
+
+
+            <button class="producto-simple anadir"
+                data-producto="Esnegaina"
+                data-emoji="🥛">
+
+                <span>🥛</span>
+                <span>Esnegaina</span>
+                <span>+</span>
+
+            </button>
+
+        </section>
+
+
+        <!-- ==========================================
+             FRUTA ETA BARAZKIAK
+        =========================================== -->
+
+        <section class="categoria">
+
+            <div class="categoria-titulo">
+                <span>🥦</span>
+
+                <div>
+                    <h2>FRUTA ETA BARAZKIAK</h2>
+                    <p>Fruta eta barazki freskoak</p>
+                </div>
+            </div>
+
+
+            <!-- FRUTA -->
+
+            <div class="subcategoria">
+
+                <button class="subcategoria-boton">
+                    <span>🍎</span>
+                    <span>Fruta</span>
+                    <span class="gezi">›</span>
+                </button>
+
+                <div class="opciones">
+
+                    <button class="anadir"
+                        data-producto="Sagarrak"
+                        data-emoji="🍎">
+                        Sagarrak
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Platanoak"
+                        data-emoji="🍌">
+                        Platanoak
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Udareak"
+                        data-emoji="🍐">
+                        Udareak
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Mandarinak"
+                        data-emoji="🍊">
+                        Mandarinak
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Laranjak"
+                        data-emoji="🍊">
+                        Laranjak
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Mahatsak"
+                        data-emoji="🍇">
+                        Mahatsak
+                        <span>+</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- BARAZKIA -->
+
+            <div class="subcategoria">
+
+                <button class="subcategoria-boton">
+                    <span>🥦</span>
+                    <span>Barazkia</span>
+                    <span class="gezi">›</span>
+                </button>
+
+                <div class="opciones">
+
+                    <button class="anadir"
+                        data-producto="Tomateak"
+                        data-emoji="🍅">
+                        Tomateak
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Aguakateak"
+                        data-emoji="🥑">
+                        Aguakateak
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Letxuga"
+                        data-emoji="🥬">
+                        Letxuga
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Azenarioak"
+                        data-emoji="🥕">
+                        Azenarioak
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Tipulak"
+                        data-emoji="🧅">
+                        Tipulak
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Patatak"
+                        data-emoji="🥔">
+                        Patatak
+                        <span>+</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+             HARAGIA
+        =========================================== -->
+
+        <section class="categoria">
+
+            <div class="categoria-titulo">
+                <span>🥩</span>
+
+                <div>
+                    <h2>HARAGIA</h2>
+                    <p>Haragi freskoa</p>
+                </div>
+            </div>
+
+
+            <button class="producto-simple anadir"
+                data-producto="Oilaskoa"
+                data-emoji="🍗">
+
+                <span>🍗</span>
+                <span>Oilaskoa</span>
+                <span>+</span>
+
+            </button>
+
+
+            <button class="producto-simple anadir"
+                data-producto="Txerri-haragia"
+                data-emoji="🥩">
+
+                <span>🥩</span>
+                <span>Txerri-haragia</span>
+                <span>+</span>
+
+            </button>
+
+
+            <button class="producto-simple anadir"
+                data-producto="Behi-haragia"
+                data-emoji="🥩">
+
+                <span>🥩</span>
+                <span>Behi-haragia</span>
+                <span>+</span>
+
+            </button>
+
+
+            <button class="producto-simple anadir"
+                data-producto="Haragi xehatua"
+                data-emoji="🥩">
+
+                <span>🥩</span>
+                <span>Haragi xehatua</span>
+                <span>+</span>
+
+            </button>
+
+        </section>
+
+
+        <!-- ==========================================
+             ARRAINA
+        =========================================== -->
+
+        <section class="categoria">
+
+            <div class="categoria-titulo">
+                <span>🐟</span>
+
+                <div>
+                    <h2>ARRAINA</h2>
+                    <p>Arrain freskoa</p>
+                </div>
+            </div>
+
+
+            <button class="producto-simple anadir"
+                data-producto="Izokina"
+                data-emoji="🐟">
+
+                <span>🐟</span>
+                <span>Izokina</span>
+                <span>+</span>
+
+            </button>
+
+
+            <button class="producto-simple anadir"
+                data-producto="Legatza"
+                data-emoji="🐟">
+
+                <span>🐟</span>
+                <span>Legatza</span>
+                <span>+</span>
+
+            </button>
+
+
+            <button class="producto-simple anadir"
+                data-producto="Atuna freskoa"
+                data-emoji="🐟">
+
+                <span>🐟</span>
+                <span>Atuna</span>
+                <span>+</span>
+
+            </button>
+
+        </section>
+
+
+        <!-- ==========================================
+             IZOZTUAK
+        =========================================== -->
+
+        <section class="categoria">
+
+            <div class="categoria-titulo">
+                <span>🧊</span>
+
+                <div>
+                    <h2>IZOZTUAK</h2>
+                    <p>Elikagai izoztuak</p>
+                </div>
+            </div>
+
+
+            <!-- IZozkia -->
+
+            <div class="subcategoria">
+
+                <button class="subcategoria-boton">
+                    <span>🍦</span>
+                    <span>Izozkia</span>
+                    <span class="gezi">›</span>
+                </button>
+
+                <div class="opciones">
+
+                    <button class="anadir"
+                        data-producto="Sandwich izozkia"
+                        data-emoji="🍦">
+                        Sandwich
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Magnum"
+                        data-emoji="🍦">
+                        Magnum
+                        <span>+</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <button class="producto-simple anadir"
+                data-producto="Pizza izoztua"
+                data-emoji="🍕">
+
+                <span>🍕</span>
+                <span>Pizza</span>
+                <span>+</span>
+
+            </button>
+
+        </section>
+
+
+        <!-- ==========================================
+             EDARIAK
+        =========================================== -->
+
+        <section class="categoria">
+
+            <div class="categoria-titulo">
+                <span>🥤</span>
+
+                <div>
+                    <h2>EDARIAK</h2>
+                    <p>Edariak</p>
+                </div>
+            </div>
+
+
+            <button class="producto-simple anadir"
+                data-producto="Ura"
+                data-emoji="💧">
+
+                <span>💧</span>
+                <span>Ura</span>
+                <span>+</span>
+
+            </button>
+
+
+            <div class="subcategoria">
+
+                <button class="subcategoria-boton">
+                    <span>🥤</span>
+                    <span>Freskagarriak</span>
+                    <span class="gezi">›</span>
+                </button>
+
+                <div class="opciones">
+
+                    <button class="anadir"
+                        data-producto="Coca-Cola"
+                        data-emoji="🥤">
+                        Coca-Cola
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Fanta"
+                        data-emoji="🥤">
+                        Fanta
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Sprite"
+                        data-emoji="🥤">
+                        Sprite
+                        <span>+</span>
+                    </button>
+
+                    <button class="anadir"
+                        data-producto="Aquarius"
+                        data-emoji="🥤">
+                        Aquarius
+                        <span>+</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+             GARBIKETA
+        =========================================== -->
+
+        <section class="categoria">
+
+            <div class="categoria-titulo">
+                <span>🧽</span>
+
+                <div>
+                    <h2>GARBIKETA</h2>
+                    <p>Etxeko garbiketarako</p>
+                </div>
+            </div>
+
+
+            <button class="producto-simple anadir"
+                data-producto="Ontzi-garbigarria"
+                data-emoji="🧽">
+
+                <span>🧽</span>
+                <span>Ontzi-garbigarria</span>
+                <span>+</span>
+
+            </button>
+
+
+            <button class="producto-simple anadir"
+                data-producto="Garbigailurako detergentea"
+                data-emoji="🧺">
+
+                <span>🧺</span>
+                <span>Garbigailurako detergentea</span>
+                <span>+</span>
+
+            </button>
+
+
+            <button class="producto-simple anadir"
+                data-producto="Lixiba"
+                data-emoji="🧴">
+
+                <span>🧴</span>
+                <span>Lixiba</span>
+                <span>+</span>
+
+            </button>
+
+
+            <button class="producto-simple anadir"
+                data-producto="Komuneko papera"
+                data-emoji="🧻">
+
+                <span>🧻</span>
+                <span>Komuneko papera</span>
+                <span>+</span>
+
+            </button>
+
+        </section>
+
+
+        <!-- ==========================================
+             NIRE ZERRENDA
+        =========================================== -->
+
+        <section class="nire-zerrenda">
+
+            <div class="lista-goiburua">
+
+                <div>
+                    <p class="etiketa">EROSKETA</p>
+                    <h2>NIRE ZERRENDA</h2>
+                </div>
+
+                <span id="produktuKopurua">
+                    0
+                </span>
+
+            </div>
+
+
+            <div id="miLista"></div>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- ==========================================
+         EROSKETA BAIEZTATZEKO MODALA
+    =========================================== -->
+
+    <div id="confirmModal" class="modal">
+
+        <div class="modal-kutxa">
+
+            <div class="modal-ikonoa">
+                ✓
+            </div>
+
+            <h2>
+                Erosketa eginda dago?
+            </h2>
+
+            <p>
+                Zerrendako produktu guztiak
+                ezabatu nahi dituzu?
+            </p>
+
+            <div class="modal-botoiak">
+
+                <button id="confirmEz">
+                    Ez
+                </button>
+
+                <button id="confirmBai">
+                    Bai, ezabatu
+                </button>
+
+            </div>
 
         </div>
 
     </div>
 
-</div>
 
+    <!-- ==========================================
+         JAVASCRIPT
+    =========================================== -->
 
-<!-- =====================================
-     JAVASCRIPT
-====================================== -->
-
-<script
-    type="module"
-    src="script.js"
-></script>
+    <script type="module" src="script.js"></script>
 
 </body>
 
