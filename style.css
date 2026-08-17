@@ -1,5 +1,5 @@
 /* ==========================================
-   OROKORRA
+   GENERAL
 ========================================== */
 
 * {
@@ -16,9 +16,11 @@ body {
 
     padding: 24px 16px 50px;
 
-    background: #f8f7f4;
+    background:
+        #f8f7f4;
 
-    color: #222;
+    color:
+        #222;
 
     font-family:
         -apple-system,
@@ -29,17 +31,14 @@ body {
 }
 
 
-/* ==========================================
-   CONTENEDOR
-========================================== */
-
 main {
 
     width: 100%;
 
     max-width: 620px;
 
-    margin: auto;
+    margin: 0 auto;
+
 }
 
 
@@ -49,86 +48,144 @@ main {
 
 .cabecera {
 
-    padding: 15px 4px 25px;
+    padding:
+        12px
+        4px
+        22px;
+
 }
 
-.etiqueta {
+
+.etiketa {
 
     display: inline-block;
 
-    font-size: 11px;
+    margin:
+        0
+        0
+        8px;
 
-    font-weight: 700;
+    color:
+        #999;
 
-    letter-spacing: 1.5px;
+    font-size:
+        11px;
 
-    color: #888;
+    font-weight:
+        700;
 
-    margin-bottom: 8px;
+    letter-spacing:
+        1.5px;
+
 }
+
 
 h1 {
 
-    margin: 0 0 18px;
+    margin:
+        0
+        0
+        18px;
 
-    font-size: 38px;
+    color:
+        #181818;
 
-    line-height: 1.04;
+    font-size:
+        38px;
 
-    letter-spacing: -1.5px;
+    line-height:
+        1.05;
 
-    font-weight: 750;
+    letter-spacing:
+        -1.5px;
+
+}
+
+
+.astea {
+
+    margin:
+        13px
+        0
+        0;
+
+    color:
+        #999;
+
+    font-size:
+        12px;
+
 }
 
 
 /* ==========================================
-   USUARIO
+   CONEXIÓN
 ========================================== */
 
-.usuario {
+.konexio-lerroa {
 
-    display: flex;
+    display:
+        flex;
 
-    align-items: center;
+    align-items:
+        center;
 
-    gap: 8px;
+    gap:
+        8px;
 
-    font-size: 13px;
+    margin-bottom:
+        12px;
 
-    color: #666;
-
-    margin-bottom: 12px;
-}
-
-.usuario::before {
-
-    content: "";
-
-    width: 8px;
-
-    height: 8px;
-
-    border-radius: 50%;
-
-    background: #bbb;
-
-    flex-shrink: 0;
 }
 
 
-/* Usuario conectado */
+.konexio-lerroa p {
 
-.usuario.konektatuta {
+    margin:
+        0;
 
-    color: #333;
+    color:
+        #777;
+
+    font-size:
+        12px;
+
 }
 
-.usuario.konektatuta::before {
 
-    background: #35b65b;
+.konexio-puntua {
+
+    width:
+        8px;
+
+    height:
+        8px;
+
+    flex-shrink:
+        0;
+
+    border-radius:
+        50%;
+
+    background:
+        #bbb;
+
+    transition:
+        background .2s ease,
+        box-shadow .2s ease;
+
+}
+
+
+.konexio-puntua.konektatuta {
+
+    background:
+        #35b65b;
 
     box-shadow:
-        0 0 0 3px rgba(53, 182, 91, 0.12);
+        0 0 0 4px
+        rgba(53,182,91,.13);
+
 }
 
 
@@ -138,268 +195,322 @@ h1 {
 
 .login-btn {
 
-    width: 100%;
+    width:
+        100%;
 
-    padding: 13px 16px;
+    padding:
+        14px
+        16px;
 
-    border: 1px solid #ddd;
+    border:
+        1px solid #ddd;
 
-    border-radius: 14px;
+    border-radius:
+        14px;
 
-    background: white;
+    background:
+        #fff;
 
-    color: #222;
+    color:
+        #222;
 
-    font-size: 14px;
+    font-size:
+        14px;
 
-    font-weight: 600;
+    font-weight:
+        600;
 
-    cursor: pointer;
+    cursor:
+        pointer;
 
     transition:
         transform .15s ease,
         background .15s ease,
         opacity .15s ease;
+
 }
+
 
 .login-btn:hover {
 
-    background: #f4f4f4;
+    background:
+        #f4f4f4;
+
 }
+
 
 .login-btn:active {
 
-    transform: scale(.98);
+    transform:
+        scale(.98);
+
 }
+
 
 .login-btn:disabled {
 
-    opacity: .65;
+    opacity:
+        .65;
 
-    cursor: default;
+    cursor:
+        default;
+
 }
 
 
 /* ==========================================
-   ASTEA
+   SECCIÓN PRODUCTOS
 ========================================== */
 
-.astea {
+.produktuak-atala {
 
-    margin-bottom: 28px;
+    margin-top:
+        5px;
 
-    padding: 13px 16px;
-
-    background: white;
-
-    border-radius: 14px;
-
-    border: 1px solid #eee;
-}
-
-.astea p {
-
-    margin: 0;
-
-    color: #777;
-
-    font-size: 13px;
 }
 
 
-/* ==========================================
-   TITULOS
-========================================== */
+.atala-goiburua {
 
-.titulo-seccion {
+    margin-bottom:
+        14px;
 
-    display: flex;
-
-    align-items: flex-end;
-
-    justify-content: space-between;
-
-    margin-bottom: 14px;
 }
 
-.mini-etiqueta {
 
-    display: block;
+.mini-etiketa {
 
-    margin-bottom: 4px;
+    display:
+        block;
 
-    color: #999;
+    margin-bottom:
+        4px;
 
-    font-size: 10px;
+    color:
+        #999;
 
-    font-weight: 700;
+    font-size:
+        10px;
 
-    letter-spacing: 1.4px;
+    font-weight:
+        700;
+
+    letter-spacing:
+        1.5px;
+
 }
+
 
 h2 {
 
-    margin: 0;
+    margin:
+        0;
 
-    font-size: 24px;
+    color:
+        #222;
 
-    letter-spacing: -.5px;
-}
+    font-size:
+        24px;
 
-.produktu-kopurua {
+    line-height:
+        1.1;
 
-    min-width: 30px;
+    letter-spacing:
+        -.5px;
 
-    height: 30px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    border-radius: 50%;
-
-    background: #222;
-
-    color: white;
-
-    font-size: 12px;
-
-    font-weight: 700;
 }
 
 
 /* ==========================================
-   KATEGORIA NAGUSIA
+   CATEGORÍAS PRINCIPALES
 ========================================== */
 
 .kategoria {
 
-    margin-bottom: 10px;
+    margin-bottom:
+        10px;
 
-    border-radius: 18px;
+    overflow:
+        hidden;
 
-    overflow: hidden;
+    border:
+        1px solid #e8e6e2;
 
-    background: white;
+    border-radius:
+        18px;
 
-    border: 1px solid #e9e7e3;
+    background:
+        #fff;
 
     box-shadow:
-        0 3px 12px rgba(0,0,0,.035);
+        0 2px 10px
+        rgba(0,0,0,.035);
+
 }
 
 
-/* ==========================================
-   BOTÓN CATEGORIA
-========================================== */
+.kategoria-btn {
 
-.kategoria-botoia {
+    width:
+        100%;
 
-    width: 100%;
+    display:
+        flex;
 
-    display: flex;
+    align-items:
+        center;
 
-    align-items: center;
+    gap:
+        13px;
 
-    gap: 14px;
+    padding:
+        15px;
 
-    padding: 17px;
+    border:
+        0;
 
-    border: 0;
+    background:
+        #fff;
 
-    background: white;
+    color:
+        #222;
 
-    color: #222;
+    cursor:
+        pointer;
 
-    cursor: pointer;
+    text-align:
+        left;
 
-    text-align: left;
 }
 
-.kategoria-botoia:hover {
 
-    background: #fafafa;
+.kategoria-btn:hover {
+
+    background:
+        #fafafa;
+
 }
+
 
 .kategoria-emoji {
 
-    width: 46px;
+    width:
+        46px;
 
-    height: 46px;
+    height:
+        46px;
 
-    flex-shrink: 0;
+    display:
+        flex;
 
-    display: flex;
+    align-items:
+        center;
 
-    align-items: center;
+    justify-content:
+        center;
 
-    justify-content: center;
+    flex-shrink:
+        0;
 
-    border-radius: 14px;
+    border-radius:
+        14px;
 
-    background: #f1f0ed;
+    background:
+        #f2f0ed;
 
-    font-size: 24px;
+    font-size:
+        23px;
+
 }
+
 
 .kategoria-info {
 
-    flex: 1;
+    flex:
+        1;
+
 }
+
 
 .kategoria-izena {
 
-    display: block;
+    display:
+        block;
 
-    font-size: 16px;
+    margin-bottom:
+        3px;
 
-    font-weight: 700;
+    font-size:
+        16px;
 
-    margin-bottom: 3px;
+    font-weight:
+        700;
+
 }
+
 
 .kategoria-deskribapena {
 
-    display: block;
+    display:
+        block;
 
-    font-size: 12px;
+    color:
+        #999;
 
-    color: #999;
-}
+    font-size:
+        11px;
 
-.gezia {
-
-    font-size: 20px;
-
-    color: #aaa;
-
-    transition: transform .2s ease;
-}
-
-.kategoria-zabalik .gezia {
-
-    transform: rotate(180deg);
 }
 
 
-/* ==========================================
-   EDUKIA
-========================================== */
+.kategoria-gezi {
+
+    color:
+        #aaa;
+
+    font-size:
+        28px;
+
+    line-height:
+        1;
+
+    transition:
+        transform .2s ease;
+
+}
+
+
+.kategoria.zabalik
+.kategoria-gezi {
+
+    transform:
+        rotate(90deg);
+
+}
+
 
 .kategoria-edukia {
 
-    display: none;
+    display:
+        none;
 
-    padding: 0 12px 12px;
+    padding:
+        0
+        11px
+        11px;
 
-    border-top: 1px solid #f0efec;
+    border-top:
+        1px solid #f0efec;
+
 }
 
-.kategoria-zabalik .kategoria-edukia {
 
-    display: block;
+.kategoria.zabalik
+.kategoria-edukia {
+
+    display:
+        block;
+
 }
 
 
@@ -407,215 +518,358 @@ h2 {
    AZPITALDEAK
 ========================================== */
 
-.azpitaldea {
+.azpikategoria {
 
-    margin-top: 10px;
+    margin-top:
+        8px;
 
-    border-radius: 14px;
+    overflow:
+        hidden;
 
-    background: #f7f6f3;
+    border-radius:
+        13px;
 
-    overflow: hidden;
-}
+    background:
+        #f5f4f1;
 
-.azpitalde-botoia {
-
-    width: 100%;
-
-    display: flex;
-
-    align-items: center;
-
-    padding: 13px;
-
-    border: 0;
-
-    background: transparent;
-
-    cursor: pointer;
-
-    text-align: left;
-
-    color: #333;
-
-    font-size: 14px;
-
-    font-weight: 650;
-}
-
-.azpitalde-botoia:hover {
-
-    background: #f0efeb;
-}
-
-.azpitalde-emoji {
-
-    margin-right: 10px;
-
-    font-size: 18px;
-}
-
-.azpitalde-izena {
-
-    flex: 1;
-}
-
-.azpitalde-gezi {
-
-    color: #aaa;
-
-    transition: transform .2s ease;
-}
-
-.azpitalde-zabalik .azpitalde-gezi {
-
-    transform: rotate(180deg);
-}
-
-.azpitalde-edukia {
-
-    display: none;
-
-    padding: 0 8px 8px;
-}
-
-.azpitalde-zabalik .azpitalde-edukia {
-
-    display: block;
 }
 
 
-/* ==========================================
-   PRODUKTUAK
-========================================== */
+.azpikategoria-btn {
 
-.produktuak {
+    width:
+        100%;
 
-    display: grid;
+    display:
+        flex;
 
-    gap: 6px;
+    align-items:
+        center;
+
+    gap:
+        11px;
+
+    padding:
+        12px
+        13px;
+
+    border:
+        0;
+
+    background:
+        transparent;
+
+    color:
+        #333;
+
+    cursor:
+        pointer;
+
+    text-align:
+        left;
+
 }
 
 
-/* Produktu arrunta */
+.azpikategoria-btn:hover {
 
-.produktu-botoia {
+    background:
+        #eeece8;
 
-    width: 100%;
+}
 
-    display: flex;
 
-    align-items: center;
+.azpikategoria-emoji {
 
-    gap: 10px;
+    width:
+        31px;
 
-    padding: 10px 11px;
+    height:
+        31px;
 
-    border: 0;
+    display:
+        flex;
 
-    border-radius: 11px;
+    align-items:
+        center;
 
-    background: white;
+    justify-content:
+        center;
 
-    cursor: pointer;
+    border-radius:
+        9px;
 
-    color: #333;
+    background:
+        #fff;
 
-    text-align: left;
+    font-size:
+        18px;
+
+}
+
+
+.azpikategoria-izena {
+
+    flex:
+        1;
+
+    font-size:
+        14px;
+
+    font-weight:
+        650;
+
+}
+
+
+.azpikategoria-gezi {
+
+    color:
+        #aaa;
+
+    font-size:
+        22px;
 
     transition:
-        background .15s ease,
-        transform .1s ease;
+        transform .2s ease;
+
 }
 
-.produktu-botoia:hover {
 
-    background: #f1f1ef;
+.azpikategoria.zabalik
+.azpikategoria-gezi {
+
+    transform:
+        rotate(90deg);
+
 }
 
-.produktu-botoia:active {
 
-    transform: scale(.985);
+.azpikategoria-edukia {
+
+    display:
+        none;
+
+    padding:
+        0
+        8px
+        8px;
+
 }
 
-.produktu-emoji {
 
-    width: 30px;
+.azpikategoria.zabalik
+.azpikategoria-edukia {
 
-    height: 30px;
+    display:
+        block;
 
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    font-size: 18px;
-
-    border-radius: 8px;
-
-    background: #f5f4f1;
-}
-
-.produktu-izena {
-
-    flex: 1;
-
-    font-size: 13px;
-
-    font-weight: 500;
-}
-
-.produktu-plus {
-
-    width: 29px;
-
-    height: 29px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    border-radius: 50%;
-
-    background: #f0f0ee;
-
-    color: #333;
-
-    font-size: 18px;
-
-    font-weight: 500;
 }
 
 
 /* ==========================================
-   PRODUKTUAREN 250G BOTOIA
+   PRODUCTOS
 ========================================== */
 
-.produktu-gramoak {
+.producto {
 
-    padding: 8px 10px;
+    display:
+        flex;
 
-    border: 0;
+    align-items:
+        center;
 
-    border-radius: 9px;
+    gap:
+        10px;
 
-    background: #222;
+    margin-top:
+        7px;
 
-    color: white;
+    padding:
+        10px;
 
-    font-size: 11px;
+    border:
+        1px solid #eceae6;
 
-    font-weight: 700;
+    border-radius:
+        13px;
 
-    cursor: pointer;
+    background:
+        #fff;
+
 }
 
-.produktu-gramoak:hover {
 
-    opacity: .85;
+.producto-emoji {
+
+    width:
+        34px;
+
+    height:
+        34px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    flex-shrink:
+        0;
+
+    border-radius:
+        10px;
+
+    background:
+        #f7f6f3;
+
+    font-size:
+        19px;
+
+}
+
+
+.producto p {
+
+    flex:
+        1;
+
+    margin:
+        0;
+
+    color:
+        #333;
+
+    font-size:
+        13px;
+
+    font-weight:
+        500;
+
+}
+
+
+/* ==========================================
+   + NORMAL
+========================================== */
+
+.anadir {
+
+    width:
+        34px;
+
+    height:
+        34px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    flex-shrink:
+        0;
+
+    border:
+        0;
+
+    border-radius:
+        50%;
+
+    background:
+        #f0f0ee;
+
+    color:
+        #333;
+
+    font-size:
+        20px;
+
+    cursor:
+        pointer;
+
+    transition:
+        transform .1s ease,
+        background .15s ease;
+
+}
+
+
+.anadir:hover {
+
+    background:
+        #e5e5e2;
+
+}
+
+
+.anadir:active {
+
+    transform:
+        scale(.88);
+
+}
+
+
+/* ==========================================
+   PRODUCTO GRAMOS
+========================================== */
+
+.producto-gramos {
+
+    padding:
+        10px;
+
+}
+
+
+.anadir-gramos {
+
+    min-width:
+        72px;
+
+    height:
+        34px;
+
+    padding:
+        0
+        10px;
+
+    border:
+        0;
+
+    border-radius:
+        10px;
+
+    background:
+        #222;
+
+    color:
+        white;
+
+    font-size:
+        11px;
+
+    font-weight:
+        700;
+
+    cursor:
+        pointer;
+
+}
+
+
+.anadir-gramos:hover {
+
+    opacity:
+        .86;
+
 }
 
 
@@ -625,432 +879,692 @@ h2 {
 
 .nire-zerrenda-section {
 
-    margin-top: 38px;
+    margin-top:
+        42px;
 
-    padding-bottom: 20px;
+    padding-bottom:
+        20px;
+
 }
+
+
+.nire-goiburua {
+
+    display:
+        flex;
+
+    align-items:
+        flex-end;
+
+    justify-content:
+        space-between;
+
+    margin-bottom:
+        15px;
+
+}
+
+
+.produktu-kopurua {
+
+    min-width:
+        31px;
+
+    height:
+        31px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border-radius:
+        50%;
+
+    background:
+        #222;
+
+    color:
+        #fff;
+
+    font-size:
+        12px;
+
+    font-weight:
+        700;
+
+}
+
+
+/* ==========================================
+   LISTA
+========================================== */
 
 #miLista {
 
-    display: grid;
+    display:
+        flex;
 
-    gap: 8px;
+    flex-direction:
+        column;
+
+    gap:
+        18px;
+
 }
 
 
-/* ==========================================
-   ZERRENDAKO PRODUKTUA
-========================================== */
+.lista-sekzioa {
+
+    width:
+        100%;
+
+}
+
+
+.lista-sekzioa-tituloa {
+
+    margin:
+        0
+        4px
+        7px;
+
+    color:
+        #999;
+
+    font-size:
+        10px;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        1.2px;
+
+}
+
 
 .lista-produktua {
 
-    display: flex;
+    display:
+        flex;
 
-    align-items: center;
+    align-items:
+        center;
 
-    gap: 9px;
+    gap:
+        8px;
 
-    padding: 11px;
+    margin-bottom:
+        7px;
 
-    background: white;
+    padding:
+        10px;
 
-    border: 1px solid #ebe9e5;
+    border:
+        1px solid #e8e6e2;
 
-    border-radius: 15px;
+    border-radius:
+        14px;
 
-    box-shadow:
-        0 2px 8px rgba(0,0,0,.025);
+    background:
+        #fff;
+
 }
+
 
 .lista-emoji {
 
-    width: 36px;
+    width:
+        36px;
 
-    height: 36px;
+    height:
+        36px;
 
-    display: flex;
+    display:
+        flex;
 
-    align-items: center;
+    align-items:
+        center;
 
-    justify-content: center;
+    justify-content:
+        center;
 
-    border-radius: 10px;
+    flex-shrink:
+        0;
 
-    background: #f4f3f0;
+    border-radius:
+        10px;
 
-    font-size: 19px;
+    background:
+        #f5f4f1;
 
-    flex-shrink: 0;
+    font-size:
+        19px;
+
 }
+
 
 .lista-info {
 
-    flex: 1;
+    flex:
+        1;
 
-    min-width: 0;
+    min-width:
+        0;
+
 }
+
 
 .lista-izena {
 
-    display: block;
+    display:
+        block;
 
-    font-size: 14px;
+    color:
+        #333;
 
-    font-weight: 600;
+    font-size:
+        13px;
 
-    color: #333;
+    font-weight:
+        600;
+
 }
 
-.lista-kategoria {
-
-    display: block;
-
-    font-size: 10px;
-
-    color: #aaa;
-
-    margin-top: 2px;
-}
 
 .lista-kantitatea {
 
-    min-width: 28px;
+    min-width:
+        35px;
 
-    text-align: center;
+    text-align:
+        center;
 
-    font-size: 13px;
+    color:
+        #333;
 
-    font-weight: 700;
+    font-size:
+        12px;
+
+    font-weight:
+        700;
+
 }
 
 
 /* ==========================================
-   BOTONES + -
+   + / -
 ========================================== */
 
 .lista-kontrola {
 
-    width: 31px;
+    width:
+        31px;
 
-    height: 31px;
+    height:
+        31px;
 
-    display: flex;
+    display:
+        flex;
 
-    align-items: center;
+    align-items:
+        center;
 
-    justify-content: center;
+    justify-content:
+        center;
 
-    border: 0;
+    flex-shrink:
+        0;
 
-    border-radius: 50%;
+    border:
+        0;
 
-    background: #f1f1ef;
+    border-radius:
+        50%;
 
-    color: #333;
+    background:
+        #f0f0ee;
 
-    font-size: 18px;
+    color:
+        #333;
 
-    cursor: pointer;
+    font-size:
+        18px;
+
+    cursor:
+        pointer;
+
 }
+
 
 .lista-kontrola:hover {
 
-    background: #e6e6e3;
+    background:
+        #e6e6e3;
+
+}
+
+
+.lista-kontrola:active {
+
+    transform:
+        scale(.88);
+
 }
 
 
 /* ==========================================
-   ELIMINAR - ROJO
+   EZABATU ROJO
 ========================================== */
 
 .lista-ezabatu {
 
-    height: 31px;
+    min-width:
+        58px;
 
-    padding: 0 10px;
+    height:
+        31px;
 
-    border: 0;
+    padding:
+        0
+        9px;
 
-    border-radius: 9px;
+    border:
+        0;
 
-    background: #fff0f0;
+    border-radius:
+        9px;
 
-    color: #d93636;
+    background:
+        #ffe8e8;
 
-    font-size: 11px;
+    color:
+        #d72c2c;
 
-    font-weight: 700;
+    font-size:
+        10px;
 
-    cursor: pointer;
+    font-weight:
+        700;
 
-    transition:
-        background .15s ease,
-        transform .1s ease;
+    cursor:
+        pointer;
+
 }
+
 
 .lista-ezabatu:hover {
 
-    background: #ffe1e1;
-}
+    background:
+        #ffdada;
 
-.lista-ezabatu:active {
-
-    transform: scale(.96);
 }
 
 
 /* ==========================================
-   ZERRENDA HUTSIK
+   LISTA VACÍA
 ========================================== */
 
 .zerrenda-hutsa {
 
-    padding: 30px 15px;
+    padding:
+        28px
+        15px;
 
-    text-align: center;
+    text-align:
+        center;
 
-    color: #aaa;
 }
+
 
 .zerrenda-hutsa span {
 
-    display: block;
+    display:
+        block;
 
-    font-size: 34px;
+    margin-bottom:
+        8px;
 
-    margin-bottom: 8px;
+    font-size:
+        34px;
+
 }
+
 
 .zerrenda-hutsa p {
 
-    margin: 0;
+    margin:
+        0;
 
-    font-size: 13px;
+    color:
+        #aaa;
+
+    font-size:
+        13px;
+
 }
 
 
 /* ==========================================
-   EROSKETA EGINDA
+   COMPRA HECHA
 ========================================== */
 
 .erosketa-eginda {
 
-    width: 100%;
+    width:
+        100%;
 
-    margin-top: 14px;
+    margin-top:
+        15px;
 
-    padding: 16px;
+    padding:
+        15px;
 
-    border: 0;
+    border:
+        0;
 
-    border-radius: 16px;
+    border-radius:
+        15px;
 
-    background: #222;
+    background:
+        #222;
 
-    color: white;
+    color:
+        white;
 
-    font-size: 15px;
+    font-size:
+        15px;
 
-    font-weight: 700;
+    font-weight:
+        700;
 
-    cursor: pointer;
+    cursor:
+        pointer;
 
     transition:
         transform .15s ease,
         opacity .15s ease;
+
 }
+
 
 .erosketa-eginda:hover {
 
-    opacity: .9;
+    opacity:
+        .9;
+
 }
+
 
 .erosketa-eginda:active {
 
-    transform: scale(.98);
+    transform:
+        scale(.98);
+
 }
 
 
 /* ==========================================
-   MODALA
+   MODAL
 ========================================== */
 
 .modal-overlay {
 
-    position: fixed;
+    position:
+        fixed;
 
-    inset: 0;
+    inset:
+        0;
 
-    z-index: 1000;
+    z-index:
+        9999;
 
-    display: none;
+    display:
+        none;
 
-    align-items: center;
+    align-items:
+        center;
 
-    justify-content: center;
+    justify-content:
+        center;
 
-    padding: 20px;
+    padding:
+        20px;
 
-    background: rgba(0,0,0,.38);
+    background:
+        rgba(0,0,0,.38);
 
-    backdrop-filter: blur(5px);
+    backdrop-filter:
+        blur(5px);
+
 }
+
 
 .modal-overlay.zabalik {
 
-    display: flex;
+    display:
+        flex;
+
 }
+
 
 .modal {
 
-    width: 100%;
+    width:
+        100%;
 
-    max-width: 390px;
+    max-width:
+        390px;
 
-    padding: 28px 22px 22px;
+    padding:
+        28px
+        22px
+        22px;
 
-    background: #fff;
+    border-radius:
+        24px;
 
-    border-radius: 24px;
+    background:
+        #fff;
 
-    text-align: center;
+    text-align:
+        center;
 
     box-shadow:
-        0 20px 60px rgba(0,0,0,.18);
+        0
+        18px
+        60px
+        rgba(0,0,0,.18);
 
-    animation:
-        modalAgertu .2s ease;
 }
 
-@keyframes modalAgertu {
-
-    from {
-
-        opacity: 0;
-
-        transform: translateY(10px) scale(.97);
-
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform: translateY(0) scale(1);
-
-    }
-}
 
 .modal-icon {
 
-    width: 58px;
+    width:
+        54px;
 
-    height: 58px;
+    height:
+        54px;
 
-    display: flex;
+    display:
+        flex;
 
-    align-items: center;
+    align-items:
+        center;
 
-    justify-content: center;
+    justify-content:
+        center;
 
-    margin: 0 auto 14px;
+    margin:
+        0
+        auto
+        14px;
 
-    border-radius: 18px;
+    border-radius:
+        17px;
 
-    background: #f3f2ef;
+    background:
+        #f3f2ef;
 
-    font-size: 28px;
+    font-size:
+        26px;
+
 }
+
 
 .modal h2 {
 
-    margin-bottom: 8px;
+    margin:
+        0
+        0
+        8px;
 
-    font-size: 22px;
+    font-size:
+        21px;
+
 }
+
 
 .modal p {
 
-    margin: 0 0 22px;
+    margin:
+        0
+        0
+        22px;
 
-    color: #888;
+    color:
+        #888;
 
-    font-size: 13px;
+    font-size:
+        13px;
+
+    line-height:
+        1.5;
+
 }
+
 
 .modal-botoiak {
 
-    display: grid;
+    display:
+        grid;
 
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns:
+        1fr
+        1fr;
 
-    gap: 9px;
+    gap:
+        9px;
+
 }
+
 
 .modal-botoiak button {
 
-    padding: 13px;
+    padding:
+        13px
+        8px;
 
-    border: 0;
+    border:
+        0;
 
-    border-radius: 13px;
+    border-radius:
+        13px;
 
-    font-size: 13px;
+    font-size:
+        13px;
 
-    font-weight: 700;
+    font-weight:
+        700;
 
-    cursor: pointer;
+    cursor:
+        pointer;
+
 }
+
 
 .modal-ez {
 
-    background: #f1f1ef;
+    background:
+        #eeeeec;
 
-    color: #333;
+    color:
+        #333;
+
 }
+
 
 .modal-bai {
 
-    background: #222;
+    background:
+        #222;
 
-    color: white;
+    color:
+        white;
+
 }
 
 
 /* ==========================================
-   MOBILE
+   MÓVIL
 ========================================== */
 
-@media (max-width: 480px) {
+@media (
+    max-width: 520px
+) {
 
     body {
 
         padding:
-            16px
+            17px
             12px
             40px;
+
     }
+
 
     h1 {
 
-        font-size: 34px;
+        font-size:
+            34px;
+
     }
 
-    .kategoria-botoia {
 
-        padding: 15px;
+    .kategoria-btn {
+
+        padding:
+            14px;
+
     }
+
 
     .kategoria-emoji {
 
-        width: 43px;
+        width:
+            43px;
 
-        height: 43px;
+        height:
+            43px;
+
     }
+
 
     .lista-ezabatu {
 
-        padding: 0 8px;
+        min-width:
+            54px;
+
+        padding:
+            0
+            7px;
+
     }
 
 }
