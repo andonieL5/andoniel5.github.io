@@ -69,12 +69,10 @@ console.log(
     firebaseConfig.projectId
 );
 
-
 console.log(
     "Firebase apiKey:",
     firebaseConfig.apiKey
 );
-
 
 console.log(
     "Firebase appId:",
@@ -152,7 +150,7 @@ const usuarioActual =
     document.getElementById("usuarioActual");
 
 
-// Estado conexión
+// Estado de conexión
 
 const puntoConexion =
     document.getElementById("puntoConexion");
@@ -161,19 +159,21 @@ const textoConexion =
     document.getElementById("textoConexion");
 
 
-// Modal compra
-
-const compraHecha =
-    document.getElementById("compraHecha");
+// ==========================================
+// MODAL DE COMPRA
+// ==========================================
 
 const modalCompra =
     document.getElementById("modalCompra");
 
+const confirmarCompra =
+    document.getElementById("confirmarCompra");
+
 const cancelarCompra =
     document.getElementById("cancelarCompra");
 
-const confirmarCompra =
-    document.getElementById("confirmarCompra");
+const compraHecha =
+    document.getElementById("compraHecha");
 
 
 // ==========================================
@@ -200,11 +200,17 @@ function mostrarLista() {
             listaCompra[producto];
 
 
+        // ======================================
+        // CREAR ELEMENTO
+        // ======================================
+
         const nuevoProducto =
             document.createElement("li");
 
 
-        // Nombre
+        // ======================================
+        // NOMBRE
+        // ======================================
 
         const nombre =
             document.createElement("span");
@@ -216,7 +222,9 @@ function mostrarLista() {
             producto;
 
 
-        // Botón -
+        // ======================================
+        // BOTÓN -
+        // ======================================
 
         const botonMenos =
             document.createElement("button");
@@ -226,7 +234,9 @@ function mostrarLista() {
             "−";
 
 
-        // Cantidad
+        // ======================================
+        // CANTIDAD
+        // ======================================
 
         const cantidad =
             document.createElement("span");
@@ -236,7 +246,9 @@ function mostrarLista() {
             informacion.cantidad;
 
 
-        // Botón +
+        // ======================================
+        // BOTÓN +
+        // ======================================
 
         const botonMas =
             document.createElement("button");
@@ -246,14 +258,16 @@ function mostrarLista() {
             "+";
 
 
-        // Botón eliminar
+        // ======================================
+        // BOTÓN ELIMINAR
+        // ======================================
 
         const botonEliminar =
             document.createElement("button");
 
 
         botonEliminar.textContent =
-            "Eliminar";
+            "Ezabatu";
 
 
         // ======================================
@@ -375,18 +389,32 @@ async function añadirProducto(
                     );
 
 
+                // ==================================
+                // PRODUCTO NUEVO
+                // ==================================
+
                 if (!documento.exists()) {
 
                     transaction.set(
                         referencia,
                         {
-                            nombre: producto,
-                            emoji: emoji,
-                            cantidad: 1
+                            nombre:
+                                producto,
+
+                            emoji:
+                                emoji,
+
+                            cantidad:
+                                1
                         }
                     );
 
                 }
+
+
+                // ==================================
+                // PRODUCTO EXISTENTE
+                // ==================================
 
                 else {
 
@@ -407,12 +435,13 @@ async function añadirProducto(
             }
         );
 
+
     }
 
     catch (error) {
 
         console.error(
-            "Error al añadir producto:",
+            "Errorea produktua gehitzean:",
             error
         );
 
@@ -467,13 +496,20 @@ async function cambiarCantidad(
                     datos.cantidad + cambio;
 
 
-                if (nuevaCantidad <= 0) {
+                // ==================================
+                // SI LLEGA A CERO
+                // ==================================
+
+                if (
+                    nuevaCantidad <= 0
+                ) {
 
                     transaction.delete(
                         referencia
                     );
 
                 }
+
 
                 else {
 
@@ -490,12 +526,13 @@ async function cambiarCantidad(
             }
         );
 
+
     }
 
     catch (error) {
 
         console.error(
-            "Error cambiando cantidad:",
+            "Errorea kantitatea aldatzean:",
             error
         );
 
@@ -533,59 +570,7 @@ async function eliminarProducto(
     catch (error) {
 
         console.error(
-            "Error eliminando producto:",
-            error
-        );
-
-    }
-
-}
-
-
-// ==========================================
-// BORRAR TODA LA LISTA
-// ==========================================
-
-async function borrarTodaLaLista() {
-
-    try {
-
-        const snapshot =
-            await getDocs(listaRef);
-
-
-        const eliminaciones =
-            [];
-
-
-        snapshot.forEach(
-            function (documento) {
-
-                eliminaciones.push(
-                    deleteDoc(
-                        documento.ref
-                    )
-                );
-
-            }
-        );
-
-
-        await Promise.all(
-            eliminaciones
-        );
-
-
-        console.log(
-            "Compra confirmada. Lista borrada."
-        );
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Error borrando la lista:",
+            "Errorea produktua ezabatzean:",
             error
         );
 
@@ -603,20 +588,14 @@ function convertirId(
 ) {
 
     return producto
-
         .toLowerCase()
-
         .replaceAll(" ", "-")
-
         .replaceAll("á", "a")
-
         .replaceAll("é", "e")
-
         .replaceAll("í", "i")
-
         .replaceAll("ó", "o")
-
-        .replaceAll("ú", "u");
+        .replaceAll("ú", "u")
+        .replaceAll("ñ", "n");
 
 }
 
@@ -661,6 +640,10 @@ onSnapshot(
 
     function (snapshot) {
 
+        // ======================================
+        // LIMPIAR LISTA LOCAL
+        // ======================================
+
         for (
             const producto in listaCompra
         ) {
@@ -669,6 +652,10 @@ onSnapshot(
 
         }
 
+
+        // ======================================
+        // CARGAR DATOS DE FIRESTORE
+        // ======================================
 
         snapshot.forEach(
             function (documento) {
@@ -693,14 +680,19 @@ onSnapshot(
         );
 
 
+        // ======================================
+        // ACTUALIZAR PANTALLA
+        // ======================================
+
         mostrarLista();
 
     },
 
+
     function (error) {
 
         console.error(
-            "Error escuchando la lista:",
+            "Errorea Firestore:",
             error
         );
 
@@ -742,10 +734,11 @@ loginGoogle.addEventListener(
 
         }
 
+
         catch (error) {
 
             console.error(
-                "Error al iniciar sesión:",
+                "Errorea Google-rekin saioa hastean:",
                 error
             );
 
@@ -756,88 +749,92 @@ loginGoogle.addEventListener(
 
 
 // ==========================================
-// BOTÓN COMPRA HECHA
+// ESTADO DE CONEXIÓN
 // ==========================================
 
-compraHecha.addEventListener(
-    "click",
+function ponerConexionOnline() {
+
+    if (puntoConexion) {
+
+        puntoConexion.style.backgroundColor =
+            "#22c55e";
+
+        puntoConexion.style.boxShadow =
+            "0 0 0 4px rgba(34, 197, 94, 0.12)";
+
+    }
+
+
+    if (textoConexion) {
+
+        textoConexion.textContent =
+            "Linean";
+
+    }
+
+}
+
+
+function ponerConexionOffline() {
+
+    if (puntoConexion) {
+
+        puntoConexion.style.backgroundColor =
+            "#999";
+
+        puntoConexion.style.boxShadow =
+            "none";
+
+    }
+
+
+    if (textoConexion) {
+
+        textoConexion.textContent =
+            "Konexiorik gabe";
+
+    }
+
+}
+
+
+// ==========================================
+// DETECTAR INTERNET
+// ==========================================
+
+window.addEventListener(
+    "online",
     function () {
 
-        modalCompra.classList.add(
-            "visible"
-        );
+        ponerConexionOnline();
 
     }
 );
 
 
-// ==========================================
-// BOTÓN NO
-// ==========================================
-
-cancelarCompra.addEventListener(
-    "click",
+window.addEventListener(
+    "offline",
     function () {
 
-        modalCompra.classList.remove(
-            "visible"
-        );
+        ponerConexionOffline();
 
     }
 );
 
 
-// ==========================================
-// BOTÓN SÍ
-// ==========================================
+// Estado inicial
 
-confirmarCompra.addEventListener(
-    "click",
-    async function () {
+if (navigator.onLine) {
 
-        confirmarCompra.disabled = true;
+    ponerConexionOnline();
 
-        confirmarCompra.textContent =
-            "Borrando...";
+}
 
+else {
 
-        await borrarTodaLaLista();
+    ponerConexionOffline();
 
-
-        modalCompra.classList.remove(
-            "visible"
-        );
-
-
-        confirmarCompra.disabled = false;
-
-        confirmarCompra.textContent =
-            "Sí, compra hecha";
-
-    }
-);
-
-
-// ==========================================
-// CERRAR MODAL AL PULSAR FUERA
-// ==========================================
-
-modalCompra.addEventListener(
-    "click",
-    function (evento) {
-
-        if (
-            evento.target === modalCompra
-        ) {
-
-            modalCompra.classList.remove(
-                "visible"
-            );
-
-        }
-
-    }
-);
+}
 
 
 // ==========================================
@@ -851,6 +848,10 @@ onAuthStateChanged(
 
         if (usuario) {
 
+            // ==================================
+            // USUARIO AUTENTICADO
+            // ==================================
+
             console.log(
                 "Usuario autenticado:",
                 usuario.email
@@ -863,59 +864,43 @@ onAuthStateChanged(
             );
 
 
-            // ==================================
-            // PUNTO VERDE
-            // ==================================
-
-            puntoConexion.classList.add(
-                "conectado"
-            );
-
-
-            textoConexion.textContent =
-                "En línea";
-
-
             usuarioActual.textContent =
-                "Conectado como " +
+                "Konektatuta: " +
                 usuario.email;
 
 
             loginGoogle.textContent =
-                "Sesión iniciada";
+                "Saioa hasita";
 
 
             loginGoogle.disabled =
                 true;
 
+
+            // Punto verde
+
+            ponerConexionOnline();
+
         }
+
 
         else {
 
+            // ==================================
+            // NO HAY USUARIO
+            // ==================================
+
             console.log(
-                "No hay usuario conectado"
+                "Ez dago erabiltzaile autentifikaturik"
             );
-
-
-            // ==================================
-            // PUNTO GRIS
-            // ==================================
-
-            puntoConexion.classList.remove(
-                "conectado"
-            );
-
-
-            textoConexion.textContent =
-                "Sin conexión";
 
 
             usuarioActual.textContent =
-                "No has iniciado sesión";
+                "Ez duzu saioa hasi";
 
 
             loginGoogle.textContent =
-                "Continuar con Google";
+                "Jarraitu Google-rekin";
 
 
             loginGoogle.disabled =
@@ -925,3 +910,120 @@ onAuthStateChanged(
 
     }
 );
+
+
+// ==========================================
+// ABRIR MODAL DE COMPRA
+// ==========================================
+
+if (compraHecha) {
+
+    compraHecha.addEventListener(
+        "click",
+        function () {
+
+            modalCompra.classList.add(
+                "mostrar"
+            );
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// CERRAR MODAL
+// ==========================================
+
+if (cancelarCompra) {
+
+    cancelarCompra.addEventListener(
+        "click",
+        function () {
+
+            modalCompra.classList.remove(
+                "mostrar"
+            );
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// CONFIRMAR COMPRA
+// ==========================================
+
+if (confirmarCompra) {
+
+    confirmarCompra.addEventListener(
+        "click",
+        async function () {
+
+            try {
+
+                // Obtener todos los productos
+
+                const snapshot =
+                    await getDocs(
+                        listaRef
+                    );
+
+
+                // ==================================
+                // BORRAR TODOS LOS PRODUCTOS
+                // ==================================
+
+                const eliminaciones =
+                    [];
+
+
+                snapshot.forEach(
+                    function (documento) {
+
+                        eliminaciones.push(
+                            deleteDoc(
+                                documento.ref
+                            )
+                        );
+
+                    }
+                );
+
+
+                await Promise.all(
+                    eliminaciones
+                );
+
+
+                // ==================================
+                // CERRAR MODAL
+                // ==================================
+
+                modalCompra.classList.remove(
+                    "mostrar"
+                );
+
+
+                console.log(
+                    "Erosketa baieztatuta. Zerrenda ezabatuta."
+                );
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "Errorea zerrenda ezabatzean:",
+                    error
+                );
+
+            }
+
+        }
+    );
+
+}
