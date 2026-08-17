@@ -458,11 +458,13 @@ async function eliminarProducto(
 ) {
 
     const referencia =
-        doc(
-            db,
-            "listaCompra",
-            convertirId(producto)
-        );
+    doc(
+        db,
+        "familias",
+        FAMILIA_ID,
+        "listaCompra",
+        convertirId(producto)
+    );
 
 
     try {
