@@ -49,6 +49,7 @@ const firebaseConfig = {
     appId: "1:343672850288:web:771de65690748505b0b1b5"
 };
 
+
 console.log(
     "Firebase projectId:",
     firebaseConfig.projectId
@@ -149,7 +150,6 @@ const listaCompra = {};
 function mostrarLista() {
 
     miLista.innerHTML = "";
-
 
     for (
         const producto in listaCompra
@@ -624,6 +624,15 @@ onSnapshot(
 
         mostrarLista();
 
+    },
+
+    function (error) {
+
+        console.error(
+            "Error escuchando Firestore:",
+            error
+        );
+
     }
 );
 
@@ -656,8 +665,21 @@ loginGoogle.addEventListener(
 
 
             console.log(
-                "ID del usuario:",
+                "================================"
+            );
+
+            console.log(
+                "EMAIL:",
+                usuario.email
+            );
+
+            console.log(
+                "UID:",
                 usuario.uid
+            );
+
+            console.log(
+                "================================"
             );
 
         }
@@ -684,47 +706,33 @@ onAuthStateChanged(
 
     function (usuario) {
 
-        if (usuario) {
+        // ======================================
+        // USUARIO AUTENTICADO
+        // ======================================
 
-            // ==================================
-            // USUARIO AUTENTICADO
-            // ==================================
+        if (usuario) {
 
             console.log(
                 "Usuario autenticado:",
                 usuario.email
             );
-            if (usuario) {
-
-    console.log(
-        "Usuario autenticado:",
-        usuario.email
-    );
-
-    alert("UID: " + usuario.uid);
-
-    usuarioActual.textContent =
-        "Conectado como " +
-        usuario.email;
-
-    loginGoogle.textContent =
-        "Sesión iniciada";
-
-    loginGoogle.disabled =
-        true;
-
-}
 
 
             console.log(
-                "ID del usuario:",
+                "UID del usuario:",
                 usuario.uid
             );
 
 
-            usuarioActual.textContent =
+            // Mostrar correo y UID en pantalla
+
+            usuarioActual.innerHTML =
                 "Conectado como " +
-                usuario.email;
+                usuario.email +
+                "<br>" +
+                "<small>UID: " +
+                usuario.uid +
+                "</small>";
 
 
             loginGoogle.textContent =
@@ -736,11 +744,12 @@ onAuthStateChanged(
 
         }
 
-        else {
 
-            // ==================================
-            // NO HAY USUARIO
-            // ==================================
+        // ======================================
+        // NO HAY USUARIO
+        // ======================================
+
+        else {
 
             console.log(
                 "No hay usuario conectado"
