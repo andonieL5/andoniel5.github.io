@@ -30,16 +30,16 @@ import {
     collection,
     doc,
     deleteDoc,
+    getDocs,
     onSnapshot,
     runTransaction,
-    getDocs,
     writeBatch
 } from
     "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
 // ==========================================
-// CONFIGURACIÓN DE FIREBASE
+// CONFIGURACIÓN FIREBASE
 // ==========================================
 
 const firebaseConfig = {
@@ -61,6 +61,7 @@ const firebaseConfig = {
 
     appId:
         "1:343672850288:web:771de65690748505b0b1b5"
+
 };
 
 
@@ -85,7 +86,9 @@ console.log(
 // ==========================================
 
 const app =
-    initializeApp(firebaseConfig);
+    initializeApp(
+        firebaseConfig
+    );
 
 
 // ==========================================
@@ -93,7 +96,9 @@ const app =
 // ==========================================
 
 const auth =
-    getAuth(app);
+    getAuth(
+        app
+    );
 
 
 const proveedorGoogle =
@@ -105,7 +110,9 @@ const proveedorGoogle =
 // ==========================================
 
 const db =
-    getFirestore(app);
+    getFirestore(
+        app
+    );
 
 
 // ==========================================
@@ -133,9 +140,24 @@ const listaRef =
 // ELEMENTOS HTML
 // ==========================================
 
-const categoriasContainer =
-    document.getElementById(
-        "kategoriak"
+const categoriaBotones =
+    document.querySelectorAll(
+        ".kategoria-btn"
+    );
+
+const azpikategoriaBotones =
+    document.querySelectorAll(
+        ".azpikategoria-btn"
+    );
+
+const botonesAnadir =
+    document.querySelectorAll(
+        ".anadir"
+    );
+
+const botonesGramos =
+    document.querySelectorAll(
+        ".anadir-gramos"
     );
 
 const miLista =
@@ -153,12 +175,17 @@ const usuarioActual =
         "usuarioActual"
     );
 
+const konexioPuntua =
+    document.getElementById(
+        "konexioPuntua"
+    );
+
 const compraHecha =
     document.getElementById(
         "compraHecha"
     );
 
-const confirmModal =
+const modalConfirmacion =
     document.getElementById(
         "confirmModal"
     );
@@ -192,540 +219,42 @@ const listaCompra = {};
 
 
 // ==========================================
-// CATEGORÍAS Y PRODUCTOS
+// LISTENER FIRESTORE
 // ==========================================
 
-const kategorienDatuak = [
-
-    // ======================================
-    // DESPENTSA
-    // ======================================
-
-    {
-        id: "despentsa",
-
-        izena: "Despentsa",
-
-        emoji: "🗄️",
-
-        deskribapena:
-            "Oinarrizko elikagaiak",
-
-        taldeak: [
-
-            {
-                izena: "Pasta",
-
-                emoji: "🍝",
-
-                produktuak: [
-
-                    ["Espagetiak", "🍝"],
-                    ["Makarroiak", "🍝"],
-                    ["Fideoak", "🍜"],
-                    ["Tallarínak", "🍝"],
-                    ["Kuskusa", "🍚"]
-
-                ]
-            },
-
-            {
-                izena: "Galletak",
-
-                emoji: "🍪",
-
-                produktuak: [
-
-                    ["María Doradas", "🍪"],
-                    ["Príncipe", "🍪"],
-                    ["Galleta txigortuak", "🍪"],
-                    ["Chiquilín", "🍪"]
-
-                ]
-            },
-
-            {
-                izena: "Lekaleak",
-
-                emoji: "🫘",
-
-                produktuak: [
-
-                    ["Lentejak", "🫘"],
-                    ["Garbantzuak", "🫘"],
-                    ["Babarrunak", "🫘"]
-
-                ]
-            },
-
-            {
-                izena: "Kontserbak",
-
-                emoji: "🥫",
-
-                produktuak: [
-
-                    ["Atuna", "🐟"],
-                    ["Olibak", "🫒"],
-                    ["Piperrak", "🌶️"],
-                    ["Esparragoak", "🌱"],
-                    ["Tomate birrindua", "🍅"],
-                    ["Tomate frijitua", "🍅"]
-
-                ]
-            },
-
-            {
-                izena: "Olioak eta ozpinak",
-
-                emoji: "🫒",
-
-                produktuak: [
-
-                    ["Oliba-olioa", "🫒"],
-                    ["Ekilore-olioa", "🌻"],
-                    ["Mahats-ozpina", "🍇"]
-
-                ]
-            }
-
-        ],
-
-        produktuak: [
-
-            ["Arroza", "🍚"],
-            ["Irina", "🌾"],
-            ["Azukrea", "🧂"],
-            ["Gatza", "🧂"],
-            ["Ogia", "🍞"],
-            ["Ogi txigortua", "🍞"],
-            ["Nesquik", "🥛"],
-            ["ColaCao", "🥛"],
-            ["Eztia", "🍯"],
-            ["Marmelada", "🍓"],
-            ["Kakao-hautsa", "🍫"],
-            ["Arto-malutak", "🥣"],
-            ["Intxaurrak", "🥜"],
-            ["Almendrak", "🥜"],
-            ["Pistatxoak", "🥜"]
-
-        ]
-    },
-
-
-    // ======================================
-    // ESNEKIAK
-    // ======================================
-
-    {
-        id: "esnekiak",
-
-        izena: "Esnekiak",
-
-        emoji: "🥛",
-
-        deskribapena:
-            "Esnea eta esnekiak",
-
-        taldeak: [
-
-            {
-                izena: "Esnea",
-
-                emoji: "🥛",
-
-                produktuak: [
-
-                    ["Esne osoa", "🥛"],
-                    ["Esne erdigaingabetua", "🥛"]
-
-                ]
-            }
-
-        ],
-
-        produktuak: [
-
-            ["Jogurta", "🥛"],
-            ["Gazta", "🧀"],
-            ["Gurina", "🧈"],
-            ["Esnegaina", "🥛"],
-            ["Gazta freskoa", "🧀"],
-            ["Flanak", "🍮"]
-
-        ]
-    },
-
-
-    // ======================================
-    // FRUTAK ETA BARAZKIAK
-    // ======================================
-
-    {
-        id: "frutak-barazkiak",
-
-        izena: "Frutak eta barazkiak",
-
-        emoji: "🥬",
-
-        deskribapena:
-            "Freskoak eta sasoikoak",
-
-        taldeak: [
-
-            {
-                izena: "Frutak",
-
-                emoji: "🍎",
-
-                produktuak: [
-
-                    ["Sagarrak", "🍎"],
-                    ["Platanoak", "🍌"],
-                    ["Laranjak", "🍊"],
-                    ["Mandarinak", "🍊"],
-                    ["Marrubiak", "🍓"],
-                    ["Mahatsak", "🍇"],
-                    ["Udareak", "🍐"],
-                    ["Melokotoiak", "🍑"],
-                    ["Nektarinak", "🍑"],
-                    ["Kiwia", "🥝"],
-                    ["Anana", "🍍"],
-                    ["Meloia", "🍈"],
-                    ["Sandia", "🍉"],
-                    ["Ahabiak", "🫐"],
-                    ["Mugurdia", "🫐"],
-                    ["Limoiak", "🍋"]
-
-                ]
-            },
-
-            {
-                izena: "Barazkiak",
-
-                emoji: "🥕",
-
-                produktuak: [
-
-                    ["Tomateak", "🍅"],
-                    ["Letxuga", "🥬"],
-                    ["Azenarioak", "🥕"],
-                    ["Patatak", "🥔"],
-                    ["Tipulak", "🧅"],
-                    ["Baratxuria", "🧄"],
-                    ["Piperrak", "🫑"],
-                    ["Kalabazina", "🥒"],
-                    ["Pepinoa", "🥒"],
-                    ["Brokolia", "🥦"],
-                    ["Azalorea", "🥦"],
-                    ["Espinakak", "🌿"],
-                    ["Porruak", "🥬"],
-                    ["Perretxikoak", "🍄"],
-                    ["Berenjena", "🍆"],
-                    ["Kalabaza", "🎃"],
-                    ["Aguakatea", "🥑"]
-
-                ]
-            }
-
-        ]
-    },
-
-
-    // ======================================
-    // HARAGIA ETA ARRAINA
-    // ======================================
-
-    {
-        id: "haragia-arraina",
-
-        izena: "Haragia eta arraina",
-
-        emoji: "🥩",
-
-        deskribapena:
-            "Harategia eta arrandegia",
-
-        taldeak: [
-
-            {
-                izena: "Oilaskoa",
-
-                emoji: "🍗",
-
-                produktuak: [
-
-                    ["Oilasko-bularkiak", "🍗"],
-                    ["Oilasko-izterrak", "🍗"],
-                    ["Oilasko-hegoak", "🍗"],
-                    ["Oilasko osoa", "🍗"]
-
-                ]
-            },
-
-            {
-                izena: "Behi-haragia",
-
-                emoji: "🥩",
-
-                produktuak: [
-
-                    ["Behi-fileteak", "🥩"],
-                    ["Behi-txuletak", "🥩"],
-                    ["Haragi xehatua", "🥩", "gramoak"],
-                    ["Haragi gisatua", "🥩"]
-
-                ]
-            },
-
-            {
-                izena: "Txerria",
-
-                emoji: "🐖",
-
-                produktuak: [
-
-                    ["Txerri-fileteak", "🥩"],
-                    ["Solomoa", "🥩"],
-                    ["Txerri-saiheskiak", "🥩"],
-                    ["Urdaiazpikoa", "🥓"],
-                    ["Hirugiharra", "🥓"]
-
-                ]
-            },
-
-            {
-                izena: "Arraina",
-
-                emoji: "🐟",
-
-                produktuak: [
-
-                    ["Izokina", "🐟"],
-                    ["Legatza", "🐟"],
-                    ["Bakailaoa", "🐟"],
-                    ["Atuna", "🐟"],
-                    ["Sardina", "🐟"],
-                    ["Antxoak", "🐟"],
-                    ["Amuarraina", "🐟"],
-                    ["Arrain-xerra", "🐟"]
-
-                ]
-            }
-
-        ]
-    },
-
-
-    // ======================================
-    // IZOZTUAK
-    // ======================================
-
-    {
-        id: "izoztuak",
-
-        izena: "Izoztuak",
-
-        emoji: "❄️",
-
-        deskribapena:
-            "Izoztutako produktuak",
-
-        taldeak: [
-
-            {
-                izena: "Izozkiak",
-
-                emoji: "🍦",
-
-                produktuak: [
-
-                    ["Sandwich", "🍦"],
-                    ["Magnum", "🍦"]
-
-                ]
-            }
-
-        ],
-
-        produktuak: [
-
-            ["Pizza", "🍕"],
-            ["Patata frijituak", "🍟"],
-            ["Barazki izoztuak", "🥦"],
-            ["Arrain-makilatxoak", "🐟"],
-            ["Ilar izoztuak", "🫛"],
-            ["Kroketak", "🥟"],
-            ["Hanburgesak", "🍔"]
-
-        ]
-    },
-
-
-    // ======================================
-    // EDARIAK
-    // ======================================
-
-    {
-        id: "edariak",
-
-        izena: "Edariak",
-
-        emoji: "🥤",
-
-        deskribapena:
-            "Edari hotzak eta beroak",
-
-        taldeak: [
-
-            {
-                izena: "Freskagarriak",
-
-                emoji: "🥤",
-
-                produktuak: [
-
-                    ["Coca-Cola", "🥤"],
-                    ["Coca-Cola Zero", "🥤"],
-                    ["Fanta", "🥤"],
-                    ["Fanta Laranja", "🥤"],
-                    ["Fanta Limoi", "🥤"],
-                    ["Sprite", "🥤"],
-                    ["Aquarius", "🥤"],
-                    ["Nestea", "🧋"]
-
-                ]
-            },
-
-            {
-                izena: "Kafea eta tea",
-
-                emoji: "☕",
-
-                produktuak: [
-
-                    ["Kafea", "☕"],
-                    ["Tea", "🍵"],
-                    ["Infusioak", "🍵"]
-
-                ]
-            }
-
-        ],
-
-        produktuak: [
-
-            ["Ura", "💧"],
-            ["Esnea", "🥛"],
-            ["Zukua", "🧃"],
-            ["Laranja-zukua", "🍊"]
-
-        ]
-    },
-
-
-    // ======================================
-    // GARBIKETA
-    // ======================================
-
-    {
-        id: "garbiketa",
-
-        izena: "Garbiketa",
-
-        emoji: "🧽",
-
-        deskribapena:
-            "Etxea garbi mantentzeko",
-
-        taldeak: [
-
-            {
-                izena: "Arropa garbitzea",
-
-                emoji: "👕",
-
-                produktuak: [
-
-                    ["Garbigarria", "🧴"],
-                    ["Oihal-leungarria", "🧴"],
-                    ["Orban-kentzailea", "🧴"]
-
-                ]
-            },
-
-            {
-                izena: "Sukaldea",
-
-                emoji: "🍽️",
-
-                produktuak: [
-
-                    ["Ontzi-garbigarria", "🧴"],
-                    ["Ontzi-garbigailurako pilulak", "🧼"],
-                    ["Koipe-kentzailea", "🧴"],
-                    ["Sukaldeko paperak", "🧻"],
-                    ["Esponjak", "🧽"]
-
-                ]
-            },
-
-            {
-                izena: "Komuna",
-
-                emoji: "🚽",
-
-                produktuak: [
-
-                    ["Komun-garbigarria", "🧴"],
-                    ["Bainugelako garbigarria", "🧴"],
-                    ["Komuneko pastillak", "🧼"]
-
-                ]
-            }
-
-        ],
-
-        produktuak: [
-
-            ["Lixiba", "🧴"],
-            ["Garbitzaile orokorra", "🧴"],
-            ["Beira-garbigarria", "🪟"],
-            ["Zabor-poltsak", "🗑️"],
-            ["Komuneko papera", "🧻"],
-            ["Paperezko zapiak", "🧻"],
-            ["Aluminio-papera", "📦"],
-            ["Plastikozko filma", "📦"],
-            ["Eskularruak", "🧤"]
-
-        ]
-    }
-
-];
+let unsubscribeLista =
+    null;
 
 
 // ==========================================
-// CATEGORÍAS ABIERTAS
+// NORMALIZAR ID
 // ==========================================
 
-const kategoriaIrekiak = {};
-
-const azpitaldeIrekiak = {};
-
-
-// ==========================================
-// ID DEL PRODUCTO
-// ==========================================
-
-function convertirId(producto) {
+function convertirId(
+    producto
+) {
 
     return producto
         .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/ñ/g, "n")
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-|-$/g, "");
+        .normalize(
+            "NFD"
+        )
+        .replace(
+            /[\u0300-\u036f]/g,
+            ""
+        )
+        .replace(
+            /ñ/g,
+            "n"
+        )
+        .replace(
+            /[^a-z0-9]+/g,
+            "-"
+        )
+        .replace(
+            /^-+|-+$/g,
+            ""
+        );
 
 }
 
@@ -734,370 +263,133 @@ function convertirId(producto) {
 // REFERENCIA PRODUCTO
 // ==========================================
 
-function productoRef(producto) {
+function productoRef(
+    producto
+) {
 
     return doc(
         db,
         "familias",
         FAMILIA_ID,
         "listaCompra",
-        convertirId(producto)
+        convertirId(
+            producto
+        )
     );
 
 }
 
 
 // ==========================================
-// CREAR CATEGORÍAS
+// CATEGORIAS PRINCIPALES
 // ==========================================
 
-function renderizarKategorias() {
+categoriaBotones.forEach(
+    function (boton) {
 
-    categoriasContainer.innerHTML = "";
+        boton.addEventListener(
+            "click",
+            function () {
 
-    kategorienDatuak.forEach(
-        (categoria) => {
+                const kategoria =
+                    boton.parentElement;
 
-            const categoriaDiv =
-                document.createElement("div");
-
-            categoriaDiv.className =
-                "kategoria";
-
-            if (
-                kategoriaIrekiak[
-                    categoria.id
-                ]
-            ) {
-
-                categoriaDiv.classList.add(
-                    "kategoria-zabalik"
+                kategoria.classList.toggle(
+                    "zabalik"
                 );
 
             }
+        );
 
-
-            // ==================================
-            // BOTÓN PRINCIPAL
-            // ==================================
-
-            const boton =
-                document.createElement("button");
-
-            boton.className =
-                "kategoria-botoia";
-
-            boton.innerHTML = `
-
-                <span class="kategoria-emoji">
-                    ${categoria.emoji}
-                </span>
-
-                <span class="kategoria-info">
-
-                    <span class="kategoria-izena">
-                        ${categoria.izena}
-                    </span>
-
-                    <span class="kategoria-deskribapena">
-                        ${categoria.deskribapena}
-                    </span>
-
-                </span>
-
-                <span class="gezia">
-                   ⌄
-                </span>
-
-            `;
-
-
-            boton.addEventListener(
-                "click",
-                () => {
-
-                    kategoriaIrekiak[
-                        categoria.id
-                    ] =
-                        !kategoriaIrekiak[
-                            categoria.id
-                        ];
-
-                    renderizarKategorias();
-
-                }
-            );
-
-
-            categoriaDiv.appendChild(
-                boton
-            );
-
-
-            // ==================================
-            // CONTENIDO
-            // ==================================
-
-            const contenido =
-                document.createElement("div");
-
-            contenido.className =
-                "kategoria-edukia";
-
-
-            // ==================================
-            // SUBGRUPOS
-            // ==================================
-
-            if (categoria.taldeak) {
-
-                categoria.taldeak.forEach(
-                    (taldea, index) => {
-
-                        const taldeId =
-                            categoria.id +
-                            "-" +
-                            index;
-
-
-                        const taldeDiv =
-                            document.createElement("div");
-
-                        taldeDiv.className =
-                            "azpitaldea";
-
-
-                        if (
-                            azpitaldeIrekiak[
-                                taldeId
-                            ]
-                        ) {
-
-                            taldeDiv.classList.add(
-                                "azpitalde-zabalik"
-                            );
-
-                        }
-
-
-                        const taldeBotoia =
-                            document.createElement("button");
-
-                        taldeBotoia.className =
-                            "azpitalde-botoia";
-
-                        taldeBotoia.innerHTML = `
-
-                            <span class="azpitalde-emoji">
-                                ${taldea.emoji}
-                            </span>
-
-                            <span class="azpitalde-izena">
-                                ${taldea.izena}
-                            </span>
-
-                            <span class="azpitalde-gezi">
-                                ⌄
-                            </span>
-
-                        `;
-
-
-                        taldeBotoia.addEventListener(
-                            "click",
-                            () => {
-
-                                azpitaldeIrekiak[
-                                    taldeId
-                                ] =
-                                    !azpitaldeIrekiak[
-                                        taldeId
-                                    ];
-
-                                renderizarKategorias();
-
-                            }
-                        );
-
-
-                        taldeDiv.appendChild(
-                            taldeBotoia
-                        );
-
-
-                        const taldeEdukia =
-                            document.createElement("div");
-
-                        taldeEdukia.className =
-                            "azpitalde-edukia";
-
-
-                        const produktuak =
-                            document.createElement("div");
-
-                        produktuak.className =
-                            "produktuak";
-
-
-                        taldearenProduktuak(
-                            produktuak,
-                            taldea.produktuak
-                        );
-
-
-                        taldeEdukia.appendChild(
-                            produktuak
-                        );
-
-                        taldeDiv.appendChild(
-                            taldeEdukia
-                        );
-
-                        contenido.appendChild(
-                            taldeDiv
-                        );
-
-                    }
-                );
-
-            }
-
-
-            // ==================================
-            // PRODUKTOS DIRECTOS
-            // ==================================
-
-            if (categoria.produktuak) {
-
-                const produktuak =
-                    document.createElement("div");
-
-                produktuak.className =
-                    "produktuak";
-
-
-                taldearenProduktuak(
-                    produktuak,
-                    categoria.produktuak
-                );
-
-
-                contenido.appendChild(
-                    produktuak
-                );
-
-            }
-
-
-            categoriaDiv.appendChild(
-                contenido
-            );
-
-
-            categoriasContainer.appendChild(
-                categoriaDiv
-            );
-
-        }
-    );
-
-}
+    }
+);
 
 
 // ==========================================
-// RENDER PRODUCTOS
+// AZPITALDEAK
 // ==========================================
 
-function taldearenProduktuak(
-    container,
-    produktuak
-) {
+azpikategoriaBotones.forEach(
+    function (boton) {
 
-    produktuak.forEach(
-        (produktua) => {
+        boton.addEventListener(
+            "click",
+            function () {
 
-            const izena =
-                produktua[0];
+                const azpikategoria =
+                    boton.parentElement;
 
-            const emoji =
-                produktua[1];
-
-            const mota =
-                produktua[2];
-
-
-            const botoia =
-                document.createElement("button");
-
-            botoia.className =
-                "produktu-botoia";
-
-
-            if (mota === "gramoak") {
-
-                botoia.innerHTML = `
-
-                    <span class="produktu-emoji">
-                        ${emoji}
-                    </span>
-
-                    <span class="produktu-izena">
-                        ${izena}
-                    </span>
-
-                    <span
-                        class="produktu-gramoak"
-                    >
-                        +250 g
-                    </span>
-
-                `;
+                azpikategoria.classList.toggle(
+                    "zabalik"
+                );
 
             }
+        );
 
-            else {
+    }
+);
 
-                botoia.innerHTML = `
 
-                    <span class="produktu-emoji">
-                        ${emoji}
-                    </span>
+// ==========================================
+// AÑADIR PRODUCTOS
+// ==========================================
 
-                    <span class="produktu-izena">
-                        ${izena}
-                    </span>
+botonesAnadir.forEach(
+    function (boton) {
 
-                    <span class="produktu-plus">
-                        +
-                    </span>
+        boton.addEventListener(
+            "click",
+            function () {
 
-                `;
+                const producto =
+                    boton.dataset.producto;
+
+                const emoji =
+                    boton.dataset.emoji;
+
+
+                añadirProducto(
+                    producto,
+                    emoji,
+                    false
+                );
 
             }
+        );
+
+    }
+);
 
 
-            botoia.addEventListener(
-                "click",
-                () => {
+// ==========================================
+// AÑADIR PRODUCTOS POR GRAMOS
+// ==========================================
 
-                    añadirProducto(
-                        izena,
-                        emoji,
-                        mota
-                    );
+botonesGramos.forEach(
+    function (boton) {
 
-                }
-            );
+        boton.addEventListener(
+            "click",
+            function () {
+
+                const producto =
+                    boton.dataset.producto;
+
+                const emoji =
+                    boton.dataset.emoji;
 
 
-            container.appendChild(
-                botoia
-            );
+                añadirProducto(
+                    producto,
+                    emoji,
+                    true
+                );
 
-        }
-    );
+            }
+        );
 
-}
+    }
+);
 
 
 // ==========================================
@@ -1107,18 +399,22 @@ function taldearenProduktuak(
 async function añadirProducto(
     producto,
     emoji,
-    mota = null
+    esPorGramos
 ) {
 
     const referencia =
-        productoRef(producto);
+        productoRef(
+            producto
+        );
 
 
     try {
 
         await runTransaction(
             db,
-            async (transaction) => {
+            async function (
+                transaction
+            ) {
 
                 const documento =
                     await transaction.get(
@@ -1127,7 +423,7 @@ async function añadirProducto(
 
 
                 // ==================================
-                // NUEVO
+                // NUEVO PRODUCTO
                 // ==================================
 
                 if (
@@ -1145,58 +441,68 @@ async function añadirProducto(
                                 emoji,
 
                             cantidad:
-                                mota === "gramoak"
+                                esPorGramos
                                     ? 250
                                     : 1,
 
                             unidad:
-                                mota === "gramoak"
+                                esPorGramos
                                     ? "g"
                                     : "unidad"
 
                         }
                     );
 
+
+                    return;
+
                 }
 
 
                 // ==================================
-                // EXISTENTE
+                // PRODUCTO EXISTENTE
                 // ==================================
 
-                else {
-
-                    const datos =
-                        documento.data();
-
-                    const incremento =
-                        datos.unidad === "g"
-                            ? 250
-                            : 1;
+                const datos =
+                    documento.data();
 
 
-                    transaction.update(
-                        referencia,
-                        {
+                const unidad =
+                    datos.unidad ||
+                    "unidad";
 
-                            cantidad:
-                                (
-                                    Number(
-                                        datos.cantidad
-                                    ) || 0
-                                ) + incremento
 
-                        }
-                    );
+                const incremento =
+                    unidad === "g"
+                        ? 250
+                        : 1;
 
-                }
+
+                const cantidadActual =
+                    Number(
+                        datos.cantidad
+                    ) || 0;
+
+
+                transaction.update(
+                    referencia,
+                    {
+
+                        cantidad:
+                            cantidadActual +
+                            incremento
+
+                    }
+                );
 
             }
         );
 
     }
 
-    catch (error) {
+    catch (
+        error
+    ) {
 
         console.error(
             "Error al añadir producto:",
@@ -1218,14 +524,18 @@ async function cambiarCantidad(
 ) {
 
     const referencia =
-        productoRef(producto);
+        productoRef(
+            producto
+        );
 
 
     try {
 
         await runTransaction(
             db,
-            async (transaction) => {
+            async function (
+                transaction
+            ) {
 
                 const documento =
                     await transaction.get(
@@ -1246,23 +556,34 @@ async function cambiarCantidad(
                     documento.data();
 
 
+                const unidad =
+                    datos.unidad ||
+                    "unidad";
+
+
                 const incremento =
-                    datos.unidad === "g"
+                    unidad === "g"
                         ? 250
                         : 1;
 
 
+                const cantidadActual =
+                    Number(
+                        datos.cantidad
+                    ) || 0;
+
+
                 const nuevaCantidad =
-                    (
-                        Number(
-                            datos.cantidad
-                        ) || 0
-                    ) +
+                    cantidadActual +
                     (
                         incremento *
                         cambio
                     );
 
+
+                // ==================================
+                // SI LLEGA A CERO
+                // ==================================
 
                 if (
                     nuevaCantidad <= 0
@@ -1272,28 +593,29 @@ async function cambiarCantidad(
                         referencia
                     );
 
-                }
-
-                else {
-
-                    transaction.update(
-                        referencia,
-                        {
-
-                            cantidad:
-                                nuevaCantidad
-
-                        }
-                    );
+                    return;
 
                 }
+
+
+                transaction.update(
+                    referencia,
+                    {
+
+                        cantidad:
+                            nuevaCantidad
+
+                    }
+                );
 
             }
         );
 
     }
 
-    catch (error) {
+    catch (
+        error
+    ) {
 
         console.error(
             "Error cambiando cantidad:",
@@ -1316,12 +638,16 @@ async function eliminarProducto(
     try {
 
         await deleteDoc(
-            productoRef(producto)
+            productoRef(
+                producto
+            )
         );
 
     }
 
-    catch (error) {
+    catch (
+        error
+    ) {
 
         console.error(
             "Error eliminando producto:",
@@ -1329,6 +655,331 @@ async function eliminarProducto(
         );
 
     }
+
+}
+
+
+// ==========================================
+// ORDEN DE LAS SECCIONES
+// ==========================================
+
+const ordenSecciones = {
+
+    "DESPENTSA":
+        1,
+
+    "ESNEKIAK":
+        2,
+
+    "FRUTAK ETA BARAZKIAK":
+        3,
+
+    "HARAGIA ETA ARRAINA":
+        4,
+
+    "IZOZTUA":
+        5,
+
+    "EDARIAK":
+        6,
+
+    "GARBIKETA":
+        7,
+
+    "BESTELAKOAK":
+        99
+
+};
+
+
+// ==========================================
+// CATEGORIA DEL PRODUCTO
+// ==========================================
+
+function obtenerSeccion(
+    producto
+) {
+
+    const nombre =
+        producto.toLowerCase();
+
+
+    // ==================================
+    // DESPENTSA
+    // ==================================
+
+    const despentsa = [
+
+        "espagetiak",
+        "makarroiak",
+        "fideoak",
+        "tallarinak",
+        "maria doradas",
+        "principe",
+        "tostadas",
+        "chiquilin",
+        "lentejak",
+        "garbantzuak",
+        "babarrunak",
+        "atuna",
+        "olibak",
+        "piperrak",
+        "esparragoak",
+        "tomate birrindua",
+        "tomate frijitua",
+        "oliba-olioa",
+        "ekilore-olioa",
+        "mahats-ozpina",
+        "arroza",
+        "nesquik",
+        "colacao"
+
+    ];
+
+
+    if (
+        despentsa
+            .some(
+                item =>
+                    nombre.includes(
+                        item
+                    )
+            )
+    ) {
+
+        return "DESPENTSA";
+
+    }
+
+
+    // ==================================
+    // ESNEKIAK
+    // ==================================
+
+    const esnekiak = [
+
+        "esne osoa",
+        "esne erdigaingabetua",
+        "jogurta",
+        "gazta",
+        "gurina",
+        "esnegaina",
+        "flana",
+        "natillak"
+
+    ];
+
+
+    if (
+        esnekiak
+            .some(
+                item =>
+                    nombre.includes(
+                        item
+                    )
+            )
+    ) {
+
+        return "ESNEKIAK";
+
+    }
+
+
+    // ==================================
+    // FRUTA ETA BARAZKIAK
+    // ==================================
+
+    const frutakBarazkiak = [
+
+        "sagarrak",
+        "platanoak",
+        "laranjak",
+        "mandarinak",
+        "udareak",
+        "marrubiak",
+        "mahatsak",
+        "melokotoiak",
+        "kiwia",
+        "anana",
+        "sandia",
+        "meloia",
+        "limoiak",
+        "tomateak",
+        "aguakateak",
+        "letxuga",
+        "azenarioak",
+        "patatak",
+        "tipulak",
+        "baratxuria",
+        "piperrak frescoa",
+        "kalabazina",
+        "pepinoa",
+        "brokolia",
+        "azalorea",
+        "espinakak",
+        "perretxikoak",
+        "berenjena",
+        "porruak"
+
+    ];
+
+
+    if (
+        frutakBarazkiak
+            .some(
+                item =>
+                    nombre.includes(
+                        item
+                    )
+            )
+    ) {
+
+        return "FRUTAK ETA BARAZKIAK";
+
+    }
+
+
+    // ==================================
+    // HARAGIA ETA ARRAINA
+    // ==================================
+
+    const haragiaArraina = [
+
+        "oilasko",
+        "behi-",
+        "haragi xehatua",
+        "haragi gisatua",
+        "txerri-",
+        "solomoa",
+        "hirugiharra",
+        "izokina",
+        "legatza",
+        "bakailaoa",
+        "atuna freskoa",
+        "sardina",
+        "antxoak"
+
+    ];
+
+
+    if (
+        haragiaArraina
+            .some(
+                item =>
+                    nombre.includes(
+                        item
+                    )
+            )
+    ) {
+
+        return "HARAGIA ETA ARRAINA";
+
+    }
+
+
+    // ==================================
+    // IZOZTUA
+    // ==================================
+
+    const izoztuak = [
+
+        "sandwich",
+        "magnum",
+        "pizza"
+
+    ];
+
+
+    if (
+        izoztuak
+            .some(
+                item =>
+                    nombre.includes(
+                        item
+                    )
+            )
+    ) {
+
+        return "IZOZTUA";
+
+    }
+
+
+    // ==================================
+    // EDARIAK
+    // ==================================
+
+    const edariak = [
+
+        "coca-cola",
+        "fanta",
+        "sprite",
+        "aquarius",
+        "nestea",
+        "kafea",
+        "tea",
+        "ura",
+        "zukua"
+
+    ];
+
+
+    if (
+        edariak
+            .some(
+                item =>
+                    nombre.includes(
+                        item
+                    )
+            )
+    ) {
+
+        return "EDARIAK";
+
+    }
+
+
+    // ==================================
+    // GARBIKETA
+    // ==================================
+
+    const garbiketa = [
+
+        "garbigarria",
+        "oihal-leungarria",
+        "orban-kentzailea",
+        "ontzi-garbigarria",
+        "ontzi-garbigailurako",
+        "koipe-kentzailea",
+        "sukaldeko papera",
+        "esponjak",
+        "komun-garbigarria",
+        "bainugelako",
+        "lixiba",
+        "garbitzaile",
+        "beira-garbigarria",
+        "zabor-poltsak",
+        "komuneko papera"
+
+    ];
+
+
+    if (
+        garbiketa
+            .some(
+                item =>
+                    nombre.includes(
+                        item
+                    )
+            )
+    ) {
+
+        return "GARBIKETA";
+
+    }
+
+
+    return "BESTELAKOAK";
 
 }
 
@@ -1349,7 +1000,47 @@ function mostrarLista() {
 
 
     // ======================================
-    // LISTA VACÍA
+    // CONTADOR
+    // ======================================
+
+    const totalUnidades =
+        productos.reduce(
+            function (
+                total,
+                producto
+            ) {
+
+                if (
+                    producto.unidad === "g"
+                ) {
+
+                    return total;
+
+                }
+
+
+                return total +
+                    (
+                        Number(
+                            producto.cantidad
+                        ) || 0
+                    );
+
+            },
+            0
+        );
+
+
+    const totalProductos =
+        productos.length;
+
+
+    produktuKopurua.textContent =
+        totalProductos;
+
+
+    // ======================================
+    // VACÍA
     // ======================================
 
     if (
@@ -1358,9 +1049,6 @@ function mostrarLista() {
 
         zerrendaHutsa.style.display =
             "block";
-
-        produktuKopurua.textContent =
-            "0";
 
         return;
 
@@ -1371,235 +1059,317 @@ function mostrarLista() {
         "none";
 
 
-    produktuKopurua.textContent =
-        productos.length;
-
-
     // ======================================
-    // ORDENAR
+    // AGRUPAR
     // ======================================
 
-    productos.sort(
-        (a, b) =>
-            a.nombre.localeCompare(
-                b.nombre,
-                "eu"
-            )
+    const grupos = {};
+
+
+    productos.forEach(
+        function (
+            producto
+        ) {
+
+            const seccion =
+                obtenerSeccion(
+                    producto.nombre
+                );
+
+
+            if (
+                !grupos[seccion]
+            ) {
+
+                grupos[seccion] =
+                    [];
+
+            }
+
+
+            grupos[seccion].push(
+                producto
+            );
+
+        }
     );
 
 
     // ======================================
-    // CREAR ELEMENTOS
+    // SECCIONES ORDENADAS
     // ======================================
 
-    productos.forEach(
-        (informacion) => {
+    Object.keys(
+        grupos
+    )
+    .sort(
+        function (
+            a,
+            b
+        ) {
 
-            const producto =
-                informacion.nombre;
-
-
-            const li =
-                document.createElement("div");
-
-            li.className =
-                "lista-produktua";
-
-
-            // ==================================
-            // EMOJI
-            // ==================================
-
-            const emoji =
-                document.createElement("span");
-
-            emoji.className =
-                "lista-emoji";
-
-            emoji.textContent =
-                informacion.emoji;
-
-
-            // ==================================
-            // INFO
-            // ==================================
-
-            const info =
-                document.createElement("div");
-
-            info.className =
-                "lista-info";
-
-
-            const nombre =
-                document.createElement("span");
-
-            nombre.className =
-                "lista-izena";
-
-            nombre.textContent =
-                producto;
-
-
-            const categoria =
-                document.createElement("span");
-
-            categoria.className =
-                "lista-kategoria";
-
-            categoria.textContent =
-                "Erosketa zerrenda";
-
-
-            info.appendChild(
-                nombre
+            return (
+                ordenSecciones[a] ||
+                99
+            ) -
+            (
+                ordenSecciones[b] ||
+                99
             );
 
-            info.appendChild(
-                categoria
+        }
+    )
+    .forEach(
+        function (
+            seccion
+        ) {
+
+            const contenedor =
+                document.createElement(
+                    "div"
+                );
+
+            contenedor.className =
+                "lista-sekzioa";
+
+
+            const titulo =
+                document.createElement(
+                    "div"
+                );
+
+            titulo.className =
+                "lista-sekzioa-tituloa";
+
+            titulo.textContent =
+                seccion;
+
+
+            contenedor.appendChild(
+                titulo
             );
 
 
             // ==================================
-            // MENOS
+            // PRODUCTOS
             // ==================================
 
-            const botonMenos =
-                document.createElement("button");
+            grupos[seccion].forEach(
+                function (
+                    producto
+                ) {
 
-            botonMenos.className =
-                "lista-kontrola";
+                    const fila =
+                        document.createElement(
+                            "div"
+                        );
 
-            botonMenos.textContent =
-                "−";
+                    fila.className =
+                        "lista-produktua";
 
 
-            botonMenos.addEventListener(
-                "click",
-                () => {
+                    // =================================
+                    // EMOJI
+                    // =================================
 
-                    cambiarCantidad(
-                        producto,
-                        -1
+                    const emoji =
+                        document.createElement(
+                            "span"
+                        );
+
+                    emoji.className =
+                        "lista-emoji";
+
+                    emoji.textContent =
+                        producto.emoji;
+
+
+                    // =================================
+                    // INFO
+                    // =================================
+
+                    const info =
+                        document.createElement(
+                            "div"
+                        );
+
+                    info.className =
+                        "lista-info";
+
+
+                    const nombre =
+                        document.createElement(
+                            "span"
+                        );
+
+                    nombre.className =
+                        "lista-izena";
+
+                    nombre.textContent =
+                        producto.nombre;
+
+
+                    info.appendChild(
+                        nombre
+                    );
+
+
+                    // =================================
+                    // MENOS
+                    // =================================
+
+                    const menos =
+                        document.createElement(
+                            "button"
+                        );
+
+                    menos.className =
+                        "lista-kontrola";
+
+                    menos.textContent =
+                        "−";
+
+
+                    menos.addEventListener(
+                        "click",
+                        function () {
+
+                            cambiarCantidad(
+                                producto.nombre,
+                                -1
+                            );
+
+                        }
+                    );
+
+
+                    // =================================
+                    // CANTIDAD
+                    // =================================
+
+                    const cantidad =
+                        document.createElement(
+                            "span"
+                        );
+
+                    cantidad.className =
+                        "lista-kantitatea";
+
+
+                    if (
+                        producto.unidad === "g"
+                    ) {
+
+                        cantidad.textContent =
+                            producto.cantidad +
+                            " g";
+
+                    }
+
+                    else {
+
+                        cantidad.textContent =
+                            producto.cantidad;
+
+                    }
+
+
+                    // =================================
+                    // MÁS
+                    // =================================
+
+                    const mas =
+                        document.createElement(
+                            "button"
+                        );
+
+                    mas.className =
+                        "lista-kontrola";
+
+                    mas.textContent =
+                        "+";
+
+
+                    mas.addEventListener(
+                        "click",
+                        function () {
+
+                            cambiarCantidad(
+                                producto.nombre,
+                                1
+                            );
+
+                        }
+                    );
+
+
+                    // =================================
+                    // ELIMINAR
+                    // =================================
+
+                    const eliminar =
+                        document.createElement(
+                            "button"
+                        );
+
+                    eliminar.className =
+                        "lista-ezabatu";
+
+                    eliminar.textContent =
+                        "Ezabatu";
+
+
+                    eliminar.addEventListener(
+                        "click",
+                        function () {
+
+                            eliminarProducto(
+                                producto.nombre
+                            );
+
+                        }
+                    );
+
+
+                    // =================================
+                    // CONSTRUIR
+                    // =================================
+
+                    fila.appendChild(
+                        emoji
+                    );
+
+                    fila.appendChild(
+                        info
+                    );
+
+                    fila.appendChild(
+                        menos
+                    );
+
+                    fila.appendChild(
+                        cantidad
+                    );
+
+                    fila.appendChild(
+                        mas
+                    );
+
+                    fila.appendChild(
+                        eliminar
+                    );
+
+
+                    contenedor.appendChild(
+                        fila
                     );
 
                 }
-            );
-
-
-            // ==================================
-            // CANTIDAD
-            // ==================================
-
-            const cantidad =
-                document.createElement("span");
-
-            cantidad.className =
-                "lista-kantitatea";
-
-
-            if (
-                informacion.unidad === "g"
-            ) {
-
-                cantidad.textContent =
-                    informacion.cantidad +
-                    " g";
-
-            }
-
-            else {
-
-                cantidad.textContent =
-                    informacion.cantidad;
-
-            }
-
-
-            // ==================================
-            // MÁS
-            // ==================================
-
-            const botonMas =
-                document.createElement("button");
-
-            botonMas.className =
-                "lista-kontrola";
-
-            botonMas.textContent =
-                "+";
-
-
-            botonMas.addEventListener(
-                "click",
-                () => {
-
-                    cambiarCantidad(
-                        producto,
-                        1
-                    );
-
-                }
-            );
-
-
-            // ==================================
-            // ELIMINAR
-            // ==================================
-
-            const botonEliminar =
-                document.createElement("button");
-
-            botonEliminar.className =
-                "lista-ezabatu";
-
-            botonEliminar.textContent =
-                "Ezabatu";
-
-
-            botonEliminar.addEventListener(
-                "click",
-                () => {
-
-                    eliminarProducto(
-                        producto
-                    );
-
-                }
-            );
-
-
-            // ==================================
-            // CONSTRUIR
-            // ==================================
-
-            li.appendChild(
-                emoji
-            );
-
-            li.appendChild(
-                info
-            );
-
-            li.appendChild(
-                botonMenos
-            );
-
-            li.appendChild(
-                cantidad
-            );
-
-            li.appendChild(
-                botonMas
-            );
-
-            li.appendChild(
-                botonEliminar
             );
 
 
             miLista.appendChild(
-                li
+                contenedor
             );
 
         }
@@ -1609,14 +1379,10 @@ function mostrarLista() {
 
 
 // ==========================================
-// FIRESTORE EN TIEMPO REAL
+// ESCUCHAR FIRESTORE
 // ==========================================
 
-let unsubscribeLista =
-    null;
-
-
-function escucharLista() {
+function iniciarListenerFirestore() {
 
     if (
         unsubscribeLista
@@ -1634,25 +1400,33 @@ function escucharLista() {
         onSnapshot(
             listaRef,
 
-            (snapshot) => {
+            function (
+                snapshot
+            ) {
 
-                // Limpiar lista
+                // Limpiar
 
                 Object.keys(
                     listaCompra
                 ).forEach(
-                    (key) => {
+                    function (
+                        key
+                    ) {
 
-                        delete listaCompra[key];
+                        delete listaCompra[
+                            key
+                        ];
 
                     }
                 );
 
 
-                // Cargar datos
+                // Cargar
 
                 snapshot.forEach(
-                    (documento) => {
+                    function (
+                        documento
+                    ) {
 
                         const datos =
                             documento.data();
@@ -1687,7 +1461,9 @@ function escucharLista() {
 
             },
 
-            (error) => {
+            function (
+                error
+            ) {
 
                 console.error(
                     "Errorea zerrenda kargatzean:",
@@ -1701,18 +1477,17 @@ function escucharLista() {
 
 
 // ==========================================
-// LOGIN GOOGLE
+// LOGIN
 // ==========================================
 
 loginGoogle.addEventListener(
     "click",
-    async () => {
+    async function () {
 
         try {
 
             loginGoogle.disabled =
                 true;
-
 
             loginGoogle.textContent =
                 "Saioa hasten...";
@@ -1725,24 +1500,17 @@ loginGoogle.addEventListener(
                 );
 
 
-            const usuario =
-                resultado.user;
-
-
             console.log(
-                "Usuario conectado:",
-                usuario
+                "Google bidez saioa hasita:",
+                resultado.user.email
             );
 
-
-            console.log(
-                "ID del usuario:",
-                usuario.uid
-            );
 
         }
 
-        catch (error) {
+        catch (
+            error
+        ) {
 
             console.error(
                 "Errorea saioa hastean:",
@@ -1763,13 +1531,15 @@ loginGoogle.addEventListener(
 
 
 // ==========================================
-// ESTADO DE AUTENTICACIÓN
+// AUTH STATE
 // ==========================================
 
 onAuthStateChanged(
     auth,
 
-    (usuario) => {
+    function (
+        usuario
+    ) {
 
         if (
             usuario
@@ -1787,9 +1557,9 @@ onAuthStateChanged(
             );
 
 
-            // ==============================
-            // ESTADO CONECTADO
-            // ==============================
+            // ==================================
+            // USUARIO
+            // ==================================
 
             usuarioActual.textContent =
                 "Konektatuta: " +
@@ -1801,19 +1571,24 @@ onAuthStateChanged(
             );
 
 
+            konexioPuntua.classList.add(
+                "konektatuta"
+            );
+
+
             loginGoogle.textContent =
-                "Saioa hasita";
+                "Saioa hasita ✓";
 
 
             loginGoogle.disabled =
                 true;
 
 
-            // ==============================
+            // ==================================
             // FIRESTORE
-            // ==============================
+            // ==================================
 
-            escucharLista();
+            iniciarListenerFirestore();
 
         }
 
@@ -1829,6 +1604,11 @@ onAuthStateChanged(
 
 
             usuarioActual.classList.remove(
+                "konektatuta"
+            );
+
+
+            konexioPuntua.classList.remove(
                 "konektatuta"
             );
 
@@ -1853,14 +1633,16 @@ onAuthStateChanged(
             }
 
 
-            // Limpiar lista
-
             Object.keys(
                 listaCompra
             ).forEach(
-                (key) => {
+                function (
+                    key
+                ) {
 
-                    delete listaCompra[key];
+                    delete listaCompra[
+                        key
+                    ];
 
                 }
             );
@@ -1880,7 +1662,7 @@ onAuthStateChanged(
 
 compraHecha.addEventListener(
     "click",
-    () => {
+    function () {
 
         if (
             Object.keys(
@@ -1893,7 +1675,7 @@ compraHecha.addEventListener(
         }
 
 
-        confirmModal.classList.add(
+        modalConfirmacion.classList.add(
             "zabalik"
         );
 
@@ -1902,14 +1684,14 @@ compraHecha.addEventListener(
 
 
 // ==========================================
-// CANCELAR
+// MODAL EZ
 // ==========================================
 
 modalEz.addEventListener(
     "click",
-    () => {
+    function () {
 
-        confirmModal.classList.remove(
+        modalConfirmacion.classList.remove(
             "zabalik"
         );
 
@@ -1918,12 +1700,12 @@ modalEz.addEventListener(
 
 
 // ==========================================
-// CONFIRMAR EROSKETA
+// MODAL BAI
 // ==========================================
 
 modalBai.addEventListener(
     "click",
-    async () => {
+    async function () {
 
         try {
 
@@ -1941,11 +1723,15 @@ modalBai.addEventListener(
 
 
             const batch =
-                writeBatch(db);
+                writeBatch(
+                    db
+                );
 
 
             snapshot.forEach(
-                (documento) => {
+                function (
+                    documento
+                ) {
 
                     batch.delete(
                         documento.ref
@@ -1958,14 +1744,16 @@ modalBai.addEventListener(
             await batch.commit();
 
 
-            confirmModal.classList.remove(
+            modalConfirmacion.classList.remove(
                 "zabalik"
             );
 
 
         }
 
-        catch (error) {
+        catch (
+            error
+        ) {
 
             console.error(
                 "Errorea zerrenda ezabatzean:",
@@ -1989,19 +1777,21 @@ modalBai.addEventListener(
 
 
 // ==========================================
-// CERRAR MODAL AL PULSAR FUERA
+// CERRAR MODAL FUERA
 // ==========================================
 
-confirmModal.addEventListener(
+modalConfirmacion.addEventListener(
     "click",
-    (event) => {
+    function (
+        evento
+    ) {
 
         if (
-            event.target ===
-            confirmModal
+            evento.target ===
+            modalConfirmacion
         ) {
 
-            confirmModal.classList.remove(
+            modalConfirmacion.classList.remove(
                 "zabalik"
             );
 
@@ -2012,18 +1802,20 @@ confirmModal.addEventListener(
 
 
 // ==========================================
-// ESCAPE PARA CERRAR
+// ESCAPE
 // ==========================================
 
 document.addEventListener(
     "keydown",
-    (event) => {
+    function (
+        evento
+    ) {
 
         if (
-            event.key === "Escape"
+            evento.key === "Escape"
         ) {
 
-            confirmModal.classList.remove(
+            modalConfirmacion.classList.remove(
                 "zabalik"
             );
 
@@ -2031,12 +1823,3 @@ document.addEventListener(
 
     }
 );
-
-
-// ==========================================
-// INICIAR INTERFAZ
-// ==========================================
-
-renderizarKategorias();
-
-mostrarLista();
