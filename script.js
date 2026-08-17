@@ -694,6 +694,26 @@ onAuthStateChanged(
                 "Usuario autenticado:",
                 usuario.email
             );
+            if (usuario) {
+
+    console.log(
+        "Usuario autenticado:",
+        usuario.email
+    );
+
+    alert("UID: " + usuario.uid);
+
+    usuarioActual.textContent =
+        "Conectado como " +
+        usuario.email;
+
+    loginGoogle.textContent =
+        "Sesión iniciada";
+
+    loginGoogle.disabled =
+        true;
+
+}
 
 
             console.log(
