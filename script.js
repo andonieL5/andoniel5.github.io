@@ -85,6 +85,11 @@ const proveedorGoogle =
 
 const db =
     getFirestore(app);
+// ==========================================
+// IDENTIFICADOR DE LA FAMILIA
+// ==========================================
+
+const FAMILIA_ID = "familia-andoni";
 
 
 // Colección de nuestra lista
