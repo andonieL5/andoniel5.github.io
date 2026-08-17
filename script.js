@@ -295,11 +295,13 @@ async function añadirProducto(
 ) {
 
     const referencia =
-        doc(
-            db,
-            "listaCompra",
-            convertirId(producto)
-        );
+    doc(
+        db,
+        "familias",
+        FAMILIA_ID,
+        "listaCompra",
+        convertirId(producto)
+    );
 
 
     try {
@@ -375,12 +377,13 @@ async function cambiarCantidad(
 ) {
 
     const referencia =
-        doc(
-            db,
-            "listaCompra",
-            convertirId(producto)
-        );
-
+    doc(
+        db,
+        "familias",
+        FAMILIA_ID,
+        "listaCompra",
+        convertirId(producto)
+    );
 
     try {
 
