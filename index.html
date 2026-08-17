@@ -5,53 +5,70 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Lista Familiar</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
 </head>
 
 
 <body>
 
-<main>
+
+    <main>
 
 
-    <!-- ================================= -->
-    <!-- CABECERA -->
-    <!-- ================================= -->
+        <!-- ===================================== -->
+        <!-- CABECERA -->
+        <!-- ===================================== -->
 
-    <header class="cabecera">
+        <header class="cabecera">
 
-        <div class="logo">
+            <div class="logo">
 
-            <span class="logo-icono">🛒</span>
+                <div class="logo-icono">
+                    🛒
+                </div>
 
-            <div>
-
-                <span class="logo-texto">LISTA</span>
-                <span class="logo-texto">FAMILIAR</span>
+                <div class="logo-texto">
+                    <strong>LISTA</strong>
+                    <strong>FAMILIAR</strong>
+                </div>
 
             </div>
 
-        </div>
+
+            <div
+                id="estadoConexion"
+                class="estado-conexion"
+            >
+
+                <span
+                    id="puntoConexion"
+                    class="punto-conexion"
+                ></span>
+
+                <span id="textoConexion">
+                    En línea
+                </span>
+
+            </div>
+
+        </header>
 
 
-        <span class="estado">
-            ● En línea
-        </span>
 
-    </header>
-
-
-
-    <!-- ================================= -->
-    <!-- PRESENTACIÓN -->
-    <!-- ================================= -->
-
-    <section class="presentacion">
+        <!-- ===================================== -->
+        <!-- TITULO -->
+        <!-- ===================================== -->
 
         <p class="etiqueta">
             PLAN SEMANAL
@@ -65,86 +82,63 @@
 
 
         <p class="descripcion">
-
-            Añade lo que necesitas y la lista se actualizará
-            automáticamente para toda la familia.
-
+            Añade lo que necesitas y la lista se actualizará automáticamente para toda la familia.
         </p>
 
-    </section>
 
 
-
-    <!-- ================================= -->
-    <!-- LOGIN -->
-    <!-- ================================= -->
-
-    <div class="zona-login">
+        <!-- ===================================== -->
+        <!-- LOGIN -->
+        <!-- ===================================== -->
 
         <button id="loginGoogle">
 
-            <span class="google-icono">
-                G
-            </span>
-
-            <span>
-                Continuar con Google
-            </span>
+            Continuar con Google
 
         </button>
 
 
-        <p id="usuarioActual"></p>
-
-    </div>
-
-
-
-    <!-- ================================= -->
-    <!-- FECHA -->
-    <!-- ================================= -->
-
-    <p class="fecha">
-
-        Semana del 20 de julio al 26 de julio
-
-    </p>
+        <p
+            id="usuarioActual"
+            class="usuario-actual"
+        >
+        </p>
 
 
 
-    <!-- ================================= -->
-    <!-- COMPRA HECHA -->
-    <!-- ================================= -->
+        <!-- ===================================== -->
+        <!-- SEMANA -->
+        <!-- ===================================== -->
 
-    <button
-        id="compraHecha"
-        class="boton-compra">
-
-        <span>✓</span>
-
-        <span>
-            Compra hecha
-        </span>
-
-    </button>
+        <p class="semana">
+            Semana del 20 de julio al 26 de julio
+        </p>
 
 
 
-    <!-- ================================= -->
-    <!-- PRODUCTOS HABITUALES -->
-    <!-- ================================= -->
+        <!-- ===================================== -->
+        <!-- COMPRA HECHA -->
+        <!-- ===================================== -->
 
-    <section class="seccion-productos">
+        <button id="compraHecha">
+
+            ✓ &nbsp; Compra hecha
+
+        </button>
+
+
+
+        <!-- ===================================== -->
+        <!-- PRODUCTOS HABITUALES -->
+        <!-- ===================================== -->
 
         <h2>
             PRODUCTOS HABITUALES
         </h2>
 
 
-        <p class="texto-seccion">
-
+        <p class="subtexto">
             Toca para añadirlos al momento.
-
         </p>
 
 
@@ -153,21 +147,20 @@
 
         <div class="producto">
 
-            <span class="producto-emoji">
+            <span>
                 🧀
             </span>
 
             <p>
-                Queso Philadelphia
+                Queso
             </p>
 
             <button
                 class="anadir"
-                data-producto="Queso Philadelphia"
-                data-emoji="🧀">
-
+                data-producto="Queso"
+                data-emoji="🧀"
+            >
                 +
-
             </button>
 
         </div>
@@ -178,7 +171,7 @@
 
         <div class="producto">
 
-            <span class="producto-emoji">
+            <span>
                 🍅
             </span>
 
@@ -189,10 +182,9 @@
             <button
                 class="anadir"
                 data-producto="Tomate"
-                data-emoji="🍅">
-
+                data-emoji="🍅"
+            >
                 +
-
             </button>
 
         </div>
@@ -203,7 +195,7 @@
 
         <div class="producto">
 
-            <span class="producto-emoji">
+            <span>
                 🥑
             </span>
 
@@ -214,10 +206,9 @@
             <button
                 class="anadir"
                 data-producto="Aguacate"
-                data-emoji="🥑">
-
+                data-emoji="🥑"
+            >
                 +
-
             </button>
 
         </div>
@@ -228,7 +219,7 @@
 
         <div class="producto">
 
-            <span class="producto-emoji">
+            <span>
                 🥛
             </span>
 
@@ -239,10 +230,9 @@
             <button
                 class="anadir"
                 data-producto="Leche"
-                data-emoji="🥛">
-
+                data-emoji="🥛"
+            >
                 +
-
             </button>
 
         </div>
@@ -253,7 +243,7 @@
 
         <div class="producto">
 
-            <span class="producto-emoji">
+            <span>
                 🍞
             </span>
 
@@ -264,54 +254,283 @@
             <button
                 class="anadir"
                 data-producto="Pan"
-                data-emoji="🍞">
-
+                data-emoji="🍞"
+            >
                 +
-
             </button>
 
         </div>
 
-    </section>
 
 
+        <!-- GALLETAS -->
 
-    <!-- ================================= -->
-    <!-- MI LISTA -->
-    <!-- ================================= -->
+        <div class="producto">
 
-    <section class="seccion-lista">
-
-        <div class="titulo-lista">
-
-            <h2>
-                MI LISTA
-            </h2>
-
-            <span class="contador-lista">
-                COMPRA
+            <span>
+                🍪
             </span>
+
+            <p>
+                Galletas
+            </p>
+
+            <button
+                class="anadir"
+                data-producto="Galletas"
+                data-emoji="🍪"
+            >
+                +
+            </button>
 
         </div>
 
 
+
+        <!-- PASTA -->
+
+        <div class="producto">
+
+            <span>
+                🍝
+            </span>
+
+            <p>
+                Pasta
+            </p>
+
+            <button
+                class="anadir"
+                data-producto="Pasta"
+                data-emoji="🍝"
+            >
+                +
+            </button>
+
+        </div>
+
+
+
+        <!-- ACEITE DE OLIVA -->
+
+        <div class="producto">
+
+            <span>
+                🫒
+            </span>
+
+            <p>
+                Aceite de oliva
+            </p>
+
+            <button
+                class="anadir"
+                data-producto="Aceite de oliva"
+                data-emoji="🫒"
+            >
+                +
+            </button>
+
+        </div>
+
+
+
+        <!-- ACEITE DE GIRASOL -->
+
+        <div class="producto">
+
+            <span>
+                🌻
+            </span>
+
+            <p>
+                Aceite de girasol
+            </p>
+
+            <button
+                class="anadir"
+                data-producto="Aceite de girasol"
+                data-emoji="🌻"
+            >
+                +
+            </button>
+
+        </div>
+
+
+
+        <!-- HUEVOS -->
+
+        <div class="producto">
+
+            <span>
+                🥚
+            </span>
+
+            <p>
+                Huevos
+            </p>
+
+            <button
+                class="anadir"
+                data-producto="Huevos"
+                data-emoji="🥚"
+            >
+                +
+            </button>
+
+        </div>
+
+
+
+        <!-- HELADO -->
+
+        <div class="producto">
+
+            <span>
+                🍦
+            </span>
+
+            <p>
+                Helado
+            </p>
+
+            <button
+                class="anadir"
+                data-producto="Helado"
+                data-emoji="🍦"
+            >
+                +
+            </button>
+
+        </div>
+
+
+
+        <!-- YOGURT -->
+
+        <div class="producto">
+
+            <span>
+                🥛
+            </span>
+
+            <p>
+                Yogurt
+            </p>
+
+            <button
+                class="anadir"
+                data-producto="Yogurt"
+                data-emoji="🥛"
+            >
+                +
+            </button>
+
+        </div>
+
+
+
+        <!-- LEGUMBRES -->
+
+        <div class="producto">
+
+            <span>
+                🫘
+            </span>
+
+            <p>
+                Legumbres
+            </p>
+
+            <button
+                class="anadir"
+                data-producto="Legumbres"
+                data-emoji="🫘"
+            >
+                +
+            </button>
+
+        </div>
+
+
+
+        <!-- ===================================== -->
+        <!-- MI LISTA -->
+        <!-- ===================================== -->
+
+        <h2>
+            MI LISTA
+        </h2>
+
+
         <ul id="miLista"></ul>
 
-    </section>
 
 
-</main>
+    </main>
 
 
 
-<!-- ================================= -->
-<!-- JAVASCRIPT -->
-<!-- ================================= -->
+    <!-- ========================================= -->
+    <!-- VENTANA CONFIRMACIÓN COMPRA -->
+    <!-- ========================================= -->
 
-<script
-    type="module"
-    src="script.js">
-</script>
+    <div
+        id="modalCompra"
+        class="modal"
+    >
+
+        <div class="modal-contenido">
+
+            <div class="modal-icono">
+                🛒
+            </div>
+
+            <h3>
+                ¿Compra hecha?
+            </h3>
+
+            <p>
+                ¿Estás seguro de que la compra está hecha?
+                <br>
+                Se borrarán todos los productos de la lista.
+            </p>
+
+
+            <div class="modal-botones">
+
+                <button
+                    id="cancelarCompra"
+                    class="boton-no"
+                >
+                    No, todavía no
+                </button>
+
+
+                <button
+                    id="confirmarCompra"
+                    class="boton-si"
+                >
+                    Sí, compra hecha
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ========================================= -->
+    <!-- JAVASCRIPT -->
+    <!-- ========================================= -->
+
+    <script
+        type="module"
+        src="script.js"
+    ></script>
 
 
 </body>
