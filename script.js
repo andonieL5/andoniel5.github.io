@@ -227,6 +227,22 @@ let unsubscribeLista =
 
 
 // ==========================================
+// PRODUCTOS QUE SE MIDEN EN GRAMOS
+// ==========================================
+
+function esProductoPorGramos(
+    producto
+) {
+
+    return (
+        producto ===
+        "Haragi xehatua"
+    );
+
+}
+
+
+// ==========================================
 // NORMALIZAR ID
 // ==========================================
 
@@ -281,11 +297,13 @@ function productoRef(
 
 
 // ==========================================
-// CATEGORIAS PRINCIPALES
+// CATEGORÍAS PRINCIPALES
 // ==========================================
 
 categoriaBotones.forEach(
-    function (boton) {
+    function (
+        boton
+    ) {
 
         boton.addEventListener(
             "click",
@@ -306,11 +324,13 @@ categoriaBotones.forEach(
 
 
 // ==========================================
-// AZPITALDEAK
+// SUBCATEGORÍAS
 // ==========================================
 
 azpikategoriaBotones.forEach(
-    function (boton) {
+    function (
+        boton
+    ) {
 
         boton.addEventListener(
             "click",
@@ -331,11 +351,13 @@ azpikategoriaBotones.forEach(
 
 
 // ==========================================
-// AÑADIR PRODUCTOS
+// AÑADIR PRODUCTOS NORMALES
 // ==========================================
 
 botonesAnadir.forEach(
-    function (boton) {
+    function (
+        boton
+    ) {
 
         boton.addEventListener(
             "click",
@@ -350,8 +372,7 @@ botonesAnadir.forEach(
 
                 añadirProducto(
                     producto,
-                    emoji,
-                    false
+                    emoji
                 );
 
             }
@@ -362,11 +383,13 @@ botonesAnadir.forEach(
 
 
 // ==========================================
-// AÑADIR PRODUCTOS POR GRAMOS
+// AÑADIR PRODUCTO POR GRAMOS
 // ==========================================
 
 botonesGramos.forEach(
-    function (boton) {
+    function (
+        boton
+    ) {
 
         boton.addEventListener(
             "click",
@@ -381,8 +404,7 @@ botonesGramos.forEach(
 
                 añadirProducto(
                     producto,
-                    emoji,
-                    true
+                    emoji
                 );
 
             }
@@ -398,8 +420,7 @@ botonesGramos.forEach(
 
 async function añadirProducto(
     producto,
-    emoji,
-    esPorGramos
+    emoji
 ) {
 
     const referencia =
@@ -423,7 +444,7 @@ async function añadirProducto(
 
 
                 // ==================================
-                // NUEVO PRODUCTO
+                // NUEVO
                 // ==================================
 
                 if (
@@ -441,12 +462,16 @@ async function añadirProducto(
                                 emoji,
 
                             cantidad:
-                                esPorGramos
+                                esProductoPorGramos(
+                                    producto
+                                )
                                     ? 250
                                     : 1,
 
                             unidad:
-                                esPorGramos
+                                esProductoPorGramos(
+                                    producto
+                                )
                                     ? "g"
                                     : "unidad"
 
@@ -460,28 +485,48 @@ async function añadirProducto(
 
 
                 // ==================================
-                // PRODUCTO EXISTENTE
+                // EXISTENTE
                 // ==================================
 
                 const datos =
                     documento.data();
 
 
-                const unidad =
-                    datos.unidad ||
-                    "unidad";
+                const esGramos =
+                    esProductoPorGramos(
+                        producto
+                    )
+                    ||
+                    datos.unidad === "g";
 
 
-                const incremento =
-                    unidad === "g"
-                        ? 250
-                        : 1;
-
-
-                const cantidadActual =
+                let cantidadActual =
                     Number(
                         datos.cantidad
                     ) || 0;
+
+
+                // Corregir productos antiguos
+                // de Haragi xehatua
+
+                if (
+                    esProductoPorGramos(
+                        producto
+                    )
+                    &&
+                    datos.unidad !== "g"
+                ) {
+
+                    cantidadActual =
+                        250;
+
+                }
+
+
+                const incremento =
+                    esGramos
+                        ? 250
+                        : 1;
 
 
                 transaction.update(
@@ -490,7 +535,15 @@ async function añadirProducto(
 
                         cantidad:
                             cantidadActual +
-                            incremento
+                            incremento,
+
+                        unidad:
+                            esGramos
+                                ? "g"
+                                : (
+                                    datos.unidad ||
+                                    "unidad"
+                                )
 
                     }
                 );
@@ -556,21 +609,36 @@ async function cambiarCantidad(
                     documento.data();
 
 
-                const unidad =
-                    datos.unidad ||
-                    "unidad";
+                const esGramos =
+                    esProductoPorGramos(
+                        producto
+                    )
+                    ||
+                    datos.unidad === "g";
 
 
                 const incremento =
-                    unidad === "g"
+                    esGramos
                         ? 250
                         : 1;
 
 
-                const cantidadActual =
+                let cantidadActual =
                     Number(
                         datos.cantidad
                     ) || 0;
+
+
+                if (
+                    esGramos
+                    &&
+                    datos.unidad !== "g"
+                ) {
+
+                    cantidadActual =
+                        250;
+
+                }
 
 
                 const nuevaCantidad =
@@ -582,7 +650,7 @@ async function cambiarCantidad(
 
 
                 // ==================================
-                // SI LLEGA A CERO
+                // ELIMINAR SI LLEGA A 0
                 // ==================================
 
                 if (
@@ -603,7 +671,15 @@ async function cambiarCantidad(
                     {
 
                         cantidad:
-                            nuevaCantidad
+                            nuevaCantidad,
+
+                        unidad:
+                            esGramos
+                                ? "g"
+                                : (
+                                    datos.unidad ||
+                                    "unidad"
+                                )
 
                     }
                 );
@@ -660,7 +736,7 @@ async function eliminarProducto(
 
 
 // ==========================================
-// ORDEN DE LAS SECCIONES
+// SECCIONES DE NIRE ZERRENDA
 // ==========================================
 
 const ordenSecciones = {
@@ -693,7 +769,7 @@ const ordenSecciones = {
 
 
 // ==========================================
-// CATEGORIA DEL PRODUCTO
+// CATEGORÍA PRODUCTO
 // ==========================================
 
 function obtenerSeccion(
@@ -716,7 +792,7 @@ function obtenerSeccion(
         "tallarinak",
         "maria doradas",
         "principe",
-        "tostadas",
+        "tostatuak",
         "chiquilin",
         "lentejak",
         "garbantzuak",
@@ -726,11 +802,11 @@ function obtenerSeccion(
         "piperrak",
         "esparragoak",
         "tomate birrindua",
-        "tomate frijitua",
         "oliba-olioa",
         "ekilore-olioa",
         "mahats-ozpina",
         "arroza",
+        "arrautzak",
         "nesquik",
         "colacao"
 
@@ -738,13 +814,17 @@ function obtenerSeccion(
 
 
     if (
-        despentsa
-            .some(
-                item =>
-                    nombre.includes(
-                        item
-                    )
-            )
+        despentsa.some(
+            function (
+                item
+            ) {
+
+                return nombre.includes(
+                    item
+                );
+
+            }
+        )
     ) {
 
         return "DESPENTSA";
@@ -771,13 +851,17 @@ function obtenerSeccion(
 
 
     if (
-        esnekiak
-            .some(
-                item =>
-                    nombre.includes(
-                        item
-                    )
-            )
+        esnekiak.some(
+            function (
+                item
+            ) {
+
+                return nombre.includes(
+                    item
+                );
+
+            }
+        )
     ) {
 
         return "ESNEKIAK";
@@ -786,7 +870,7 @@ function obtenerSeccion(
 
 
     // ==================================
-    // FRUTA ETA BARAZKIAK
+    // FRUTAK ETA BARAZKIAK
     // ==================================
 
     const frutakBarazkiak = [
@@ -811,7 +895,7 @@ function obtenerSeccion(
         "patatak",
         "tipulak",
         "baratxuria",
-        "piperrak frescoa",
+        "piperrak freskoa",
         "kalabazina",
         "pepinoa",
         "brokolia",
@@ -825,13 +909,17 @@ function obtenerSeccion(
 
 
     if (
-        frutakBarazkiak
-            .some(
-                item =>
-                    nombre.includes(
-                        item
-                    )
-            )
+        frutakBarazkiak.some(
+            function (
+                item
+            ) {
+
+                return nombre.includes(
+                    item
+                );
+
+            }
+        )
     ) {
 
         return "FRUTAK ETA BARAZKIAK";
@@ -863,13 +951,17 @@ function obtenerSeccion(
 
 
     if (
-        haragiaArraina
-            .some(
-                item =>
-                    nombre.includes(
-                        item
-                    )
-            )
+        haragiaArraina.some(
+            function (
+                item
+            ) {
+
+                return nombre.includes(
+                    item
+                );
+
+            }
+        )
     ) {
 
         return "HARAGIA ETA ARRAINA";
@@ -891,13 +983,17 @@ function obtenerSeccion(
 
 
     if (
-        izoztuak
-            .some(
-                item =>
-                    nombre.includes(
-                        item
-                    )
-            )
+        izoztuak.some(
+            function (
+                item
+            ) {
+
+                return nombre.includes(
+                    item
+                );
+
+            }
+        )
     ) {
 
         return "IZOZTUA";
@@ -925,13 +1021,17 @@ function obtenerSeccion(
 
 
     if (
-        edariak
-            .some(
-                item =>
-                    nombre.includes(
-                        item
-                    )
-            )
+        edariak.some(
+            function (
+                item
+            ) {
+
+                return nombre.includes(
+                    item
+                );
+
+            }
+        )
     ) {
 
         return "EDARIAK";
@@ -965,13 +1065,17 @@ function obtenerSeccion(
 
 
     if (
-        garbiketa
-            .some(
-                item =>
-                    nombre.includes(
-                        item
-                    )
-            )
+        garbiketa.some(
+            function (
+                item
+            ) {
+
+                return nombre.includes(
+                    item
+                );
+
+            }
+        )
     ) {
 
         return "GARBIKETA";
@@ -985,7 +1089,7 @@ function obtenerSeccion(
 
 
 // ==========================================
-// MOSTRAR LISTA
+// MOSTRAR NIRE ZERRENDA
 // ==========================================
 
 function mostrarLista() {
@@ -1003,40 +1107,8 @@ function mostrarLista() {
     // CONTADOR
     // ======================================
 
-    const totalUnidades =
-        productos.reduce(
-            function (
-                total,
-                producto
-            ) {
-
-                if (
-                    producto.unidad === "g"
-                ) {
-
-                    return total;
-
-                }
-
-
-                return total +
-                    (
-                        Number(
-                            producto.cantidad
-                        ) || 0
-                    );
-
-            },
-            0
-        );
-
-
-    const totalProductos =
-        productos.length;
-
-
     produktuKopurua.textContent =
-        totalProductos;
+        productos.length;
 
 
     // ======================================
@@ -1096,7 +1168,7 @@ function mostrarLista() {
 
 
     // ======================================
-    // SECCIONES ORDENADAS
+    // ORDENAR SECCIONES
     // ======================================
 
     Object.keys(
@@ -1109,12 +1181,11 @@ function mostrarLista() {
         ) {
 
             return (
-                ordenSecciones[a] ||
-                99
-            ) -
+                ordenSecciones[a] || 99
+            )
+            -
             (
-                ordenSecciones[b] ||
-                99
+                ordenSecciones[b] || 99
             );
 
         }
@@ -1124,12 +1195,12 @@ function mostrarLista() {
             seccion
         ) {
 
-            const contenedor =
+            const seccionElemento =
                 document.createElement(
                     "div"
                 );
 
-            contenedor.className =
+            seccionElemento.className =
                 "lista-sekzioa";
 
 
@@ -1145,7 +1216,7 @@ function mostrarLista() {
                 seccion;
 
 
-            contenedor.appendChild(
+            seccionElemento.appendChild(
                 titulo
             );
 
@@ -1168,9 +1239,9 @@ function mostrarLista() {
                         "lista-produktua";
 
 
-                    // =================================
+                    // ==============================
                     // EMOJI
-                    // =================================
+                    // ==============================
 
                     const emoji =
                         document.createElement(
@@ -1184,9 +1255,9 @@ function mostrarLista() {
                         producto.emoji;
 
 
-                    // =================================
+                    // ==============================
                     // INFO
-                    // =================================
+                    // ==============================
 
                     const info =
                         document.createElement(
@@ -1214,9 +1285,9 @@ function mostrarLista() {
                     );
 
 
-                    // =================================
+                    // ==============================
                     // MENOS
-                    // =================================
+                    // ==============================
 
                     const menos =
                         document.createElement(
@@ -1243,9 +1314,9 @@ function mostrarLista() {
                     );
 
 
-                    // =================================
+                    // ==============================
                     // CANTIDAD
-                    // =================================
+                    // ==============================
 
                     const cantidad =
                         document.createElement(
@@ -1257,6 +1328,10 @@ function mostrarLista() {
 
 
                     if (
+                        esProductoPorGramos(
+                            producto.nombre
+                        )
+                        ||
                         producto.unidad === "g"
                     ) {
 
@@ -1274,9 +1349,9 @@ function mostrarLista() {
                     }
 
 
-                    // =================================
+                    // ==============================
                     // MÁS
-                    // =================================
+                    // ==============================
 
                     const mas =
                         document.createElement(
@@ -1303,9 +1378,9 @@ function mostrarLista() {
                     );
 
 
-                    // =================================
+                    // ==============================
                     // ELIMINAR
-                    // =================================
+                    // ==============================
 
                     const eliminar =
                         document.createElement(
@@ -1331,9 +1406,9 @@ function mostrarLista() {
                     );
 
 
-                    // =================================
+                    // ==============================
                     // CONSTRUIR
-                    // =================================
+                    // ==============================
 
                     fila.appendChild(
                         emoji
@@ -1360,7 +1435,7 @@ function mostrarLista() {
                     );
 
 
-                    contenedor.appendChild(
+                    seccionElemento.appendChild(
                         fila
                     );
 
@@ -1369,7 +1444,7 @@ function mostrarLista() {
 
 
             miLista.appendChild(
-                contenedor
+                seccionElemento
             );
 
         }
@@ -1379,7 +1454,7 @@ function mostrarLista() {
 
 
 // ==========================================
-// ESCUCHAR FIRESTORE
+// FIRESTORE EN TIEMPO REAL
 // ==========================================
 
 function iniciarListenerFirestore() {
@@ -1404,8 +1479,6 @@ function iniciarListenerFirestore() {
                 snapshot
             ) {
 
-                // Limpiar
-
                 Object.keys(
                     listaCompra
                 ).forEach(
@@ -1420,8 +1493,6 @@ function iniciarListenerFirestore() {
                     }
                 );
 
-
-                // Cargar
 
                 snapshot.forEach(
                     function (
@@ -1449,7 +1520,13 @@ function iniciarListenerFirestore() {
 
                             unidad:
                                 datos.unidad ||
-                                "unidad"
+                                (
+                                    esProductoPorGramos(
+                                        datos.nombre
+                                    )
+                                        ? "g"
+                                        : "unidad"
+                                )
 
                         };
 
@@ -1477,7 +1554,7 @@ function iniciarListenerFirestore() {
 
 
 // ==========================================
-// LOGIN
+// LOGIN GOOGLE
 // ==========================================
 
 loginGoogle.addEventListener(
@@ -1557,10 +1634,6 @@ onAuthStateChanged(
             );
 
 
-            // ==================================
-            // USUARIO
-            // ==================================
-
             usuarioActual.textContent =
                 "Konektatuta: " +
                 usuario.email;
@@ -1583,10 +1656,6 @@ onAuthStateChanged(
             loginGoogle.disabled =
                 true;
 
-
-            // ==================================
-            // FIRESTORE
-            // ==================================
 
             iniciarListenerFirestore();
 
@@ -1657,7 +1726,7 @@ onAuthStateChanged(
 
 
 // ==========================================
-// MODAL EROSKETA EGINDA
+// EROSKETA EGINDA
 // ==========================================
 
 compraHecha.addEventListener(
@@ -1684,7 +1753,7 @@ compraHecha.addEventListener(
 
 
 // ==========================================
-// MODAL EZ
+// EZ
 // ==========================================
 
 modalEz.addEventListener(
@@ -1700,7 +1769,7 @@ modalEz.addEventListener(
 
 
 // ==========================================
-// MODAL BAI
+// BAI
 // ==========================================
 
 modalBai.addEventListener(
@@ -1747,7 +1816,6 @@ modalBai.addEventListener(
             modalConfirmacion.classList.remove(
                 "zabalik"
             );
-
 
         }
 
