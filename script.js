@@ -31,7 +31,8 @@ import {
     doc,
     deleteDoc,
     onSnapshot,
-    runTransaction
+    runTransaction,
+    getDocs
 } from
     "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
@@ -41,12 +42,25 @@ import {
 // ==========================================
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCqTIkaoO62UIMZPcRpaQdbdTvE5ZXYKE8",
-    authDomain: "lista-familiar-3a05d.firebaseapp.com",
-    projectId: "lista-familiar-3a05d",
-    storageBucket: "lista-familiar-3a05d.firebasestorage.app",
-    messagingSenderId: "343672850288",
-    appId: "1:343672850288:web:771de65690748505b0b1b5"
+
+    apiKey:
+        "AIzaSyCqTIkaoO62UIMZPcRpaQdbdTvE5ZXYKE8",
+
+    authDomain:
+        "lista-familiar-3a05d.firebaseapp.com",
+
+    projectId:
+        "lista-familiar-3a05d",
+
+    storageBucket:
+        "lista-familiar-3a05d.firebasestorage.app",
+
+    messagingSenderId:
+        "343672850288",
+
+    appId:
+        "1:343672850288:web:771de65690748505b0b1b5"
+
 };
 
 
@@ -55,10 +69,12 @@ console.log(
     firebaseConfig.projectId
 );
 
+
 console.log(
     "Firebase apiKey:",
     firebaseConfig.apiKey
 );
+
 
 console.log(
     "Firebase appId:",
@@ -136,6 +152,30 @@ const usuarioActual =
     document.getElementById("usuarioActual");
 
 
+// Estado conexión
+
+const puntoConexion =
+    document.getElementById("puntoConexion");
+
+const textoConexion =
+    document.getElementById("textoConexion");
+
+
+// Modal compra
+
+const compraHecha =
+    document.getElementById("compraHecha");
+
+const modalCompra =
+    document.getElementById("modalCompra");
+
+const cancelarCompra =
+    document.getElementById("cancelarCompra");
+
+const confirmarCompra =
+    document.getElementById("confirmarCompra");
+
+
 // ==========================================
 // LISTA LOCAL EN MEMORIA
 // ==========================================
@@ -151,6 +191,7 @@ function mostrarLista() {
 
     miLista.innerHTML = "";
 
+
     for (
         const producto in listaCompra
     ) {
@@ -159,20 +200,15 @@ function mostrarLista() {
             listaCompra[producto];
 
 
-        // ======================================
-        // CREAR ELEMENTO
-        // ======================================
-
         const nuevoProducto =
             document.createElement("li");
 
 
-        // ======================================
-        // NOMBRE
-        // ======================================
+        // Nombre
 
         const nombre =
             document.createElement("span");
+
 
         nombre.textContent =
             informacion.emoji +
@@ -180,45 +216,41 @@ function mostrarLista() {
             producto;
 
 
-        // ======================================
-        // BOTÓN -
-        // ======================================
+        // Botón -
 
         const botonMenos =
             document.createElement("button");
+
 
         botonMenos.textContent =
             "−";
 
 
-        // ======================================
-        // CANTIDAD
-        // ======================================
+        // Cantidad
 
         const cantidad =
             document.createElement("span");
+
 
         cantidad.textContent =
             informacion.cantidad;
 
 
-        // ======================================
-        // BOTÓN +
-        // ======================================
+        // Botón +
 
         const botonMas =
             document.createElement("button");
+
 
         botonMas.textContent =
             "+";
 
 
-        // ======================================
-        // BOTÓN ELIMINAR
-        // ======================================
+        // Botón eliminar
 
         const botonEliminar =
             document.createElement("button");
+
 
         botonEliminar.textContent =
             "Eliminar";
@@ -282,17 +314,21 @@ function mostrarLista() {
             nombre
         );
 
+
         nuevoProducto.appendChild(
             botonMenos
         );
+
 
         nuevoProducto.appendChild(
             cantidad
         );
 
+
         nuevoProducto.appendChild(
             botonMas
         );
+
 
         nuevoProducto.appendChild(
             botonEliminar
@@ -339,10 +375,6 @@ async function añadirProducto(
                     );
 
 
-                // ==================================
-                // PRODUCTO NUEVO
-                // ==================================
-
                 if (!documento.exists()) {
 
                     transaction.set(
@@ -355,11 +387,6 @@ async function añadirProducto(
                     );
 
                 }
-
-
-                // ==================================
-                // PRODUCTO EXISTENTE
-                // ==================================
 
                 else {
 
@@ -440,10 +467,6 @@ async function cambiarCantidad(
                     datos.cantidad + cambio;
 
 
-                // ==================================
-                // SI LLEGA A CERO
-                // ==================================
-
                 if (nuevaCantidad <= 0) {
 
                     transaction.delete(
@@ -520,6 +543,58 @@ async function eliminarProducto(
 
 
 // ==========================================
+// BORRAR TODA LA LISTA
+// ==========================================
+
+async function borrarTodaLaLista() {
+
+    try {
+
+        const snapshot =
+            await getDocs(listaRef);
+
+
+        const eliminaciones =
+            [];
+
+
+        snapshot.forEach(
+            function (documento) {
+
+                eliminaciones.push(
+                    deleteDoc(
+                        documento.ref
+                    )
+                );
+
+            }
+        );
+
+
+        await Promise.all(
+            eliminaciones
+        );
+
+
+        console.log(
+            "Compra confirmada. Lista borrada."
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Error borrando la lista:",
+            error
+        );
+
+    }
+
+}
+
+
+// ==========================================
 // CONVERTIR PRODUCTO EN ID
 // ==========================================
 
@@ -528,12 +603,19 @@ function convertirId(
 ) {
 
     return producto
+
         .toLowerCase()
+
         .replaceAll(" ", "-")
+
         .replaceAll("á", "a")
+
         .replaceAll("é", "e")
+
         .replaceAll("í", "i")
+
         .replaceAll("ó", "o")
+
         .replaceAll("ú", "u");
 
 }
@@ -552,6 +634,7 @@ botones.forEach(
 
                 const producto =
                     boton.dataset.producto;
+
 
                 const emoji =
                     boton.dataset.emoji;
@@ -578,10 +661,6 @@ onSnapshot(
 
     function (snapshot) {
 
-        // ======================================
-        // LIMPIAR LISTA LOCAL
-        // ======================================
-
         for (
             const producto in listaCompra
         ) {
@@ -590,10 +669,6 @@ onSnapshot(
 
         }
 
-
-        // ======================================
-        // CARGAR DATOS DE FIRESTORE
-        // ======================================
 
         snapshot.forEach(
             function (documento) {
@@ -618,10 +693,6 @@ onSnapshot(
         );
 
 
-        // ======================================
-        // ACTUALIZAR PANTALLA
-        // ======================================
-
         mostrarLista();
 
     },
@@ -629,7 +700,7 @@ onSnapshot(
     function (error) {
 
         console.error(
-            "Error escuchando Firestore:",
+            "Error escuchando la lista:",
             error
         );
 
@@ -665,21 +736,8 @@ loginGoogle.addEventListener(
 
 
             console.log(
-                "================================"
-            );
-
-            console.log(
-                "EMAIL:",
-                usuario.email
-            );
-
-            console.log(
-                "UID:",
+                "ID del usuario:",
                 usuario.uid
-            );
-
-            console.log(
-                "================================"
             );
 
         }
@@ -698,6 +756,91 @@ loginGoogle.addEventListener(
 
 
 // ==========================================
+// BOTÓN COMPRA HECHA
+// ==========================================
+
+compraHecha.addEventListener(
+    "click",
+    function () {
+
+        modalCompra.classList.add(
+            "visible"
+        );
+
+    }
+);
+
+
+// ==========================================
+// BOTÓN NO
+// ==========================================
+
+cancelarCompra.addEventListener(
+    "click",
+    function () {
+
+        modalCompra.classList.remove(
+            "visible"
+        );
+
+    }
+);
+
+
+// ==========================================
+// BOTÓN SÍ
+// ==========================================
+
+confirmarCompra.addEventListener(
+    "click",
+    async function () {
+
+        confirmarCompra.disabled = true;
+
+        confirmarCompra.textContent =
+            "Borrando...";
+
+
+        await borrarTodaLaLista();
+
+
+        modalCompra.classList.remove(
+            "visible"
+        );
+
+
+        confirmarCompra.disabled = false;
+
+        confirmarCompra.textContent =
+            "Sí, compra hecha";
+
+    }
+);
+
+
+// ==========================================
+// CERRAR MODAL AL PULSAR FUERA
+// ==========================================
+
+modalCompra.addEventListener(
+    "click",
+    function (evento) {
+
+        if (
+            evento.target === modalCompra
+        ) {
+
+            modalCompra.classList.remove(
+                "visible"
+            );
+
+        }
+
+    }
+);
+
+
+// ==========================================
 // SABER SI HAY UN USUARIO CONECTADO
 // ==========================================
 
@@ -705,10 +848,6 @@ onAuthStateChanged(
     auth,
 
     function (usuario) {
-
-        // ======================================
-        // USUARIO AUTENTICADO
-        // ======================================
 
         if (usuario) {
 
@@ -719,20 +858,27 @@ onAuthStateChanged(
 
 
             console.log(
-                "UID del usuario:",
+                "ID del usuario:",
                 usuario.uid
             );
 
 
-            // Mostrar correo y UID en pantalla
+            // ==================================
+            // PUNTO VERDE
+            // ==================================
 
-            usuarioActual.innerHTML =
+            puntoConexion.classList.add(
+                "conectado"
+            );
+
+
+            textoConexion.textContent =
+                "En línea";
+
+
+            usuarioActual.textContent =
                 "Conectado como " +
-                usuario.email +
-                "<br>" +
-                "<small>UID: " +
-                usuario.uid +
-                "</small>";
+                usuario.email;
 
 
             loginGoogle.textContent =
@@ -744,16 +890,24 @@ onAuthStateChanged(
 
         }
 
-
-        // ======================================
-        // NO HAY USUARIO
-        // ======================================
-
         else {
 
             console.log(
                 "No hay usuario conectado"
             );
+
+
+            // ==================================
+            // PUNTO GRIS
+            // ==================================
+
+            puntoConexion.classList.remove(
+                "conectado"
+            );
+
+
+            textoConexion.textContent =
+                "Sin conexión";
 
 
             usuarioActual.textContent =
