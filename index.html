@@ -2,153 +2,317 @@
 <html lang="es">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Compra de la semana</title>
+    <title>Lista Familiar</title>
 
     <link rel="stylesheet" href="style.css">
+
 </head>
+
 
 <body>
 
-    <main>
+<main>
 
-        <p>PLAN SEMANAL</p>
+
+    <!-- ================================= -->
+    <!-- CABECERA -->
+    <!-- ================================= -->
+
+    <header class="cabecera">
+
+        <div class="logo">
+
+            <span class="logo-icono">🛒</span>
+
+            <div>
+
+                <span class="logo-texto">LISTA</span>
+                <span class="logo-texto">FAMILIAR</span>
+
+            </div>
+
+        </div>
+
+
+        <span class="estado">
+            ● En línea
+        </span>
+
+    </header>
+
+
+
+    <!-- ================================= -->
+    <!-- PRESENTACIÓN -->
+    <!-- ================================= -->
+
+    <section class="presentacion">
+
+        <p class="etiqueta">
+            PLAN SEMANAL
+        </p>
+
 
         <h1>
             Compra de la semana<br>
             que viene
         </h1>
 
-        <!-- LOGIN -->
+
+        <p class="descripcion">
+
+            Añade lo que necesitas y la lista se actualizará
+            automáticamente para toda la familia.
+
+        </p>
+
+    </section>
+
+
+
+    <!-- ================================= -->
+    <!-- LOGIN -->
+    <!-- ================================= -->
+
+    <div class="zona-login">
+
         <button id="loginGoogle">
-            Continuar con Google
+
+            <span class="google-icono">
+                G
+            </span>
+
+            <span>
+                Continuar con Google
+            </span>
+
         </button>
+
 
         <p id="usuarioActual"></p>
 
-        <p>
-            Semana del 20 de julio al 26 de julio
-        </p>
+    </div>
 
-        <button id="compraHecha">
+
+
+    <!-- ================================= -->
+    <!-- FECHA -->
+    <!-- ================================= -->
+
+    <p class="fecha">
+
+        Semana del 20 de julio al 26 de julio
+
+    </p>
+
+
+
+    <!-- ================================= -->
+    <!-- COMPRA HECHA -->
+    <!-- ================================= -->
+
+    <button
+        id="compraHecha"
+        class="boton-compra">
+
+        <span>✓</span>
+
+        <span>
             Compra hecha
-        </button>
+        </span>
+
+    </button>
 
 
-        <!-- PRODUCTOS HABITUALES -->
 
-        <h2>PRODUCTOS HABITUALES</h2>
+    <!-- ================================= -->
+    <!-- PRODUCTOS HABITUALES -->
+    <!-- ================================= -->
 
-        <p>
+    <section class="seccion-productos">
+
+        <h2>
+            PRODUCTOS HABITUALES
+        </h2>
+
+
+        <p class="texto-seccion">
+
             Toca para añadirlos al momento.
+
         </p>
+
 
 
         <!-- QUESO -->
 
         <div class="producto">
 
-            <span>🧀</span>
+            <span class="producto-emoji">
+                🧀
+            </span>
 
-            <p>Queso Philadelphia</p>
+            <p>
+                Queso Philadelphia
+            </p>
 
             <button
                 class="anadir"
                 data-producto="Queso Philadelphia"
                 data-emoji="🧀">
+
                 +
+
             </button>
 
         </div>
+
 
 
         <!-- TOMATE -->
 
         <div class="producto">
 
-            <span>🍅</span>
+            <span class="producto-emoji">
+                🍅
+            </span>
 
-            <p>Tomate</p>
+            <p>
+                Tomate
+            </p>
 
             <button
                 class="anadir"
                 data-producto="Tomate"
                 data-emoji="🍅">
+
                 +
+
             </button>
 
         </div>
+
 
 
         <!-- AGUACATE -->
 
         <div class="producto">
 
-            <span>🥑</span>
+            <span class="producto-emoji">
+                🥑
+            </span>
 
-            <p>Aguacate</p>
+            <p>
+                Aguacate
+            </p>
 
             <button
                 class="anadir"
                 data-producto="Aguacate"
                 data-emoji="🥑">
+
                 +
+
             </button>
 
         </div>
+
 
 
         <!-- LECHE -->
 
         <div class="producto">
 
-            <span>🥛</span>
+            <span class="producto-emoji">
+                🥛
+            </span>
 
-            <p>Leche</p>
+            <p>
+                Leche
+            </p>
 
             <button
                 class="anadir"
                 data-producto="Leche"
                 data-emoji="🥛">
+
                 +
+
             </button>
 
         </div>
+
 
 
         <!-- PAN -->
 
         <div class="producto">
 
-            <span>🍞</span>
+            <span class="producto-emoji">
+                🍞
+            </span>
 
-            <p>Pan</p>
+            <p>
+                Pan
+            </p>
 
             <button
                 class="anadir"
                 data-producto="Pan"
                 data-emoji="🍞">
+
                 +
+
             </button>
 
         </div>
 
+    </section>
 
-        <!-- MI LISTA -->
 
-        <h2>MI LISTA</h2>
+
+    <!-- ================================= -->
+    <!-- MI LISTA -->
+    <!-- ================================= -->
+
+    <section class="seccion-lista">
+
+        <div class="titulo-lista">
+
+            <h2>
+                MI LISTA
+            </h2>
+
+            <span class="contador-lista">
+                COMPRA
+            </span>
+
+        </div>
+
 
         <ul id="miLista"></ul>
 
-    </main>
+    </section>
 
 
-    <!-- JAVASCRIPT -->
+</main>
 
-    <script type="module" src="script.js"></script>
+
+
+<!-- ================================= -->
+<!-- JAVASCRIPT -->
+<!-- ================================= -->
+
+<script
+    type="module"
+    src="script.js">
+</script>
+
 
 </body>
 
