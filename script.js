@@ -4,8 +4,7 @@
 
 import {
     initializeApp
-} from
-    "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
 
 // ==========================================
@@ -17,8 +16,7 @@ import {
     GoogleAuthProvider,
     signInWithPopup,
     onAuthStateChanged
-} from
-    "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 
 // ==========================================
@@ -32,8 +30,7 @@ import {
     deleteDoc,
     onSnapshot,
     runTransaction
-} from
-    "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
 // ==========================================
@@ -50,94 +47,72 @@ const firebaseConfig = {
 };
 
 
-console.log(
-    "Firebase projectId:",
-    firebaseConfig.projectId
-);
-
-console.log(
-    "Firebase apiKey:",
-    firebaseConfig.apiKey
-);
-
-console.log(
-    "Firebase appId:",
-    firebaseConfig.appId
-);
+console.log("Firebase projectId:", firebaseConfig.projectId);
+console.log("Firebase appId:", firebaseConfig.appId);
 
 
 // ==========================================
 // INICIALIZAR FIREBASE
 // ==========================================
 
-const app =
-    initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
 
 // ==========================================
 // FIREBASE AUTH
 // ==========================================
 
-const auth =
-    getAuth(app);
+const auth = getAuth(app);
 
 
 // ==========================================
 // PROVEEDOR GOOGLE
 // ==========================================
 
-const proveedorGoogle =
-    new GoogleAuthProvider();
+const proveedorGoogle = new GoogleAuthProvider();
 
 
 // ==========================================
 // FIRESTORE
 // ==========================================
 
-const db =
-    getFirestore(app);
+const db = getFirestore(app);
 
 
 // ==========================================
 // IDENTIFICADOR DE LA FAMILIA
 // ==========================================
 
-const FAMILIA_ID =
-    "familia-andoni";
+const FAMILIA_ID = "familia-andoni";
 
 
 // ==========================================
-// COLECCIÓN DE LA LISTA FAMILIAR
+// COLECCIÓN DE LA LISTA
 // ==========================================
 
-const listaRef =
-    collection(
-        db,
-        "familias",
-        FAMILIA_ID,
-        "listaCompra"
-    );
+const listaRef = collection(
+    db,
+    "familias",
+    FAMILIA_ID,
+    "listaCompra"
+);
 
 
 // ==========================================
 // ELEMENTOS HTML
 // ==========================================
 
-const botones =
-    document.querySelectorAll(".anadir");
+const botones = document.querySelectorAll(".anadir");
 
-const miLista =
-    document.getElementById("miLista");
+const miLista = document.getElementById("miLista");
 
-const loginGoogle =
-    document.getElementById("loginGoogle");
+const loginGoogle = document.getElementById("loginGoogle");
 
-const usuarioActual =
-    document.getElementById("usuarioActual");
+const usuarioActual = document.getElementById("usuarioActual");
 
 
 // ==========================================
-// LISTA LOCAL EN MEMORIA
+// LISTA LOCAL
 // ==========================================
 
 const listaCompra = {};
@@ -151,17 +126,13 @@ function mostrarLista() {
 
     miLista.innerHTML = "";
 
+    for (const producto in listaCompra) {
 
-    for (
-        const producto in listaCompra
-    ) {
-
-        const informacion =
-            listaCompra[producto];
+        const informacion = listaCompra[producto];
 
 
         // ======================================
-        // CREAR ELEMENTO
+        // ELEMENTO
         // ======================================
 
         const nuevoProducto =
@@ -176,20 +147,17 @@ function mostrarLista() {
             document.createElement("span");
 
         nombre.textContent =
-            informacion.emoji +
-            " " +
-            producto;
+            informacion.emoji + " " + producto;
 
 
         // ======================================
-        // BOTÓN -
+        // BOTÓN MENOS
         // ======================================
 
         const botonMenos =
             document.createElement("button");
 
-        botonMenos.textContent =
-            "−";
+        botonMenos.textContent = "−";
 
 
         // ======================================
@@ -204,14 +172,13 @@ function mostrarLista() {
 
 
         // ======================================
-        // BOTÓN +
+        // BOTÓN MÁS
         // ======================================
 
         const botonMas =
             document.createElement("button");
 
-        botonMas.textContent =
-            "+";
+        botonMas.textContent = "+";
 
 
         // ======================================
@@ -221,17 +188,16 @@ function mostrarLista() {
         const botonEliminar =
             document.createElement("button");
 
-        botonEliminar.textContent =
-            "Ezabatu";
+        botonEliminar.textContent = "Ezabatu";
 
 
         // ======================================
-        // BOTÓN MENOS
+        // EVENTO MENOS
         // ======================================
 
         botonMenos.addEventListener(
             "click",
-            async function () {
+            async () => {
 
                 await cambiarCantidad(
                     producto,
@@ -243,12 +209,12 @@ function mostrarLista() {
 
 
         // ======================================
-        // BOTÓN MÁS
+        // EVENTO MÁS
         // ======================================
 
         botonMas.addEventListener(
             "click",
-            async function () {
+            async () => {
 
                 await cambiarCantidad(
                     producto,
@@ -260,12 +226,12 @@ function mostrarLista() {
 
 
         // ======================================
-        // BOTÓN ELIMINAR
+        // EVENTO ELIMINAR
         // ======================================
 
         botonEliminar.addEventListener(
             "click",
-            async function () {
+            async () => {
 
                 await eliminarProducto(
                     producto
@@ -276,36 +242,22 @@ function mostrarLista() {
 
 
         // ======================================
-        // CONSTRUIR PRODUCTO
+        // CONSTRUIR ELEMENTO
         // ======================================
 
-        nuevoProducto.appendChild(
-            nombre
-        );
+        nuevoProducto.appendChild(nombre);
 
-        nuevoProducto.appendChild(
-            botonMenos
-        );
+        nuevoProducto.appendChild(botonMenos);
 
-        nuevoProducto.appendChild(
-            cantidad
-        );
+        nuevoProducto.appendChild(cantidad);
 
-        nuevoProducto.appendChild(
-            botonMas
-        );
+        nuevoProducto.appendChild(botonMas);
 
-        nuevoProducto.appendChild(
-            botonEliminar
-        );
+        nuevoProducto.appendChild(botonEliminar);
 
 
-        miLista.appendChild(
-            nuevoProducto
-        );
-
+        miLista.appendChild(nuevoProducto);
     }
-
 }
 
 
@@ -318,14 +270,13 @@ async function añadirProducto(
     emoji
 ) {
 
-    const referencia =
-        doc(
-            db,
-            "familias",
-            FAMILIA_ID,
-            "listaCompra",
-            convertirId(producto)
-        );
+    const referencia = doc(
+        db,
+        "familias",
+        FAMILIA_ID,
+        "listaCompra",
+        convertirId(producto)
+    );
 
 
     try {
@@ -340,9 +291,7 @@ async function añadirProducto(
                     );
 
 
-                // ==================================
                 // PRODUCTO NUEVO
-                // ==================================
 
                 if (!documento.exists()) {
 
@@ -358,9 +307,7 @@ async function añadirProducto(
                 }
 
 
-                // ==================================
                 // PRODUCTO EXISTENTE
-                // ==================================
 
                 else {
 
@@ -391,7 +338,6 @@ async function añadirProducto(
         );
 
     }
-
 }
 
 
@@ -404,14 +350,13 @@ async function cambiarCantidad(
     cambio
 ) {
 
-    const referencia =
-        doc(
-            db,
-            "familias",
-            FAMILIA_ID,
-            "listaCompra",
-            convertirId(producto)
-        );
+    const referencia = doc(
+        db,
+        "familias",
+        FAMILIA_ID,
+        "listaCompra",
+        convertirId(producto)
+    );
 
 
     try {
@@ -441,9 +386,7 @@ async function cambiarCantidad(
                     datos.cantidad + cambio;
 
 
-                // ==================================
                 // SI LLEGA A CERO
-                // ==================================
 
                 if (nuevaCantidad <= 0) {
 
@@ -478,7 +421,6 @@ async function cambiarCantidad(
         );
 
     }
-
 }
 
 
@@ -490,14 +432,13 @@ async function eliminarProducto(
     producto
 ) {
 
-    const referencia =
-        doc(
-            db,
-            "familias",
-            FAMILIA_ID,
-            "listaCompra",
-            convertirId(producto)
-        );
+    const referencia = doc(
+        db,
+        "familias",
+        FAMILIA_ID,
+        "listaCompra",
+        convertirId(producto)
+    );
 
 
     try {
@@ -516,7 +457,6 @@ async function eliminarProducto(
         );
 
     }
-
 }
 
 
@@ -524,9 +464,7 @@ async function eliminarProducto(
 // CONVERTIR PRODUCTO EN ID
 // ==========================================
 
-function convertirId(
-    producto
-) {
+function convertirId(producto) {
 
     return producto
         .toLowerCase()
@@ -536,7 +474,6 @@ function convertirId(
         .replaceAll("í", "i")
         .replaceAll("ó", "o")
         .replaceAll("ú", "u");
-
 }
 
 
@@ -545,11 +482,11 @@ function convertirId(
 // ==========================================
 
 botones.forEach(
-    function (boton) {
+    (boton) => {
 
         boton.addEventListener(
             "click",
-            function () {
+            () => {
 
                 const producto =
                     boton.dataset.producto;
@@ -571,33 +508,27 @@ botones.forEach(
 
 
 // ==========================================
-// ESCUCHAR FIRESTORE EN TIEMPO REAL
+// FIRESTORE EN TIEMPO REAL
 // ==========================================
 
 onSnapshot(
     listaRef,
 
-    function (snapshot) {
+    (snapshot) => {
 
-        // ======================================
-        // LIMPIAR LISTA LOCAL
-        // ======================================
+        // Limpiar lista local
 
-        for (
-            const producto in listaCompra
-        ) {
+        for (const producto in listaCompra) {
 
             delete listaCompra[producto];
 
         }
 
 
-        // ======================================
-        // CARGAR DATOS DE FIRESTORE
-        // ======================================
+        // Cargar productos
 
         snapshot.forEach(
-            function (documento) {
+            (documento) => {
 
                 const datos =
                     documento.data();
@@ -619,15 +550,13 @@ onSnapshot(
         );
 
 
-        // ======================================
-        // ACTUALIZAR PANTALLA
-        // ======================================
+        // Mostrar lista
 
         mostrarLista();
 
     },
 
-    function (error) {
+    (error) => {
 
         console.error(
             "Errorea zerrenda kargatzean:",
@@ -644,7 +573,12 @@ onSnapshot(
 
 loginGoogle.addEventListener(
     "click",
-    async function () {
+    async () => {
+
+        console.log(
+            "Google bidezko saioa hasten..."
+        );
+
 
         try {
 
@@ -660,13 +594,13 @@ loginGoogle.addEventListener(
 
 
             console.log(
-                "Usuario conectado:",
-                usuario
+                "Google bidez saioa hasita:",
+                usuario.email
             );
 
 
             console.log(
-                "ID del usuario:",
+                "Erabiltzailearen IDa:",
                 usuario.uid
             );
 
@@ -686,33 +620,33 @@ loginGoogle.addEventListener(
 
 
 // ==========================================
-// SABER SI HAY UN USUARIO CONECTADO
+// CONTROLAR ESTADO DE AUTENTICACIÓN
 // ==========================================
 
 onAuthStateChanged(
     auth,
 
-    function (usuario) {
+    (usuario) => {
 
         if (usuario) {
 
             // ==================================
-            // USUARIO AUTENTICADO
+            // USUARIO CONECTADO
             // ==================================
 
             console.log(
-                "Usuario autenticado:",
+                "Erabiltzailea autentifikatuta:",
                 usuario.email
             );
 
 
             console.log(
-                "ID del usuario:",
+                "Erabiltzailearen IDa:",
                 usuario.uid
             );
 
 
-            // Texto visible en euskera
+            // TEXTO VISIBLE
 
             usuarioActual.textContent =
                 "Konektatuta: " +
@@ -720,7 +654,7 @@ onAuthStateChanged(
 
 
             loginGoogle.textContent =
-                "Saioa hasita";
+                "Saioa hasita ✓";
 
 
             loginGoogle.disabled =
@@ -731,15 +665,15 @@ onAuthStateChanged(
         else {
 
             // ==================================
-            // NO HAY USUARIO
+            // USUARIO NO CONECTADO
             // ==================================
 
             console.log(
-                "No hay usuario conectado"
+                "Ez dago erabiltzaile autentifikaturik"
             );
 
 
-            // Texto visible en euskera
+            // TEXTO VISIBLE
 
             usuarioActual.textContent =
                 "Ez duzu saiorik hasi";
