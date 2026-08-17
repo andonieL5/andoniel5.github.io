@@ -1,7 +1,16 @@
+// ==========================================
+// FIREBASE APP
+// ==========================================
+
 import {
     initializeApp
 } from
     "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+
+// ==========================================
+// FIREBASE AUTHENTICATION
+// ==========================================
 
 import {
     getAuth,
@@ -10,6 +19,11 @@ import {
     onAuthStateChanged
 } from
     "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+// ==========================================
+// FIRESTORE
+// ==========================================
 
 import {
     getFirestore,
@@ -23,6 +37,10 @@ import {
 } from
     "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
+
+// ==========================================
+// CONFIGURACIÓN FIREBASE
+// ==========================================
 
 const firebaseConfig = {
 
@@ -63,11 +81,19 @@ console.log(
 );
 
 
+// ==========================================
+// INICIALIZAR FIREBASE
+// ==========================================
+
 const app =
     initializeApp(
         firebaseConfig
     );
 
+
+// ==========================================
+// AUTH
+// ==========================================
 
 const auth =
     getAuth(
@@ -79,15 +105,27 @@ const proveedorGoogle =
     new GoogleAuthProvider();
 
 
+// ==========================================
+// FIRESTORE
+// ==========================================
+
 const db =
     getFirestore(
         app
     );
 
 
+// ==========================================
+// FAMILIA
+// ==========================================
+
 const FAMILIA_ID =
     "familia-andoni";
 
+
+// ==========================================
+// REFERENCIA LISTA
+// ==========================================
 
 const listaRef =
     collection(
@@ -97,6 +135,10 @@ const listaRef =
         "listaCompra"
     );
 
+
+// ==========================================
+// ELEMENTOS HTML
+// ==========================================
 
 const categoriaBotones =
     document.querySelectorAll(
@@ -169,12 +211,24 @@ const produktuKopurua =
     );
 
 
+// ==========================================
+// LISTA LOCAL
+// ==========================================
+
 const listaCompra = {};
 
+
+// ==========================================
+// LISTENER FIRESTORE
+// ==========================================
 
 let unsubscribeLista =
     null;
 
+
+// ==========================================
+// PRODUCTOS POR GRAMOS
+// ==========================================
 
 function esProductoPorGramos(
     producto
@@ -188,13 +242,19 @@ function esProductoPorGramos(
 }
 
 
+// ==========================================
+// NORMALIZAR ID
+// ==========================================
+
 function convertirId(
     producto
 ) {
 
     return producto
         .toLowerCase()
-        .normalize("NFD")
+        .normalize(
+            "NFD"
+        )
         .replace(
             /[\u0300-\u036f]/g,
             ""
@@ -214,6 +274,10 @@ function convertirId(
 
 }
 
+
+// ==========================================
+// REFERENCIA PRODUCTO
+// ==========================================
 
 function productoRef(
     producto
@@ -319,7 +383,7 @@ botonesAnadir.forEach(
 
 
 // ==========================================
-// PRODUCTO +250G
+// PRODUCTO +250 G
 // ==========================================
 
 botonesGramos.forEach(
@@ -351,7 +415,7 @@ botonesGramos.forEach(
 
 
 // ==========================================
-// AÑADIR
+// AÑADIR PRODUCTO
 // ==========================================
 
 async function añadirProducto(
@@ -622,7 +686,7 @@ async function cambiarCantidad(
 
 
 // ==========================================
-// ELIMINAR
+// ELIMINAR PRODUCTO
 // ==========================================
 
 async function eliminarProducto(
@@ -654,7 +718,7 @@ async function eliminarProducto(
 
 
 // ==========================================
-// SECCIONES
+// SECCIONES DE LA LISTA
 // ==========================================
 
 const ordenSecciones = {
@@ -687,7 +751,7 @@ const ordenSecciones = {
 
 
 // ==========================================
-// CLASIFICAR PRODUCTO
+// OBTENER SECCIÓN
 // ==========================================
 
 function obtenerSeccion(
@@ -978,7 +1042,7 @@ function obtenerSeccion(
 
 
 // ==========================================
-// MOSTRAR LISTA
+// MOSTRAR NIRE ZERRENDA
 // ==========================================
 
 function mostrarLista() {
@@ -992,8 +1056,7 @@ function mostrarLista() {
         );
 
 
-    produktuKopurua.textContent =
-        productos.length;
+    produtoKopuruaFix();
 
 
     if (
@@ -1101,6 +1164,10 @@ function mostrarLista() {
                     producto
                 ) {
 
+                    // ==================================
+                    // FILA
+                    // ==================================
+
                     const fila =
                         document.createElement(
                             "div"
@@ -1109,6 +1176,41 @@ function mostrarLista() {
                     fila.className =
                         "lista-produktua";
 
+
+                    // ==================================
+                    // CHECK
+                    // ==================================
+
+                    const check =
+                        document.createElement(
+                            "button"
+                        );
+
+                    check.className =
+                        "lista-check";
+
+                    check.type =
+                        "button";
+
+                    check.textContent =
+                        "✓";
+
+
+                    check.addEventListener(
+                        "click",
+                        function () {
+
+                            fila.classList.toggle(
+                                "eginda"
+                            );
+
+                        }
+                    );
+
+
+                    // ==================================
+                    // EMOJI
+                    // ==================================
 
                     const emoji =
                         document.createElement(
@@ -1121,6 +1223,10 @@ function mostrarLista() {
                     emoji.textContent =
                         producto.emoji;
 
+
+                    // ==================================
+                    // INFO
+                    // ==================================
 
                     const info =
                         document.createElement(
@@ -1148,6 +1254,10 @@ function mostrarLista() {
                     );
 
 
+                    // ==================================
+                    // MENOS
+                    // ==================================
+
                     const menos =
                         document.createElement(
                             "button"
@@ -1172,6 +1282,10 @@ function mostrarLista() {
                         }
                     );
 
+
+                    // ==================================
+                    // CANTIDAD
+                    // ==================================
 
                     const cantidad =
                         document.createElement(
@@ -1204,6 +1318,10 @@ function mostrarLista() {
                     }
 
 
+                    // ==================================
+                    // MÁS
+                    // ==================================
+
                     const mas =
                         document.createElement(
                             "button"
@@ -1229,6 +1347,10 @@ function mostrarLista() {
                     );
 
 
+                    // ==================================
+                    // ELIMINAR
+                    // ==================================
+
                     const eliminar =
                         document.createElement(
                             "button"
@@ -1252,6 +1374,14 @@ function mostrarLista() {
                         }
                     );
 
+
+                    // ==================================
+                    // CONSTRUIR FILA
+                    // ==================================
+
+                    fila.appendChild(
+                        check
+                    );
 
                     fila.appendChild(
                         emoji
@@ -1297,7 +1427,34 @@ function mostrarLista() {
 
 
 // ==========================================
-// FIRESTORE
+// CONTADOR
+// ==========================================
+
+function produtoKopuruaFix() {
+
+    produtoKopurua.textContent =
+        Object.keys(
+            listaCompra
+        ).length;
+
+}
+
+
+// Alias correcto para mantener el código
+// fácil de leer.
+
+function productoKopuruaActualizar() {
+
+    produktuKopurua.textContent =
+        Object.keys(
+            listaCompra
+        ).length;
+
+}
+
+
+// ==========================================
+// FIRESTORE EN TIEMPO REAL
 // ==========================================
 
 function iniciarListenerFirestore() {
@@ -1397,7 +1554,7 @@ function iniciarListenerFirestore() {
 
 
 // ==========================================
-// LOGIN
+// LOGIN GOOGLE
 // ==========================================
 
 loginGoogle.addEventListener(
@@ -1595,7 +1752,7 @@ compraHecha.addEventListener(
 
 
 // ==========================================
-// EZ
+// MODAL EZ
 // ==========================================
 
 modalEz.addEventListener(
@@ -1611,7 +1768,7 @@ modalEz.addEventListener(
 
 
 // ==========================================
-// BAI
+// MODAL BAI
 // ==========================================
 
 modalBai.addEventListener(
@@ -1693,7 +1850,7 @@ modalBai.addEventListener(
 modalConfirmacion.addEventListener(
     "click",
     function (
-       evento
+        evento
     ) {
 
         if (
@@ -1718,12 +1875,11 @@ modalConfirmacion.addEventListener(
 document.addEventListener(
     "keydown",
     function (
-       evento
+        evento
     ) {
 
         if (
-            evento.key ===
-            "Escape"
+            evento.key === "Escape"
         ) {
 
             modalConfirmacion.classList.remove(
