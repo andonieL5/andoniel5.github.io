@@ -1,11 +1,10 @@
-/* ================================= */
-/* CONFIGURACIÓN GENERAL */
-/* ================================= */
+/* ==========================================
+   GENERAL
+========================================== */
 
 * {
     box-sizing: border-box;
 }
-
 
 body {
 
@@ -18,34 +17,29 @@ body {
     padding: 25px;
 
     color: #222;
-
 }
-
 
 main {
 
     max-width: 500px;
 
     margin: auto;
-
 }
 
 
-
-/* ================================= */
-/* CABECERA */
-/* ================================= */
+/* ==========================================
+   CABECERA
+========================================== */
 
 .cabecera {
 
     display: flex;
 
-    align-items: center;
-
     justify-content: space-between;
 
-    margin-bottom: 45px;
+    align-items: center;
 
+    margin-bottom: 45px;
 }
 
 
@@ -56,15 +50,18 @@ main {
     align-items: center;
 
     gap: 10px;
-
 }
 
 
 .logo-icono {
 
-    width: 42px;
+    width: 44px;
 
-    height: 42px;
+    height: 44px;
+
+    background-color: white;
+
+    border-radius: 14px;
 
     display: flex;
 
@@ -72,257 +69,235 @@ main {
 
     justify-content: center;
 
-    background: white;
-
-    border-radius: 13px;
-
-    font-size: 22px;
+    font-size: 23px;
 
     box-shadow:
-        0 3px 12px rgba(0, 0, 0, 0.06);
-
+        0 2px 8px rgba(0,0,0,0.05);
 }
 
 
 .logo-texto {
 
-    display: block;
+    display: flex;
 
-    font-size: 12px;
+    flex-direction: column;
 
-    font-weight: 800;
+    font-size: 13px;
 
-    letter-spacing: 1.5px;
+    line-height: 1.05;
 
-    line-height: 1.1;
-
+    letter-spacing: 1px;
 }
 
 
-.estado {
+/* ==========================================
+   ESTADO CONEXIÓN
+========================================== */
 
-    font-size: 11px;
-
-    color: #777;
-
-    background: white;
-
-    padding: 7px 10px;
-
-    border-radius: 20px;
-
-    box-shadow:
-        0 2px 8px rgba(0, 0, 0, 0.04);
-
-}
-
-
-
-/* ================================= */
-/* PRESENTACIÓN */
-/* ================================= */
-
-.presentacion {
-
-    margin-bottom: 25px;
-
-}
-
-
-.etiqueta {
-
-    margin: 0 0 8px;
-
-    font-size: 11px;
-
-    font-weight: 700;
-
-    letter-spacing: 1.5px;
-
-    color: #999;
-
-}
-
-
-.presentacion h1 {
-
-    margin: 0;
-
-    font-size: 36px;
-
-    line-height: 1.08;
-
-    letter-spacing: -1.2px;
-
-    color: #171717;
-
-}
-
-
-.descripcion {
-
-    margin-top: 15px;
-
-    max-width: 420px;
-
-    font-size: 14px;
-
-    line-height: 1.5;
-
-    color: #888;
-
-}
-
-
-
-/* ================================= */
-/* LOGIN GOOGLE */
-/* ================================= */
-
-.zona-login {
-
-    margin-bottom: 12px;
-
-}
-
-
-#loginGoogle {
-
-    width: 100%;
+.estado-conexion {
 
     display: flex;
 
     align-items: center;
 
-    justify-content: center;
+    gap: 7px;
 
-    gap: 10px;
+    background-color: white;
 
-    padding: 13px 16px;
+    padding: 8px 12px;
 
-    border: 1px solid #e7e7e7;
+    border-radius: 20px;
 
-    border-radius: 14px;
+    font-size: 13px;
 
-    background: white;
+    color: #777;
 
-    color: #333;
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.04);
+}
+
+
+.punto-conexion {
+
+    width: 7px;
+
+    height: 7px;
+
+    border-radius: 50%;
+
+    background-color: #aaa;
+
+    display: inline-block;
+
+    transition:
+        background-color 0.25s ease;
+}
+
+
+/* CUANDO ESTÁ CONECTADO */
+
+.punto-conexion.conectado {
+
+    background-color: #22c55e;
+
+    box-shadow:
+        0 0 0 3px rgba(34,197,94,0.12);
+}
+
+
+
+/* ==========================================
+   TITULOS
+========================================== */
+
+.etiqueta {
+
+    font-size: 12px;
+
+    letter-spacing: 2px;
+
+    font-weight: 600;
+
+    color: #888;
+
+    margin-bottom: 6px;
+}
+
+
+h1 {
+
+    font-size: 32px;
+
+    line-height: 1.05;
+
+    margin-top: 5px;
+
+    margin-bottom: 18px;
+
+    letter-spacing: -1px;
+}
+
+
+h2 {
 
     font-size: 14px;
+
+    margin-top: 32px;
+
+    margin-bottom: 7px;
+
+    letter-spacing: 0.7px;
+}
+
+
+.descripcion {
+
+    color: #777;
+
+    line-height: 1.5;
+
+    font-size: 14px;
+
+    margin-bottom: 22px;
+}
+
+
+.subtexto {
+
+    color: #888;
+
+    font-size: 14px;
+
+    margin-top: 0;
+
+    margin-bottom: 15px;
+}
+
+
+.semana {
+
+    color: #777;
+
+    font-size: 14px;
+
+    margin: 13px 0;
+}
+
+
+/* ==========================================
+   LOGIN GOOGLE
+========================================== */
+
+#loginGoogle {
+
+    width: 100%;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 15px;
+
+    background-color: white;
+
+    color: #222;
+
+    font-size: 15px;
 
     font-weight: 600;
 
     cursor: pointer;
 
     box-shadow:
-        0 3px 12px rgba(0, 0, 0, 0.04);
+        0 2px 8px rgba(0,0,0,0.04);
 
     transition:
         transform 0.15s ease,
-        box-shadow 0.15s ease,
         background-color 0.15s ease;
-
 }
 
 
 #loginGoogle:hover {
 
-    background-color: #fafafa;
-
-    box-shadow:
-        0 5px 16px rgba(0, 0, 0, 0.07);
-
+    background-color: #f5f5f5;
 }
 
 
 #loginGoogle:active {
 
     transform: scale(0.98);
-
 }
 
 
 #loginGoogle:disabled {
 
-    opacity: 0.7;
-
     cursor: default;
 
+    opacity: 0.85;
 }
 
 
-.google-icono {
-
-    width: 22px;
-
-    height: 22px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    border-radius: 50%;
-
-    font-size: 15px;
-
-    font-weight: 700;
-
-    background: #f5f5f5;
-
-}
-
-
-#usuarioActual {
-
-    margin: 8px 0 0;
+.usuario-actual {
 
     text-align: center;
 
-    font-size: 11px;
-
-    color: #999;
-
-}
-
-
-
-/* ================================= */
-/* FECHA */
-/* ================================= */
-
-.fecha {
-
-    margin: 10px 0 15px;
-
-    font-size: 13px;
+    font-size: 12px;
 
     color: #888;
 
+    margin-top: 10px;
 }
 
 
+/* ==========================================
+   BOTÓN COMPRA HECHA
+========================================== */
 
-/* ================================= */
-/* BOTÓN COMPRA HECHA */
-/* ================================= */
-
-.boton-compra {
+#compraHecha {
 
     width: 100%;
 
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 8px;
-
     padding: 14px;
-
-    margin-bottom: 35px;
 
     border: none;
 
@@ -332,7 +307,7 @@ main {
 
     color: white;
 
-    font-size: 15px;
+    font-size: 16px;
 
     font-weight: 600;
 
@@ -341,75 +316,25 @@ main {
     transition:
         transform 0.15s ease,
         opacity 0.15s ease;
-
 }
 
 
-.boton-compra:hover {
+#compraHecha:hover {
 
     opacity: 0.9;
-
 }
 
 
-.boton-compra:active {
+#compraHecha:active {
 
     transform: scale(0.98);
-
-}
-
-
-.boton-compra span:first-child {
-
-    font-size: 17px;
-
 }
 
 
 
-/* ================================= */
-/* TÍTULOS DE SECCIÓN */
-/* ================================= */
-
-h2 {
-
-    font-size: 13px;
-
-    margin: 0;
-
-    letter-spacing: 1px;
-
-    font-weight: 800;
-
-    color: #333;
-
-}
-
-
-.texto-seccion {
-
-    margin-top: 7px;
-
-    margin-bottom: 15px;
-
-    font-size: 13px;
-
-    color: #999;
-
-}
-
-
-
-/* ================================= */
-/* PRODUCTOS HABITUALES */
-/* ================================= */
-
-.seccion-productos {
-
-    margin-bottom: 40px;
-
-}
-
+/* ==========================================
+   PRODUCTOS HABITUALES
+========================================== */
 
 .producto {
 
@@ -428,22 +353,7 @@ h2 {
     border-radius: 15px;
 
     box-shadow:
-        0 2px 8px rgba(0, 0, 0, 0.04);
-
-    transition:
-        transform 0.15s ease,
-        box-shadow 0.15s ease;
-
-}
-
-
-.producto:hover {
-
-    transform: translateY(-1px);
-
-    box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.07);
-
+        0 2px 8px rgba(0,0,0,0.04);
 }
 
 
@@ -456,30 +366,16 @@ h2 {
     color: #333;
 
     font-size: 15px;
-
-    font-weight: 500;
-
 }
 
 
-.producto-emoji {
+.producto span {
 
-    width: 40px;
+    font-size: 25px;
 
-    height: 40px;
+    width: 35px;
 
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    background: #fafafa;
-
-    border-radius: 12px;
-
-    font-size: 23px;
-
+    text-align: center;
 }
 
 
@@ -495,8 +391,6 @@ h2 {
 
     background-color: #f2f2f2;
 
-    color: #222;
-
     font-size: 22px;
 
     cursor: pointer;
@@ -510,72 +404,25 @@ h2 {
     transition:
         transform 0.15s ease,
         background-color 0.15s ease;
-
 }
 
 
 .anadir:hover {
 
     background-color: #e8e8e8;
-
 }
 
 
 .anadir:active {
 
     transform: scale(0.9);
-
 }
 
 
 
-/* ================================= */
-/* MI LISTA */
-/* ================================= */
-
-.seccion-lista {
-
-    margin-bottom: 40px;
-
-}
-
-
-.titulo-lista {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    margin-bottom: 15px;
-
-}
-
-
-.contador-lista {
-
-    font-size: 9px;
-
-    font-weight: 700;
-
-    letter-spacing: 1px;
-
-    color: #aaa;
-
-    background: white;
-
-    padding: 6px 9px;
-
-    border-radius: 10px;
-
-}
-
-
-
-/* ================================= */
-/* LISTA */
-/* ================================= */
+/* ==========================================
+   MI LISTA
+========================================== */
 
 #miLista {
 
@@ -583,15 +430,9 @@ h2 {
 
     padding: 0;
 
-    margin: 0;
-
+    margin: 0 0 40px 0;
 }
 
-
-
-/* ================================= */
-/* PRODUCTOS DE MI LISTA */
-/* ================================= */
 
 #miLista li {
 
@@ -610,15 +451,9 @@ h2 {
     border-radius: 15px;
 
     box-shadow:
-        0 2px 8px rgba(0, 0, 0, 0.04);
-
+        0 2px 8px rgba(0,0,0,0.04);
 }
 
-
-
-/* ================================= */
-/* NOMBRE PRODUCTO */
-/* ================================= */
 
 #miLista li span:first-child {
 
@@ -629,14 +464,8 @@ h2 {
     font-size: 15px;
 
     font-weight: 500;
-
 }
 
-
-
-/* ================================= */
-/* BOTONES + Y - */
-/* ================================= */
 
 #miLista li button {
 
@@ -667,28 +496,20 @@ h2 {
     transition:
         transform 0.15s ease,
         background-color 0.15s ease;
-
 }
 
 
 #miLista li button:hover {
 
     background-color: #e8e8e8;
-
 }
 
 
 #miLista li button:active {
 
     transform: scale(0.88);
-
 }
 
-
-
-/* ================================= */
-/* BOTÓN ELIMINAR */
-/* ================================= */
 
 #miLista li button:last-child {
 
@@ -707,63 +528,203 @@ h2 {
     font-size: 12px;
 
     font-weight: 500;
-
 }
 
 
 #miLista li button:last-child:hover {
 
     background-color: #e8e8e8;
-
 }
 
 
 
-/* ================================= */
-/* MÓVIL */
-/* ================================= */
+/* ==========================================
+   MODAL
+========================================== */
 
-@media (max-width: 600px) {
+.modal {
 
-    body {
+    position: fixed;
 
-        padding: 20px 16px;
+    top: 0;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    background-color: rgba(0,0,0,0.35);
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    z-index: 9999;
+
+    backdrop-filter: blur(4px);
+}
+
+
+/* Modal visible */
+
+.modal.visible {
+
+    display: flex;
+}
+
+
+/* ==========================================
+   CONTENIDO MODAL
+========================================== */
+
+.modal-contenido {
+
+    width: 100%;
+
+    max-width: 390px;
+
+    background-color: #fff8f5;
+
+    border-radius: 24px;
+
+    padding: 30px 25px;
+
+    text-align: center;
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,0.18);
+
+    animation:
+        aparecerModal 0.2s ease;
+}
+
+
+@keyframes aparecerModal {
+
+    from {
+
+        opacity: 0;
+
+        transform: scale(0.94);
 
     }
 
+    to {
 
-    .cabecera {
+        opacity: 1;
 
-        margin-bottom: 35px;
-
-    }
-
-
-    .presentacion h1 {
-
-        font-size: 32px;
+        transform: scale(1);
 
     }
+}
 
 
-    .descripcion {
+.modal-icono {
 
-        font-size: 13px;
+    width: 55px;
 
-    }
+    height: 55px;
+
+    margin: 0 auto 15px auto;
+
+    background-color: white;
+
+    border-radius: 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 28px;
+}
 
 
-    .producto {
+.modal-contenido h3 {
 
-        padding: 9px;
+    font-size: 22px;
 
-    }
+    margin: 5px 0 10px 0;
+}
 
 
-    #miLista li {
+.modal-contenido p {
 
-        padding: 9px 10px;
+    color: #777;
 
-    }
+    font-size: 14px;
 
+    line-height: 1.5;
+
+    margin-bottom: 25px;
+}
+
+
+/* ==========================================
+   BOTONES DEL MODAL
+========================================== */
+
+.modal-botones {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 9px;
+}
+
+
+.modal-botones button {
+
+    width: 100%;
+
+    padding: 13px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
+}
+
+
+.modal-botones button:active {
+
+    transform: scale(0.98);
+}
+
+
+.boton-no {
+
+    background-color: white;
+
+    color: #333;
+}
+
+
+.boton-si {
+
+    background-color: #222;
+
+    color: white;
+}
+
+
+.modal-botones button:hover {
+
+    opacity: 0.85;
 }
