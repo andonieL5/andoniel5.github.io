@@ -1,5 +1,5 @@
 // ==========================================
-// FIREBASE APP
+// FIREBASE APP - LISTA FAMILIAR
 // ==========================================
 
 import {
@@ -21,7 +21,8 @@ import {
     getDocs,
     onSnapshot,
     runTransaction,
-    writeBatch
+    writeBatch,
+    updateDoc
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
@@ -38,51 +39,91 @@ const firebaseConfig = {
     appId: "1:343672850288:web:771de65690748505b0b1b5"
 };
 
+console.log("==========================================");
+console.log("LISTA FAMILIAR");
 console.log("Firebase projectId:", firebaseConfig.projectId);
-console.log("Firebase apiKey:", firebaseConfig.apiKey);
 console.log("Firebase appId:", firebaseConfig.appId);
+console.log("==========================================");
 
 
 // ==========================================
-// INICIALIZAR
+// INICIALIZAR FIREBASE
 // ==========================================
 
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 
-const proveedorGoogle = new GoogleAuthProvider();
+const proveedorGoogle =
+    new GoogleAuthProvider();
 
-const db = getFirestore(app);
-
-const FAMILIA_ID = "familia-andoni";
-
-const listaRef = collection(
-    db,
-    "familias",
-    FAMILIA_ID,
-    "listaCompra"
-);
+const db =
+    getFirestore(app);
 
 
 // ==========================================
-// ELEMENTOS
+// REFERENCIAS FIRESTORE
 // ==========================================
 
-const miLista = document.getElementById("miLista");
-const loginGoogle = document.getElementById("loginGoogle");
-const usuarioActual = document.getElementById("usuarioActual");
-const konexioPuntua = document.getElementById("konexioPuntua");
-const compraHecha = document.getElementById("compraHecha");
-const modalConfirmacion = document.getElementById("confirmModal");
-const modalBai = document.getElementById("modalBai");
-const modalEz = document.getElementById("modalEz");
-const zerrendaHutsa = document.getElementById("zerrendaHutsa");
-const produktuKopurua = document.getElementById("produktuKopurua");
+const FAMILIA_ID =
+    "familia-andoni";
+
+const listaRef =
+    collection(
+        db,
+        "familias",
+        FAMILIA_ID,
+        "listaCompra"
+    );
+
+
+// ==========================================
+// ELEMENTOS HTML
+// ==========================================
+
+const miLista =
+    document.getElementById("miLista");
+
+const loginGoogle =
+    document.getElementById("loginGoogle");
+
+const usuarioActual =
+    document.getElementById("usuarioActual");
+
+const konexioPuntua =
+    document.getElementById("konexioPuntua");
+
+const compraHecha =
+    document.getElementById("compraHecha");
+
+const modalConfirmacion =
+    document.getElementById("confirmModal");
+
+const modalBai =
+    document.getElementById("modalBai");
+
+const modalEz =
+    document.getElementById("modalEz");
+
+const zerrendaHutsa =
+    document.getElementById("zerrendaHutsa");
+
+const produktuKopurua =
+    document.getElementById("produktuKopurua");
+
+
+// ==========================================
+// ESTADO LOCAL
+// ==========================================
 
 const listaCompra = {};
 
 let unsubscribeLista = null;
+
+
+// Evita que un mismo botón de check
+// reciba dos acciones simultáneas.
+const checksGuardando = new Set();
 
 
 // ==========================================
@@ -90,10 +131,17 @@ let unsubscribeLista = null;
 // ==========================================
 
 function esProductoPorGramos(producto) {
+
     return producto === "Haragi xehatua";
 }
 
+
+// ==========================================
+// CREAR ID SEGURO PARA FIRESTORE
+// ==========================================
+
 function convertirId(producto) {
+
     return producto
         .toLowerCase()
         .normalize("NFD")
@@ -103,7 +151,13 @@ function convertirId(producto) {
         .replace(/^-+|-+$/g, "");
 }
 
+
+// ==========================================
+// REFERENCIA DE PRODUCTO
+// ==========================================
+
 function productoRef(producto) {
+
     return doc(
         db,
         "familias",
@@ -115,30 +169,64 @@ function productoRef(producto) {
 
 
 // ==========================================
-// CATEGORÍAS Y PRODUCTOS
+// CATEGORÍAS / PRODUCTOS
 // ==========================================
 
-document.addEventListener("click", function (evento) {
+document.addEventListener(
+    "click",
+    function (evento) {
 
-    const categoria = evento.target.closest(".kategoria-btn");
+        // --------------------------------------
+        // CATEGORÍA
+        // --------------------------------------
 
-    if (categoria) {
-        categoria.parentElement.classList.toggle("zabalik");
-        return;
-    }
+        const categoria =
+            evento.target.closest(
+                ".kategoria-btn"
+            );
 
-    const subcategoria = evento.target.closest(".azpikategoria-btn");
+        if (categoria) {
 
-    if (subcategoria) {
-        subcategoria.parentElement.classList.toggle("zabalik");
-        return;
-    }
+            categoria.parentElement.classList.toggle(
+                "zabalik"
+            );
 
-    const botonProducto = evento.target.closest(
-        ".anadir, .anadir-gramos"
-    );
+            return;
+        }
 
-    if (botonProducto) {
+
+        // --------------------------------------
+        // SUBCATEGORÍA
+        // --------------------------------------
+
+        const subcategoria =
+            evento.target.closest(
+                ".azpikategoria-btn"
+            );
+
+        if (subcategoria) {
+
+            subcategoria.parentElement.classList.toggle(
+                "zabalik"
+            );
+
+            return;
+        }
+
+
+        // --------------------------------------
+        // AÑADIR PRODUCTO
+        // --------------------------------------
+
+        const botonProducto =
+            evento.target.closest(
+                ".anadir, .anadir-gramos"
+            );
+
+        if (!botonProducto) {
+            return;
+        }
+
 
         const producto =
             botonProducto.dataset.producto;
@@ -146,25 +234,30 @@ document.addEventListener("click", function (evento) {
         const emoji =
             botonProducto.dataset.emoji;
 
+
         if (!producto || !emoji) {
+
             console.error(
                 "Producto sin datos:",
                 botonProducto
             );
+
             return;
         }
+
 
         console.log(
             "Añadiendo producto:",
             producto
         );
 
+
         añadirProducto(
             producto,
             emoji
         );
     }
-});
+);
 
 
 // ==========================================
@@ -179,6 +272,7 @@ async function añadirProducto(
     const referencia =
         productoRef(producto);
 
+
     try {
 
         await runTransaction(
@@ -190,52 +284,94 @@ async function añadirProducto(
                         referencia
                     );
 
+
+                // ----------------------------------
+                // PRODUCTO NUEVO
+                // ----------------------------------
+
                 if (!documento.exists()) {
 
                     const esGramos =
-                        esProductoPorGramos(producto);
+                        esProductoPorGramos(
+                            producto
+                        );
+
 
                     transaction.set(
                         referencia,
                         {
                             nombre: producto,
-                            emoji: emoji,
-                            cantidad:
-                                esGramos ? 250 : 1,
-                            unidad:
-                                esGramos ? "g" : "unidad",
 
-                            // NUEVO:
-                            // Todo producto nuevo empieza
-                            // sin estar marcado.
+                            emoji: emoji,
+
+                            cantidad:
+                                esGramos
+                                    ? 250
+                                    : 1,
+
+                            unidad:
+                                esGramos
+                                    ? "g"
+                                    : "unidad",
+
                             checked: false
                         }
                     );
 
+
                     return;
                 }
+
+
+                // ----------------------------------
+                // PRODUCTO YA EXISTENTE
+                // ----------------------------------
 
                 const datos =
                     documento.data();
 
+
                 const esGramos =
-                    esProductoPorGramos(producto)
+                    esProductoPorGramos(
+                        producto
+                    )
                     ||
                     datos.unidad === "g";
 
+
                 const incremento =
-                    esGramos ? 250 : 1;
+                    esGramos
+                        ? 250
+                        : 1;
+
 
                 let cantidadActual =
-                    Number(datos.cantidad) || 0;
+                    Number(
+                        datos.cantidad
+                    ) || 0;
+
 
                 if (
                     esGramos
                     &&
                     datos.unidad !== "g"
                 ) {
+
                     cantidadActual = 0;
                 }
+
+
+                // ----------------------------------
+                // MUY IMPORTANTE
+                //
+                // SOLO modificamos cantidad/unidad.
+                //
+                // NO escribimos checked.
+                //
+                // Por tanto:
+                // checked queda exactamente como estaba
+                // en Firebase.
+                // ----------------------------------
 
                 transaction.update(
                     referencia,
@@ -243,6 +379,7 @@ async function añadirProducto(
                         cantidad:
                             cantidadActual +
                             incremento,
+
                         unidad:
                             esGramos
                                 ? "g"
@@ -255,10 +392,12 @@ async function añadirProducto(
             }
         );
 
+
         console.log(
             "Producto añadido correctamente:",
             producto
         );
+
 
     } catch (error) {
 
@@ -294,6 +433,7 @@ async function cambiarCantidad(
     const referencia =
         productoRef(producto);
 
+
     try {
 
         await runTransaction(
@@ -305,46 +445,77 @@ async function cambiarCantidad(
                         referencia
                     );
 
+
                 if (!documento.exists()) {
                     return;
                 }
 
+
                 const datos =
                     documento.data();
 
+
                 const esGramos =
-                    esProductoPorGramos(producto)
+                    esProductoPorGramos(
+                        producto
+                    )
                     ||
                     datos.unidad === "g";
 
+
                 const incremento =
-                    esGramos ? 250 : 1;
+                    esGramos
+                        ? 250
+                        : 1;
+
 
                 let cantidadActual =
-                    Number(datos.cantidad) || 0;
+                    Number(
+                        datos.cantidad
+                    ) || 0;
+
 
                 if (
                     esGramos
                     &&
                     datos.unidad !== "g"
                 ) {
+
                     cantidadActual = 250;
                 }
+
 
                 const nuevaCantidad =
                     cantidadActual +
                     incremento * cambio;
 
+
+                // ----------------------------------
+                // SI LLEGA A 0
+                // ----------------------------------
+
                 if (nuevaCantidad <= 0) {
-                    transaction.delete(referencia);
+
+                    transaction.delete(
+                        referencia
+                    );
+
                     return;
                 }
+
+
+                // ----------------------------------
+                // CAMBIAR CANTIDAD
+                //
+                // NO TOCAMOS checked.
+                // ----------------------------------
 
                 transaction.update(
                     referencia,
                     {
                         cantidad:
                             nuevaCantidad,
+
                         unidad:
                             esGramos
                                 ? "g"
@@ -356,6 +527,7 @@ async function cambiarCantidad(
                 );
             }
         );
+
 
     } catch (error) {
 
@@ -371,13 +543,16 @@ async function cambiarCantidad(
 // ELIMINAR PRODUCTO
 // ==========================================
 
-async function eliminarProducto(producto) {
+async function eliminarProducto(
+    producto
+) {
 
     try {
 
         await deleteDoc(
             productoRef(producto)
         );
+
 
     } catch (error) {
 
@@ -390,17 +565,244 @@ async function eliminarProducto(producto) {
 
 
 // ==========================================
+// CAMBIAR CHECK
+// ==========================================
+//
+// ESTA ES LA PARTE NUEVA IMPORTANTE.
+//
+// No utilizamos runTransaction para el check.
+// Utilizamos updateDoc().
+//
+// Además:
+//
+// 1. Actualizamos inmediatamente la interfaz.
+// 2. Actualizamos listaCompra local.
+// 3. Guardamos el valor exacto en Firebase.
+// 4. Evitamos doble toque.
+// 5. Si falla Firebase hacemos rollback.
+//
+
+async function cambiarCheck(
+    producto,
+    fila,
+    botonCheck
+) {
+
+    const nombre =
+        producto.nombre;
+
+
+    const id =
+        convertirId(nombre);
+
+
+    // --------------------------------------
+    // EVITAR DOBLE CLICK / DOBLE TOQUE
+    // --------------------------------------
+
+    if (checksGuardando.has(id)) {
+
+        console.log(
+            "Check ya se está guardando:",
+            nombre
+        );
+
+        return;
+    }
+
+
+    checksGuardando.add(id);
+
+
+    // --------------------------------------
+    // ESTADO ANTERIOR
+    // --------------------------------------
+
+    const estadoAnterior =
+        producto.checked === true;
+
+
+    // --------------------------------------
+    // NUEVO ESTADO
+    // --------------------------------------
+
+    const nuevoEstado =
+        !estadoAnterior;
+
+
+    // --------------------------------------
+    // ACTUALIZACIÓN LOCAL INMEDIATA
+    // --------------------------------------
+
+    producto.checked =
+        nuevoEstado;
+
+
+    // --------------------------------------
+    // ACTUALIZAR INTERFAZ INMEDIATAMENTE
+    // --------------------------------------
+
+    if (nuevoEstado) {
+
+        fila.classList.add(
+            "eginda"
+        );
+
+    } else {
+
+        fila.classList.remove(
+            "eginda"
+        );
+    }
+
+
+    // --------------------------------------
+    // PROTEGER BOTÓN
+    // --------------------------------------
+
+    botonCheck.disabled =
+        true;
+
+
+    botonCheck.dataset.guardando =
+        "true";
+
+
+    try {
+
+        const referencia =
+            productoRef(nombre);
+
+
+        console.log(
+            "Guardando check en Firebase:",
+            nombre,
+            "=>",
+            nuevoEstado
+        );
+
+
+        // ----------------------------------
+        // ESCRITURA DIRECTA
+        // ----------------------------------
+
+        await updateDoc(
+            referencia,
+            {
+                checked:
+                    nuevoEstado
+            }
+        );
+
+
+        console.log(
+            "✓ Check guardado correctamente:",
+            nombre,
+            nuevoEstado
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "=========================================="
+        );
+
+        console.error(
+            "ERROR GUARDANDO CHECK"
+        );
+
+        console.error(
+            "Producto:",
+            nombre
+        );
+
+        console.error(
+            "Código:",
+            error.code
+        );
+
+        console.error(
+            "Mensaje:",
+            error.message
+        );
+
+        console.error(
+            error
+        );
+
+        console.error(
+            "=========================================="
+        );
+
+
+        // ----------------------------------
+        // ROLLBACK
+        // ----------------------------------
+
+        producto.checked =
+            estadoAnterior;
+
+
+        if (estadoAnterior) {
+
+            fila.classList.add(
+                "eginda"
+            );
+
+        } else {
+
+            fila.classList.remove(
+                "eginda"
+            );
+        }
+
+
+        // ----------------------------------
+        // MENSAJE
+        // ----------------------------------
+
+        console.warn(
+            "El check no se pudo guardar en Firebase."
+        );
+
+
+    } finally {
+
+        checksGuardando.delete(
+            id
+        );
+
+
+        botonCheck.disabled =
+            false;
+
+
+        delete botonCheck.dataset.guardando;
+    }
+}
+
+
+// ==========================================
 // ORDEN DE SECCIONES
 // ==========================================
 
 const ordenSecciones = {
+
     "DESPENTSA": 1,
+
     "ESNEKIAK": 2,
+
     "FRUTAK ETA BARAZKIAK": 3,
+
     "HARAGIA ETA ARRAINA": 4,
+
     "IZOZTUA": 5,
+
     "EDARIAK": 6,
+
     "GARBIKETA": 7,
+
     "BESTELAKOAK": 99
 };
 
@@ -409,12 +811,20 @@ const ordenSecciones = {
 // CLASIFICACIÓN
 // ==========================================
 
-function obtenerSeccion(producto) {
+function obtenerSeccion(
+    producto
+) {
 
     const nombre =
         producto.toLowerCase();
 
+
+    // --------------------------------------
+    // DESPENTSA
+    // --------------------------------------
+
     const despentsa = [
+
         "espagetiak",
         "makarroiak",
         "fideoak",
@@ -440,11 +850,24 @@ function obtenerSeccion(producto) {
         "colacao"
     ];
 
-    if (despentsa.some(item => nombre.includes(item))) {
+
+    if (
+        despentsa.some(
+            item =>
+                nombre.includes(item)
+        )
+    ) {
+
         return "DESPENTSA";
     }
 
+
+    // --------------------------------------
+    // ESNEKIAK
+    // --------------------------------------
+
     const esnekiak = [
+
         "esne osoa",
         "esne erdigaingabetua",
         "jogurta",
@@ -455,11 +878,24 @@ function obtenerSeccion(producto) {
         "natillak"
     ];
 
-    if (esnekiak.some(item => nombre.includes(item))) {
+
+    if (
+        esnekiak.some(
+            item =>
+                nombre.includes(item)
+        )
+    ) {
+
         return "ESNEKIAK";
     }
 
+
+    // --------------------------------------
+    // FRUTAK ETA BARAZKIAK
+    // --------------------------------------
+
     const frutakBarazkiak = [
+
         "sagarrak",
         "platanoak",
         "laranjak",
@@ -491,15 +927,24 @@ function obtenerSeccion(producto) {
         "porruak"
     ];
 
+
     if (
         frutakBarazkiak.some(
-            item => nombre.includes(item)
+            item =>
+                nombre.includes(item)
         )
     ) {
+
         return "FRUTAK ETA BARAZKIAK";
     }
 
+
+    // --------------------------------------
+    // HARAGIA ETA ARRAINA
+    // --------------------------------------
+
     const haragiaArraina = [
+
         "oilasko",
         "behi-",
         "haragi xehatua",
@@ -514,29 +959,47 @@ function obtenerSeccion(producto) {
         "antxoak"
     ];
 
+
     if (
         haragiaArraina.some(
-            item => nombre.includes(item)
+            item =>
+                nombre.includes(item)
         )
     ) {
+
         return "HARAGIA ETA ARRAINA";
     }
 
+
+    // --------------------------------------
+    // IZOTZTUA
+    // --------------------------------------
+
     const izoztuak = [
+
         "sandwich",
         "magnum",
         "pizza"
     ];
 
+
     if (
         izoztuak.some(
-            item => nombre.includes(item)
+            item =>
+                nombre.includes(item)
         )
     ) {
+
         return "IZOZTUA";
     }
 
+
+    // --------------------------------------
+    // EDARIAK
+    // --------------------------------------
+
     const edariak = [
+
         "coca-cola",
         "fanta",
         "sprite",
@@ -548,15 +1011,24 @@ function obtenerSeccion(producto) {
         "zukua"
     ];
 
+
     if (
         edariak.some(
-            item => nombre.includes(item)
+            item =>
+                nombre.includes(item)
         )
     ) {
+
         return "EDARIAK";
     }
 
+
+    // --------------------------------------
+    // GARBIKETA
+    // --------------------------------------
+
     const garbiketa = [
+
         "garbigarria",
         "oihal-leungarria",
         "orban-kentzailea",
@@ -574,13 +1046,17 @@ function obtenerSeccion(producto) {
         "komuneko papera"
     ];
 
+
     if (
         garbiketa.some(
-            item => nombre.includes(item)
+            item =>
+                nombre.includes(item)
         )
     ) {
+
         return "GARBIKETA";
     }
+
 
     return "BESTELAKOAK";
 }
@@ -594,18 +1070,27 @@ function mostrarLista() {
 
     miLista.innerHTML = "";
 
+
     const productos =
-        Object.values(listaCompra);
+        Object.values(
+            listaCompra
+        );
 
 
-    // CORRECCIÓN IMPORTANTE:
-    // usamos únicamente "produktuKopurua".
-    // No existe nenhuma referencia a
-    // "produtoKopurua" ni "produtoKopuruaFix".
+    // --------------------------------------
+    // CONTADOR
+    // --------------------------------------
 
-    produktuKopurua.textContent =
-        productos.length;
+    if (produktuKopurua) {
 
+        produktuKopurua.textContent =
+            productos.length;
+    }
+
+
+    // --------------------------------------
+    // LISTA VACÍA
+    // --------------------------------------
 
     if (productos.length === 0) {
 
@@ -620,6 +1105,10 @@ function mostrarLista() {
         "none";
 
 
+    // --------------------------------------
+    // AGRUPAR
+    // --------------------------------------
+
     const grupos = {};
 
 
@@ -631,9 +1120,12 @@ function mostrarLista() {
                     producto.nombre
                 );
 
+
             if (!grupos[seccion]) {
+
                 grupos[seccion] = [];
             }
+
 
             grupos[seccion].push(
                 producto
@@ -641,6 +1133,10 @@ function mostrarLista() {
         }
     );
 
+
+    // --------------------------------------
+    // MOSTRAR SECCIONES
+    // --------------------------------------
 
     Object.keys(grupos)
         .sort(
@@ -658,22 +1154,30 @@ function mostrarLista() {
         .forEach(
             function (seccion) {
 
+
                 const seccionElemento =
                     document.createElement(
                         "div"
                     );
 
+
                 seccionElemento.className =
                     "lista-sekzioa";
 
+
+                // ----------------------------------
+                // TÍTULO
+                // ----------------------------------
 
                 const titulo =
                     document.createElement(
                         "div"
                     );
 
+
                 titulo.className =
                     "lista-sekzioa-tituloa";
+
 
                 titulo.textContent =
                     seccion;
@@ -684,40 +1188,49 @@ function mostrarLista() {
                 );
 
 
+                // ----------------------------------
+                // PRODUCTOS
+                // ----------------------------------
+
                 grupos[seccion].forEach(
                     function (producto) {
+
 
                         const fila =
                             document.createElement(
                                 "div"
                             );
 
+
                         fila.className =
                             "lista-produktua";
 
 
-                        // ==========================================
+                        // ==================================
                         // CHECK
-                        // ==========================================
+                        // ==================================
 
                         const check =
                             document.createElement(
                                 "button"
                             );
 
+
                         check.className =
                             "lista-check";
 
+
                         check.type =
                             "button";
+
 
                         check.textContent =
                             "✓";
 
 
-                        // ==========================================
-                        // RECUPERAR CHECK DESDE FIREBASE
-                        // ==========================================
+                        // ----------------------------------
+                        // ESTADO INICIAL
+                        // ----------------------------------
 
                         if (
                             producto.checked === true
@@ -726,108 +1239,83 @@ function mostrarLista() {
                             fila.classList.add(
                                 "eginda"
                             );
-
                         }
 
 
-                        // ==========================================
-                        // GUARDAR CHECK EN FIREBASE
-                        // ==========================================
+                        // ----------------------------------
+                        // CHECK
+                        // ----------------------------------
+                        //
+                        // Importante:
+                        //
+                        // NO usamos aquí un listener
+                        // que dependa del DOM anterior.
+                        //
+                        // El listener queda asociado
+                        // directamente al botón actual.
+                        // ----------------------------------
 
                         check.addEventListener(
                             "click",
-                            async function () {
+                            function (evento) {
 
-                                try {
+                                evento.preventDefault();
 
-                                    const referencia =
-                                        productoRef(
-                                            producto.nombre
-                                        );
+                                evento.stopPropagation();
 
 
-                                    await runTransaction(
-                                        db,
-                                        async function (
-                                            transaction
-                                        ) {
-
-                                            const documento =
-                                                await transaction.get(
-                                                    referencia
-                                                );
-
-
-                                            if (
-                                                !documento.exists()
-                                            ) {
-                                                return;
-                                            }
-
-
-                                            const datos =
-                                                documento.data();
-
-
-                                            const estadoActual =
-                                                datos.checked === true;
-
-
-                                            transaction.update(
-                                                referencia,
-                                                {
-                                                    checked:
-                                                        !estadoActual
-                                                }
-                                            );
-
-                                        }
-                                    );
-
-
-                                    console.log(
-                                        "Check actualizado:",
-                                        producto.nombre
-                                    );
-
-
-                                } catch (error) {
-
-                                    console.error(
-                                        "Error guardando el check:",
-                                        error
-                                    );
-
-                                }
-
+                                cambiarCheck(
+                                    producto,
+                                    fila,
+                                    check
+                                );
                             }
                         );
 
 
-                        // ==========================================
+                        // También evitamos que ciertos
+                        // móviles interpreten una pulsación
+                        // larga como otra acción.
+
+                        check.addEventListener(
+                            "touchstart",
+                            function (evento) {
+
+                                evento.stopPropagation();
+                            },
+                            {
+                                passive: true
+                            }
+                        );
+
+
+                        // ==================================
                         // EMOJI
-                        // ==========================================
+                        // ==================================
 
                         const emoji =
                             document.createElement(
                                 "span"
                             );
 
+
                         emoji.className =
                             "lista-emoji";
+
 
                         emoji.textContent =
                             producto.emoji;
 
 
-                        // ==========================================
+                        // ==================================
                         // INFO
-                        // ==========================================
+                        // ==================================
 
                         const info =
                             document.createElement(
                                 "div"
                             );
+
 
                         info.className =
                             "lista-info";
@@ -838,8 +1326,10 @@ function mostrarLista() {
                                 "span"
                             );
 
+
                         nombre.className =
                             "lista-izena";
+
 
                         nombre.textContent =
                             producto.nombre;
@@ -850,20 +1340,23 @@ function mostrarLista() {
                         );
 
 
-                        // ==========================================
+                        // ==================================
                         // MENOS
-                        // ==========================================
+                        // ==================================
 
                         const menos =
                             document.createElement(
                                 "button"
                             );
 
+
                         menos.className =
                             "lista-kontrola";
 
+
                         menos.type =
                             "button";
+
 
                         menos.textContent =
                             "−";
@@ -871,25 +1364,30 @@ function mostrarLista() {
 
                         menos.addEventListener(
                             "click",
-                            function () {
+                            function (evento) {
+
+                                evento.preventDefault();
+
+                                evento.stopPropagation();
+
 
                                 cambiarCantidad(
                                     producto.nombre,
                                     -1
                                 );
-
                             }
                         );
 
 
-                        // ==========================================
+                        // ==================================
                         // CANTIDAD
-                        // ==========================================
+                        // ==================================
 
                         const cantidad =
                             document.createElement(
                                 "span"
                             );
+
 
                         cantidad.className =
                             "lista-kantitatea";
@@ -914,20 +1412,23 @@ function mostrarLista() {
                         }
 
 
-                        // ==========================================
+                        // ==================================
                         // MÁS
-                        // ==========================================
+                        // ==================================
 
                         const mas =
                             document.createElement(
                                 "button"
                             );
 
+
                         mas.className =
                             "lista-kontrola";
 
+
                         mas.type =
                             "button";
+
 
                         mas.textContent =
                             "+";
@@ -935,31 +1436,38 @@ function mostrarLista() {
 
                         mas.addEventListener(
                             "click",
-                            function () {
+                            function (evento) {
+
+                                evento.preventDefault();
+
+                                evento.stopPropagation();
+
 
                                 cambiarCantidad(
                                     producto.nombre,
                                     1
                                 );
-
                             }
                         );
 
 
-                        // ==========================================
+                        // ==================================
                         // ELIMINAR
-                        // ==========================================
+                        // ==================================
 
                         const eliminar =
                             document.createElement(
                                 "button"
                             );
 
+
                         eliminar.className =
                             "lista-ezabatu";
 
+
                         eliminar.type =
                             "button";
+
 
                         eliminar.textContent =
                             "Ezabatu";
@@ -967,27 +1475,51 @@ function mostrarLista() {
 
                         eliminar.addEventListener(
                             "click",
-                            function () {
+                            function (evento) {
+
+                                evento.preventDefault();
+
+                                evento.stopPropagation();
+
 
                                 eliminarProducto(
                                     producto.nombre
                                 );
-
                             }
                         );
 
 
-                        // ==========================================
-                        // CONSTRUIR
-                        // ==========================================
+                        // ==================================
+                        // CONSTRUIR FILA
+                        // ==================================
 
-                        fila.appendChild(check);
-                        fila.appendChild(emoji);
-                        fila.appendChild(info);
-                        fila.appendChild(menos);
-                        fila.appendChild(cantidad);
-                        fila.appendChild(mas);
-                        fila.appendChild(eliminar);
+                        fila.appendChild(
+                            check
+                        );
+
+                        fila.appendChild(
+                            emoji
+                        );
+
+                        fila.appendChild(
+                            info
+                        );
+
+                        fila.appendChild(
+                            menos
+                        );
+
+                        fila.appendChild(
+                            cantidad
+                        );
+
+                        fila.appendChild(
+                            mas
+                        );
+
+                        fila.appendChild(
+                            eliminar
+                        );
 
 
                         seccionElemento.appendChild(
@@ -1011,6 +1543,10 @@ function mostrarLista() {
 
 function iniciarListenerFirestore() {
 
+    // --------------------------------------
+    // CANCELAR LISTENER ANTERIOR
+    // --------------------------------------
+
     if (unsubscribeLista) {
 
         unsubscribeLista();
@@ -1019,19 +1555,29 @@ function iniciarListenerFirestore() {
     }
 
 
+    console.log(
+        "Iniciando listener Firestore..."
+    );
+
+
     unsubscribeLista =
         onSnapshot(
+
             listaRef,
 
             function (snapshot) {
 
-                Object.keys(
-                    listaCompra
-                ).forEach(
-                    function (key) {
-                        delete listaCompra[key];
-                    }
+                console.log(
+                    "Firestore actualizado. Productos:",
+                    snapshot.size
                 );
+
+
+                // ----------------------------------
+                // CREAR NUEVO ESTADO
+                // ----------------------------------
+
+                const nuevoEstado = {};
 
 
                 snapshot.forEach(
@@ -1041,15 +1587,43 @@ function iniciarListenerFirestore() {
                             documento.data();
 
 
-                        listaCompra[
+                        const nombre =
+                            datos.nombre;
+
+
+                        if (!nombre) {
+                            return;
+                        }
+
+
+                        // ----------------------------------
+                        // CHECK
+                        // ----------------------------------
+                        //
+                        // Si Firebase tiene:
+                        //
+                        // checked: true
+                        //
+                        // guardamos true.
+                        //
+                        // Si no existe o es false:
+                        //
+                        // false.
+                        // ----------------------------------
+
+                        const checked =
+                            datos.checked === true;
+
+
+                        nuevoEstado[
                             documento.id
                         ] = {
 
                             nombre:
-                                datos.nombre,
+                                nombre,
 
                             emoji:
-                                datos.emoji,
+                                datos.emoji || "🛒",
 
                             cantidad:
                                 Number(
@@ -1061,33 +1635,74 @@ function iniciarListenerFirestore() {
                                 ||
                                 (
                                     esProductoPorGramos(
-                                        datos.nombre
+                                        nombre
                                     )
                                         ? "g"
                                         : "unidad"
                                 ),
 
-                            // ==========================================
-                            // CHECK DESDE FIREBASE
-                            // ==========================================
-
                             checked:
-                                datos.checked === true
+                                checked
                         };
                     }
                 );
 
 
+                // ----------------------------------
+                // REEMPLAZAR ESTADO LOCAL
+                // ----------------------------------
+
+                Object.keys(
+                    listaCompra
+                ).forEach(
+                    function (key) {
+
+                        delete listaCompra[key];
+                    }
+                );
+
+
+                Object.assign(
+                    listaCompra,
+                    nuevoEstado
+                );
+
+
+                // ----------------------------------
+                // DIBUJAR
+                // ----------------------------------
+
                 mostrarLista();
             },
+
 
             function (error) {
 
                 console.error(
-                    "Errorea zerrenda kargatzean:",
+                    "=========================================="
+                );
+
+                console.error(
+                    "ERROR FIRESTORE LISTENER"
+                );
+
+                console.error(
+                    "Código:",
+                    error.code
+                );
+
+                console.error(
+                    "Mensaje:",
+                    error.message
+                );
+
+                console.error(
                     error
                 );
 
+                console.error(
+                    "=========================================="
+                );
             }
         );
 }
@@ -1105,6 +1720,7 @@ loginGoogle.addEventListener(
 
             loginGoogle.disabled =
                 true;
+
 
             loginGoogle.textContent =
                 "Saioa hasten...";
@@ -1134,10 +1750,10 @@ loginGoogle.addEventListener(
             loginGoogle.disabled =
                 false;
 
+
             loginGoogle.textContent =
                 "Google-rekin sartu";
         }
-
     }
 );
 
@@ -1149,6 +1765,10 @@ loginGoogle.addEventListener(
 onAuthStateChanged(
     auth,
     function (usuario) {
+
+        // --------------------------------------
+        // USUARIO CONECTADO
+        // --------------------------------------
 
         if (usuario) {
 
@@ -1189,57 +1809,69 @@ onAuthStateChanged(
 
             iniciarListenerFirestore();
 
-        } else {
 
-            console.log(
-                "No hay usuario conectado"
-            );
-
-
-            usuarioActual.textContent =
-                "Ez duzu saiorik hasi";
-
-
-            usuarioActual.classList.remove(
-                "konektatuta"
-            );
-
-
-            konexioPuntua.classList.remove(
-                "konektatuta"
-            );
-
-
-            loginGoogle.textContent =
-                "Google-rekin sartu";
-
-
-            loginGoogle.disabled =
-                false;
-
-
-            if (unsubscribeLista) {
-
-                unsubscribeLista();
-
-                unsubscribeLista = null;
-            }
-
-
-            Object.keys(
-                listaCompra
-            ).forEach(
-                function (key) {
-
-                    delete listaCompra[key];
-
-                }
-            );
-
-
-            mostrarLista();
+            return;
         }
 
+
+        // --------------------------------------
+        // SIN USUARIO
+        // --------------------------------------
+
+        console.log(
+            "No hay usuario conectado"
+        );
+
+
+        usuarioActual.textContent =
+            "Ez duzu saiorik hasi";
+
+
+        usuarioActual.classList.remove(
+            "konektatuta"
+        );
+
+
+        konexioPuntua.classList.remove(
+            "konektatuta"
+        );
+
+
+        loginGoogle.textContent =
+            "Google-rekin sartu";
+
+
+        loginGoogle.disabled =
+            false;
+
+
+        // --------------------------------------
+        // PARAR LISTENER
+        // --------------------------------------
+
+        if (unsubscribeLista) {
+
+            unsubscribeLista();
+
+            unsubscribeLista = null;
+        }
+
+
+        // --------------------------------------
+        // LIMPIAR LISTA LOCAL
+        // --------------------------------------
+
+        Object.keys(
+            listaCompra
+        ).forEach(
+            function (key) {
+
+                delete listaCompra[key];
+            }
+        );
+
+
+        mostrarLista();
     }
 );
 
@@ -1257,6 +1889,7 @@ compraHecha.addEventListener(
                 listaCompra
             ).length === 0
         ) {
+
             return;
         }
 
@@ -1296,6 +1929,7 @@ modalBai.addEventListener(
             modalBai.disabled =
                 true;
 
+
             modalBai.textContent =
                 "Ezabatzen...";
 
@@ -1316,7 +1950,6 @@ modalBai.addEventListener(
                     batch.delete(
                         documento.ref
                     );
-
                 }
             );
 
@@ -1342,10 +1975,10 @@ modalBai.addEventListener(
             modalBai.disabled =
                 false;
 
+
             modalBai.textContent =
                 "Bai, ezabatu";
         }
-
     }
 );
 
@@ -1367,7 +2000,6 @@ modalConfirmacion.addEventListener(
                 "zabalik"
             );
         }
-
     }
 );
 
@@ -1388,599 +2020,26 @@ document.addEventListener(
                 "zabalik"
             );
         }
-
     }
 );
 
 
 // ==========================================
-// FIN DE LA LÓGICA
+// DEBUG
 // ==========================================
 
-// DOCUMENTACIÓN 0001: Bloque de documentación interna del proyecto.
-// DOCUMENTACIÓN 0002: La aplicación utiliza Firebase Authentication.
-// DOCUMENTACIÓN 0003: El proveedor de autenticación es Google.
-// DOCUMENTACIÓN 0004: Firestore almacena la lista compartida de la familia.
-// DOCUMENTACIÓN 0005: La familia activa se identifica mediante familia-andoni.
-// DOCUMENTACIÓN 0006: La colección activa es listaCompra.
-// DOCUMENTACIÓN 0007: La lista se observa con onSnapshot.
-// DOCUMENTACIÓN 0008: Los productos normales aumentan de uno en uno.
-// DOCUMENTACIÓN 0009: Haragi xehatua aumenta de 250 g en 250 g.
-// DOCUMENTACIÓN 0010: Los controles de Nire zerrenda permiten cambiar cantidades.
-// DOCUMENTACIÓN 0011: El botón Ezabatu elimina el producto.
-// DOCUMENTACIÓN 0012: El botón Erosketa eginda abre el diálogo de confirmación.
-// DOCUMENTACIÓN 0013: El botón Bai elimina todos los productos.
-// DOCUMENTACIÓN 0014: El botón Ez cierra el diálogo.
-// DOCUMENTACIÓN 0015: El check de cada producto se guarda ahora en Firestore.
-// DOCUMENTACIÓN 0016: El campo checked almacena el estado del check.
-// DOCUMENTACIÓN 0017: Las categorías principales se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0018: Las subcategorías se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0019: Los botones de productos utilizan delegación de eventos.
-// DOCUMENTACIÓN 0020: La delegación evita problemas con muchos botones.
-// DOCUMENTACIÓN 0021: La lista se agrupa por secciones del supermercado.
-// DOCUMENTACIÓN 0022: El contador utiliza la variable produktuKopurua.
-// DOCUMENTACIÓN 0023: No debe existir nenhuma referencia a produtoKopurua.
-// DOCUMENTACIÓN 0024: No debe existir uma função chamada produtoKopuruaFix.
-// DOCUMENTACIÓN 0025: El texto visible de autenticación está en euskera.
-// DOCUMENTACIÓN 0026: Los mensajes de consola pueden estar en castellano.
-// DOCUMENTACIÓN 0027: La aplicación está preparada para varios dispositivos.
-// DOCUMENTACIÓN 0028: La sincronización depende de la autenticación actual.
-// DOCUMENTACIÓN 0029: El listener se inicia únicamente cuando hay usuario.
-// DOCUMENTACIÓN 0030: El listener anterior se cancela antes de crear uno nuevo.
+console.log(
+    "Lista Familiar JS cargado correctamente."
+);
 
-// DOCUMENTACIÓN 0031: Bloque de documentación interna del proyecto.
-// DOCUMENTACIÓN 0032: La aplicación utiliza Firebase Authentication.
-// DOCUMENTACIÓN 0033: El proveedor de autenticación es Google.
-// DOCUMENTACIÓN 0034: Firestore almacena la lista compartida de la familia.
-// DOCUMENTACIÓN 0035: La familia activa se identifica mediante familia-andoni.
-// DOCUMENTACIÓN 0036: La colección activa es listaCompra.
-// DOCUMENTACIÓN 0037: La lista se observa con onSnapshot.
-// DOCUMENTACIÓN 0038: Los productos normales aumentan de uno en uno.
-// DOCUMENTACIÓN 0039: Haragi xehatua aumenta de 250 g en 250 g.
-// DOCUMENTACIÓN 0040: Los controles de Nire zerrenda permiten cambiar cantidades.
-// DOCUMENTACIÓN 0041: El botón Ezabatu elimina el producto.
-// DOCUMENTACIÓN 0042: El botón Erosketa eginda abre el diálogo de confirmación.
-// DOCUMENTACIÓN 0043: El botón Bai elimina todos los productos.
-// DOCUMENTACIÓN 0044: El botón Ez cierra el diálogo.
-// DOCUMENTACIÓN 0045: El check de cada producto se guarda ahora en Firestore.
-// DOCUMENTACIÓN 0046: El campo checked almacena el estado del check.
-// DOCUMENTACIÓN 0047: Las categorías principales se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0048: Las subcategorías se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0049: Los botones de productos utilizan delegación de eventos.
-// DOCUMENTACIÓN 0050: La delegación evita problemas con muchos botones.
-// DOCUMENTACIÓN 0051: La lista se agrupa por secciones del supermercado.
-// DOCUMENTACIÓN 0052: El contador utiliza la variable produktuKopurua.
-// DOCUMENTACIÓN 0053: No debe existir nenhuma referencia a produtoKopurua.
-// DOCUMENTACIÓN 0054: No debe existir uma função chamada produtoKopuruaFix.
-// DOCUMENTACIÓN 0055: El texto visible de autenticación está en euskera.
-// DOCUMENTACIÓN 0056: Los mensajes de consola pueden estar en castellano.
-// DOCUMENTACIÓN 0057: La aplicación está preparada para varios dispositivos.
-// DOCUMENTACIÓN 0058: La sincronización depende de la autenticación actual.
-// DOCUMENTACIÓN 0059: El listener se inicia únicamente cuando hay usuario.
-// DOCUMENTACIÓN 0060: El listener anterior se cancela antes de crear uno nuevo.
+console.log(
+    "Sistema de checks Firebase: ACTIVO"
+);
 
-// DOCUMENTACIÓN 0061: Bloque de documentación interna del proyecto.
-// DOCUMENTACIÓN 0062: La aplicación utiliza Firebase Authentication.
-// DOCUMENTACIÓN 0063: El proveedor de autenticación es Google.
-// DOCUMENTACIÓN 0064: Firestore almacena la lista compartida de la familia.
-// DOCUMENTACIÓN 0065: La familia activa se identifica mediante familia-andoni.
-// DOCUMENTACIÓN 0066: La colección activa es listaCompra.
-// DOCUMENTACIÓN 0067: La lista se observa con onSnapshot.
-// DOCUMENTACIÓN 0068: Los productos normales aumentan de uno en uno.
-// DOCUMENTACIÓN 0069: Haragi xehatua aumenta de 250 g en 250 g.
-// DOCUMENTACIÓN 0070: Los controles de Nire zerrenda permiten cambiar cantidades.
-// DOCUMENTACIÓN 0071: El botón Ezabatu elimina el producto.
-// DOCUMENTACIÓN 0072: El botón Erosketa eginda abre el diálogo de confirmación.
-// DOCUMENTACIÓN 0073: El botón Bai elimina todos los productos.
-// DOCUMENTACIÓN 0074: El botón Ez cierra el diálogo.
-// DOCUMENTACIÓN 0075: El check de cada producto se guarda ahora en Firestore.
-// DOCUMENTACIÓN 0076: El campo checked almacena el estado del check.
-// DOCUMENTACIÓN 0077: Las categorías principales se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0078: Las subcategorías se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0079: Los botones de productos utilizan delegación de eventos.
-// DOCUMENTACIÓN 0080: La delegación evita problemas con muchos botones.
-// DOCUMENTACIÓN 0081: La lista se agrupa por secciones del supermercado.
-// DOCUMENTACIÓN 0082: El contador utiliza la variable produktuKopurua.
-// DOCUMENTACIÓN 0083: No debe existir nenhuma referencia a produtoKopurua.
-// DOCUMENTACIÓN 0084: No debe existir uma função chamada produtoKopuruaFix.
-// DOCUMENTACIÓN 0085: El texto visible de autenticación está en euskera.
-// DOCUMENTACIÓN 0086: Los mensajes de consola pueden estar en castellano.
-// DOCUMENTACIÓN 0087: La aplicación está preparada para varios dispositivos.
-// DOCUMENTACIÓN 0088: La sincronización depende de la autenticación actual.
-// DOCUMENTACIÓN 0089: El listener se inicia únicamente cuando hay usuario.
-// DOCUMENTACIÓN 0090: El listener anterior se cancela antes de crear uno nuevo.
+console.log(
+    "Sistema anti doble toque móvil: ACTIVO"
+);
 
-// DOCUMENTACIÓN 0091: Bloque de documentación interna del proyecto.
-// DOCUMENTACIÓN 0092: La aplicación utiliza Firebase Authentication.
-// DOCUMENTACIÓN 0093: El proveedor de autenticación es Google.
-// DOCUMENTACIÓN 0094: Firestore almacena la lista compartida de la familia.
-// DOCUMENTACIÓN 0095: La familia activa se identifica mediante familia-andoni.
-// DOCUMENTACIÓN 0096: La colección activa es listaCompra.
-// DOCUMENTACIÓN 0097: La lista se observa con onSnapshot.
-// DOCUMENTACIÓN 0098: Los productos normales aumentan de uno en uno.
-// DOCUMENTACIÓN 0099: Haragi xehatua aumenta de 250 g en 250 g.
-// DOCUMENTACIÓN 0100: Los controles de Nire zerrenda permiten cambiar cantidades.
-// DOCUMENTACIÓN 0101: El botón Ezabatu elimina el producto.
-// DOCUMENTACIÓN 0102: El botón Erosketa eginda abre el diálogo de confirmación.
-// DOCUMENTACIÓN 0103: El botón Bai elimina todos los productos.
-// DOCUMENTACIÓN 0104: El botón Ez cierra el diálogo.
-// DOCUMENTACIÓN 0105: El check de cada producto se guarda ahora en Firestore.
-// DOCUMENTACIÓN 0106: El campo checked almacena el estado del check.
-// DOCUMENTACIÓN 0107: Las categorías principales se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0108: Las subcategorías se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0109: Los botones de productos utilizan delegación de eventos.
-// DOCUMENTACIÓN 0110: La delegación evita problemas con muchos botones.
-// DOCUMENTACIÓN 0111: La lista se agrupa por secciones del supermercado.
-// DOCUMENTACIÓN 0112: El contador utiliza la variable produktuKopurua.
-// DOCUMENTACIÓN 0113: No debe existir nenhuma referencia a produtoKopurua.
-// DOCUMENTACIÓN 0114: No debe existir uma função chamada produtoKopuruaFix.
-// DOCUMENTACIÓN 0115: El texto visible de autenticación está en euskera.
-// DOCUMENTACIÓN 0116: Los mensajes de consola pueden estar en castellano.
-// DOCUMENTACIÓN 0117: La aplicación está preparada para varios dispositivos.
-// DOCUMENTACIÓN 0118: La sincronización depende de la autenticación actual.
-// DOCUMENTACIÓN 0119: El listener se inicia únicamente cuando hay usuario.
-// DOCUMENTACIÓN 0120: El listener anterior se cancela antes de crear uno nuevo.
-
-// DOCUMENTACIÓN 0121: Bloque de documentación interna del proyecto.
-// DOCUMENTACIÓN 0122: La aplicación utiliza Firebase Authentication.
-// DOCUMENTACIÓN 0123: El proveedor de autenticación es Google.
-// DOCUMENTACIÓN 0124: Firestore almacena la lista compartida de la familia.
-// DOCUMENTACIÓN 0125: La familia activa se identifica mediante familia-andoni.
-// DOCUMENTACIÓN 0126: La colección activa es listaCompra.
-// DOCUMENTACIÓN 0127: La lista se observa con onSnapshot.
-// DOCUMENTACIÓN 0128: Los productos normales aumentan de uno en uno.
-// DOCUMENTACIÓN 0129: Haragi xehatua aumenta de 250 g en 250 g.
-// DOCUMENTACIÓN 0130: Los controles de Nire zerrenda permiten cambiar cantidades.
-// DOCUMENTACIÓN 0131: El botón Ezabatu elimina el producto.
-// DOCUMENTACIÓN 0132: El botón Erosketa eginda abre el diálogo de confirmación.
-// DOCUMENTACIÓN 0133: El botón Bai elimina todos los productos.
-// DOCUMENTACIÓN 0134: El botón Ez cierra el diálogo.
-// DOCUMENTACIÓN 0135: El check de cada producto se guarda ahora en Firestore.
-// DOCUMENTACIÓN 0136: El campo checked almacena el estado del check.
-// DOCUMENTACIÓN 0137: Las categorías principales se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0138: Las subcategorías se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0139: Los botones de productos utilizan delegación de eventos.
-// DOCUMENTACIÓN 0140: La delegación evita problemas con muchos botones.
-// DOCUMENTACIÓN 0141: La lista se agrupa por secciones del supermercado.
-// DOCUMENTACIÓN 0142: El contador utiliza la variable produktuKopurua.
-// DOCUMENTACIÓN 0143: No debe existir nenhuma referencia a produtoKopurua.
-// DOCUMENTACIÓN 0144: No debe existir uma função chamada produtoKopuruaFix.
-// DOCUMENTACIÓN 0145: El texto visible de autenticación está en euskera.
-// DOCUMENTACIÓN 0146: Los mensajes de consola pueden estar en castellano.
-// DOCUMENTACIÓN 0147: La aplicación está preparada para varios dispositivos.
-// DOCUMENTACIÓN 0148: La sincronización depende de la autenticación actual.
-// DOCUMENTACIÓN 0149: El listener se inicia únicamente cuando hay usuario.
-// DOCUMENTACIÓN 0150: El listener anterior se cancela antes de crear uno nuevo.
-
-// DOCUMENTACIÓN 0151: Bloque de documentación interna del proyecto.
-// DOCUMENTACIÓN 0152: La aplicación utiliza Firebase Authentication.
-// DOCUMENTACIÓN 0153: El proveedor de autenticación es Google.
-// DOCUMENTACIÓN 0154: Firestore almacena la lista compartida de la familia.
-// DOCUMENTACIÓN 0155: La familia activa se identifica mediante familia-andoni.
-// DOCUMENTACIÓN 0156: La colección activa es listaCompra.
-// DOCUMENTACIÓN 0157: La lista se observa con onSnapshot.
-// DOCUMENTACIÓN 0158: Los productos normales aumentan de uno en uno.
-// DOCUMENTACIÓN 0159: Haragi xehatua aumenta de 250 g en 250 g.
-// DOCUMENTACIÓN 0160: Los controles de Nire zerrenda permiten cambiar cantidades.
-// DOCUMENTACIÓN 0161: El botón Ezabatu elimina el producto.
-// DOCUMENTACIÓN 0162: El botón Erosketa eginda abre el diálogo de confirmación.
-// DOCUMENTACIÓN 0163: El botón Bai elimina todos los productos.
-// DOCUMENTACIÓN 0164: El botón Ez cierra el diálogo.
-// DOCUMENTACIÓN 0165: El check de cada producto se guarda ahora en Firestore.
-// DOCUMENTACIÓN 0166: El campo checked almacena el estado del check.
-// DOCUMENTACIÓN 0167: Las categorías principales se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0168: Las subcategorías se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0169: Los botones de productos utilizan delegación de eventos.
-// DOCUMENTACIÓN 0170: La delegación evita problemas con muchos botones.
-// DOCUMENTACIÓN 0171: La lista se agrupa por secciones del supermercado.
-// DOCUMENTACIÓN 0172: El contador utiliza la variable produktuKopurua.
-// DOCUMENTACIÓN 0173: No debe existir nenhuma referencia a produtoKopurua.
-// DOCUMENTACIÓN 0174: No debe existir uma função chamada produtoKopuruaFix.
-// DOCUMENTACIÓN 0175: El texto visible de autenticación está en euskera.
-// DOCUMENTACIÓN 0176: Los mensajes de consola pueden estar en castellano.
-// DOCUMENTACIÓN 0177: La aplicación está preparada para varios dispositivos.
-// DOCUMENTACIÓN 0178: La sincronización depende de la autenticación actual.
-// DOCUMENTACIÓN 0179: El listener se inicia únicamente cuando hay usuario.
-// DOCUMENTACIÓN 0180: El listener anterior se cancela antes de crear uno nuevo.
-
-// DOCUMENTACIÓN 0181: Bloque de documentación interna del proyecto.
-// DOCUMENTACIÓN 0182: La aplicación utiliza Firebase Authentication.
-// DOCUMENTACIÓN 0183: El proveedor de autenticación es Google.
-// DOCUMENTACIÓN 0184: Firestore almacena la lista compartida de la familia.
-// DOCUMENTACIÓN 0185: La familia activa se identifica mediante familia-andoni.
-// DOCUMENTACIÓN 0186: La colección activa es listaCompra.
-// DOCUMENTACIÓN 0187: La lista se observa con onSnapshot.
-// DOCUMENTACIÓN 0188: Los productos normales aumentan de uno en uno.
-// DOCUMENTACIÓN 0189: Haragi xehatua aumenta de 250 g en 250 g.
-// DOCUMENTACIÓN 0190: Los controles de Nire zerrenda permiten cambiar cantidades.
-// DOCUMENTACIÓN 0191: El botón Ezabatu elimina el producto.
-// DOCUMENTACIÓN 0192: El botón Erosketa eginda abre el diálogo de confirmación.
-// DOCUMENTACIÓN 0193: El botón Bai elimina todos los productos.
-// DOCUMENTACIÓN 0194: El botón Ez cierra el diálogo.
-// DOCUMENTACIÓN 0195: El check de cada producto se guarda ahora en Firestore.
-// DOCUMENTACIÓN 0196: El campo checked almacena el estado del check.
-// DOCUMENTACIÓN 0197: Las categorías principales se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0198: Las subcategorías se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0199: Los botones de productos utilizan delegación de eventos.
-// DOCUMENTACIÓN 0200: La delegación evita problemas con muchos botones.
-
-// DOCUMENTACIÓN 0201: La lista se agrupa por secciones del supermercado.
-// DOCUMENTACIÓN 0202: El contador utiliza la variable produktuKopurua.
-// DOCUMENTACIÓN 0203: No debe existir nenhuma referencia a produtoKopurua.
-// DOCUMENTACIÓN 0204: No debe existir uma função chamada produtoKopuruaFix.
-// DOCUMENTACIÓN 0205: El texto visible de autenticación está en euskera.
-// DOCUMENTACIÓN 0206: Los mensajes de consola pueden estar en castellano.
-// DOCUMENTACIÓN 0207: La aplicación está preparada para varios dispositivos.
-// DOCUMENTACIÓN 0208: La sincronización depende de la autenticación actual.
-// DOCUMENTACIÓN 0209: El listener se inicia únicamente cuando hay usuario.
-// DOCUMENTACIÓN 0210: El listener anterior se cancela antes de crear uno nuevo.
-
-// DOCUMENTACIÓN 0211: Bloque de documentación interna del proyecto.
-// DOCUMENTACIÓN 0212: La aplicación utiliza Firebase Authentication.
-// DOCUMENTACIÓN 0213: El proveedor de autenticación es Google.
-// DOCUMENTACIÓN 0214: Firestore almacena la lista compartida de la familia.
-// DOCUMENTACIÓN 0215: La familia activa se identifica mediante familia-andoni.
-// DOCUMENTACIÓN 0216: La colección activa es listaCompra.
-// DOCUMENTACIÓN 0217: La lista se observa con onSnapshot.
-// DOCUMENTACIÓN 0218: Los productos normales aumentan de uno en uno.
-// DOCUMENTACIÓN 0219: Haragi xehatua aumenta de 250 g en 250 g.
-// DOCUMENTACIÓN 0220: Los controles de Nire zerrenda permiten cambiar cantidades.
-// DOCUMENTACIÓN 0221: El botón Ezabatu elimina el producto.
-// DOCUMENTACIÓN 0222: El botón Erosketa eginda abre el diálogo de confirmación.
-// DOCUMENTACIÓN 0223: El botón Bai elimina todos los productos.
-// DOCUMENTACIÓN 0224: El botón Ez cierra el diálogo.
-// DOCUMENTACIÓN 0225: El check de cada producto se guarda ahora en Firestore.
-// DOCUMENTACIÓN 0226: El campo checked almacena el estado del check.
-// DOCUMENTACIÓN 0227: Las categorías principales se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0228: Las subcategorías se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0229: Los botones de productos utilizan delegación de eventos.
-// DOCUMENTACIÓN 0230: La delegación evita problemas con muchos botones.
-
-// DOCUMENTACIÓN 0231: La lista se agrupa por secciones del supermercado.
-// DOCUMENTACIÓN 0232: El contador utiliza la variable produktuKopurua.
-// DOCUMENTACIÓN 0233: No debe existir nenhuma referencia a produtoKopurua.
-// DOCUMENTACIÓN 0234: No debe existir uma função chamada produtoKopuruaFix.
-// DOCUMENTACIÓN 0235: El texto visible de autenticación está en euskera.
-// DOCUMENTACIÓN 0236: Los mensajes de consola pueden estar en castellano.
-// DOCUMENTACIÓN 0237: La aplicación está preparada para varios dispositivos.
-// DOCUMENTACIÓN 0238: La sincronización depende de la autenticación actual.
-// DOCUMENTACIÓN 0239: El listener se inicia únicamente cuando hay usuario.
-// DOCUMENTACIÓN 0240: El listener anterior se cancela antes de crear uno nuevo.
-
-// DOCUMENTACIÓN 0241: Bloque de documentación interna del proyecto.
-// DOCUMENTACIÓN 0242: La aplicación utiliza Firebase Authentication.
-// DOCUMENTACIÓN 0243: El proveedor de autenticación es Google.
-// DOCUMENTACIÓN 0244: Firestore almacena la lista compartida de la familia.
-// DOCUMENTACIÓN 0245: La familia activa se identifica mediante familia-andoni.
-// DOCUMENTACIÓN 0246: La colección activa es listaCompra.
-// DOCUMENTACIÓN 0247: La lista se observa con onSnapshot.
-// DOCUMENTACIÓN 0248: Los productos normales aumentan de uno en uno.
-// DOCUMENTACIÓN 0249: Haragi xehatua aumenta de 250 g en 250 g.
-// DOCUMENTACIÓN 0250: Los controles de Nire zerrenda permiten cambiar cantidades.
-// DOCUMENTACIÓN 0251: El botón Ezabatu elimina el producto.
-// DOCUMENTACIÓN 0252: El botón Erosketa eginda abre el diálogo de confirmación.
-// DOCUMENTACIÓN 0253: El botón Bai elimina todos los productos.
-// DOCUMENTACIÓN 0254: El botón Ez cierra el diálogo.
-// DOCUMENTACIÓN 0255: El check de cada producto se guarda ahora en Firestore.
-// DOCUMENTACIÓN 0256: El campo checked almacena el estado del check.
-// DOCUMENTACIÓN 0257: Las categorías principales se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0258: Las subcategorías se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0259: Los botones de productos utilizan delegación de eventos.
-// DOCUMENTACIÓN 0260: La delegación evita problemas con muchos botones.
-
-// DOCUMENTACIÓN 0261: La lista se agrupa por secciones del supermercado.
-// DOCUMENTACIÓN 0262: El contador utiliza la variable produktuKopurua.
-// DOCUMENTACIÓN 0263: No debe existir nenhuma referencia a produtoKopurua.
-// DOCUMENTACIÓN 0264: No debe existir uma função chamada produtoKopuruaFix.
-// DOCUMENTACIÓN 0265: El texto visible de autenticación está en euskera.
-// DOCUMENTACIÓN 0266: Los mensajes de consola pueden estar en castellano.
-// DOCUMENTACIÓN 0267: La aplicación está preparada para varios dispositivos.
-// DOCUMENTACIÓN 0268: La sincronización depende de la autenticación actual.
-// DOCUMENTACIÓN 0269: El listener se inicia únicamente cuando hay usuario.
-// DOCUMENTACIÓN 0270: El listener anterior se cancela antes de crear uno nuevo.
-
-// DOCUMENTACIÓN 0271: Bloque de documentación interna del proyecto.
-// DOCUMENTACIÓN 0272: La aplicación utiliza Firebase Authentication.
-// DOCUMENTACIÓN 0273: El proveedor de autenticación es Google.
-// DOCUMENTACIÓN 0274: Firestore almacena la lista compartida de la familia.
-// DOCUMENTACIÓN 0275: La familia activa se identifica mediante familia-andoni.
-// DOCUMENTACIÓN 0276: La colección activa es listaCompra.
-// DOCUMENTACIÓN 0277: La lista se observa con onSnapshot.
-// DOCUMENTACIÓN 0278: Los productos normales aumentan de uno en uno.
-// DOCUMENTACIÓN 0279: Haragi xehatua aumenta de 250 g en 250 g.
-// DOCUMENTACIÓN 0280: Los controles de Nire zerrenda permiten cambiar cantidades.
-// DOCUMENTACIÓN 0281: El botón Ezabatu elimina el producto.
-// DOCUMENTACIÓN 0282: El botón Erosketa eginda abre el diálogo de confirmación.
-// DOCUMENTACIÓN 0283: El botón Bai elimina todos los productos.
-// DOCUMENTACIÓN 0284: El botón Ez cierra el diálogo.
-// DOCUMENTACIÓN 0285: El check de cada producto se guarda ahora en Firestore.
-// DOCUMENTACIÓN 0286: El campo checked almacena el estado del check.
-// DOCUMENTACIÓN 0287: Las categorías principales se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0288: Las subcategorías se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0289: Los botones de productos utilizan delegación de eventos.
-// DOCUMENTACIÓN 0290: La delegación evita problemas con muchos botones.
-
-// DOCUMENTACIÓN 0291: La lista se agrupa por secciones del supermercado.
-// DOCUMENTACIÓN 0292: El contador utiliza la variable produktuKopurua.
-// DOCUMENTACIÓN 0293: No debe existir nenhuma referencia a produtoKopurua.
-// DOCUMENTACIÓN 0294: No debe existir uma função chamada produtoKopuruaFix.
-// DOCUMENTACIÓN 0295: El texto visible de autenticación está en euskera.
-// DOCUMENTACIÓN 0296: Los mensajes de consola pueden estar en castellano.
-// DOCUMENTACIÓN 0297: La aplicación está preparada para varios dispositivos.
-// DOCUMENTACIÓN 0298: La sincronización depende de la autenticación actual.
-// DOCUMENTACIÓN 0299: El listener se inicia únicamente cuando hay usuario.
-// DOCUMENTACIÓN 0300: El listener anterior se cancela antes de crear uno nuevo.
-
-// DOCUMENTACIÓN 0301: Bloque de documentación interna del proyecto.
-// DOCUMENTACIÓN 0302: La aplicación utiliza Firebase Authentication.
-// DOCUMENTACIÓN 0303: El proveedor de autenticación es Google.
-// DOCUMENTACIÓN 0304: Firestore almacena la lista compartida de la familia.
-// DOCUMENTACIÓN 0305: La familia activa se identifica mediante familia-andoni.
-// DOCUMENTACIÓN 0306: La colección activa es listaCompra.
-// DOCUMENTACIÓN 0307: La lista se observa con onSnapshot.
-// DOCUMENTACIÓN 0308: Los productos normales aumentan de uno en uno.
-// DOCUMENTACIÓN 0309: Haragi xehatua aumenta de 250 g en 250 g.
-// DOCUMENTACIÓN 0310: Los controles de Nire zerrenda permiten cambiar cantidades.
-// DOCUMENTACIÓN 0311: El botón Ezabatu elimina el producto.
-// DOCUMENTACIÓN 0312: El botón Erosketa eginda abre el diálogo de confirmación.
-// DOCUMENTACIÓN 0313: El botón Bai elimina todos los productos.
-// DOCUMENTACIÓN 0314: El botón Ez cierra el diálogo.
-// DOCUMENTACIÓN 0315: El check de cada producto se guarda ahora en Firestore.
-// DOCUMENTACIÓN 0316: El campo checked almacena el estado del check.
-// DOCUMENTACIÓN 0317: Las categorías principales se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0318: Las subcategorías se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0319: Los botones de productos utilizan delegación de eventos.
-// DOCUMENTACIÓN 0320: La delegación evita problemas con muchos botones.
-
-// DOCUMENTACIÓN 0321: La lista se agrupa por secciones del supermercado.
-// DOCUMENTACIÓN 0322: El contador utiliza la variable produktuKopurua.
-// DOCUMENTACIÓN 0323: No debe existir nenhuma referencia a produtoKopurua.
-// DOCUMENTACIÓN 0324: No debe existir uma função chamada produtoKopuruaFix.
-// DOCUMENTACIÓN 0325: El texto visible de autenticación está en euskera.
-// DOCUMENTACIÓN 0326: Los mensajes de consola pueden estar en castellano.
-// DOCUMENTACIÓN 0327: La aplicación está preparada para varios dispositivos.
-// DOCUMENTACIÓN 0328: La sincronización depende de la autenticación actual.
-// DOCUMENTACIÓN 0329: El listener se inicia únicamente cuando hay usuario.
-// DOCUMENTACIÓN 0330: El listener anterior se cancela antes de crear uno nuevo.
-
-// DOCUMENTACIÓN 0331: Bloque de documentación interna del proyecto.
-// DOCUMENTACIÓN 0332: La aplicación utiliza Firebase Authentication.
-// DOCUMENTACIÓN 0333: El proveedor de autenticación es Google.
-// DOCUMENTACIÓN 0334: Firestore almacena la lista compartida de la familia.
-// DOCUMENTACIÓN 0335: La familia activa se identifica mediante familia-andoni.
-// DOCUMENTACIÓN 0336: La colección activa es listaCompra.
-// DOCUMENTACIÓN 0337: La lista se observa con onSnapshot.
-// DOCUMENTACIÓN 0338: Los productos normales aumentan de uno en uno.
-// DOCUMENTACIÓN 0339: Haragi xehatua aumenta de 250 g en 250 g.
-// DOCUMENTACIÓN 0340: Los controles de Nire zerrenda permiten cambiar cantidades.
-// DOCUMENTACIÓN 0341: El botón Ezabatu elimina el producto.
-// DOCUMENTACIÓN 0342: El botón Erosketa eginda abre el diálogo de confirmación.
-// DOCUMENTACIÓN 0343: El botón Bai elimina todos los productos.
-// DOCUMENTACIÓN 0344: El botón Ez cierra el diálogo.
-// DOCUMENTACIÓN 0345: El check de cada producto se guarda ahora en Firestore.
-// DOCUMENTACIÓN 0346: El campo checked almacena el estado del check.
-// DOCUMENTACIÓN 0347: Las categorías principales se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0348: Las subcategorías se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0349: Los botones de productos utilizan delegación de eventos.
-// DOCUMENTACIÓN 0350: La delegación evita problemas con muchos botones.
-
-// DOCUMENTACIÓN 0351: La lista se agrupa por secciones del supermercado.
-// DOCUMENTACIÓN 0352: El contador utiliza la variable produktuKopurua.
-// DOCUMENTACIÓN 0353: No debe existir nenhuma referencia a produtoKopurua.
-// DOCUMENTACIÓN 0354: No debe existir uma função chamada produtoKopuruaFix.
-// DOCUMENTACIÓN 0355: El texto visible de autenticación está en euskera.
-// DOCUMENTACIÓN 0356: Los mensajes de consola pueden estar en castellano.
-// DOCUMENTACIÓN 0357: La aplicación está preparada para varios dispositivos.
-// DOCUMENTACIÓN 0358: La sincronización depende de la autenticación actual.
-// DOCUMENTACIÓN 0359: El listener se inicia únicamente cuando hay usuario.
-// DOCUMENTACIÓN 0360: El listener anterior se cancela antes de crear uno nuevo.
-
-// DOCUMENTACIÓN 0361: Bloque de documentación interna del proyecto.
-// DOCUMENTACIÓN 0362: La aplicación utiliza Firebase Authentication.
-// DOCUMENTACIÓN 0363: El proveedor de autenticación es Google.
-// DOCUMENTACIÓN 0364: Firestore almacena la lista compartida de la familia.
-// DOCUMENTACIÓN 0365: La familia activa se identifica mediante familia-andoni.
-// DOCUMENTACIÓN 0366: La colección activa es listaCompra.
-// DOCUMENTACIÓN 0367: La lista se observa con onSnapshot.
-// DOCUMENTACIÓN 0368: Los productos normales aumentan de uno en uno.
-// DOCUMENTACIÓN 0369: Haragi xehatua aumenta de 250 g en 250 g.
-// DOCUMENTACIÓN 0370: Los controles de Nire zerrenda permiten cambiar cantidades.
-// DOCUMENTACIÓN 0371: El botón Ezabatu elimina el producto.
-// DOCUMENTACIÓN 0372: El botón Erosketa eginda abre el diálogo de confirmación.
-// DOCUMENTACIÓN 0373: El botón Bai elimina todos los productos.
-// DOCUMENTACIÓN 0374: El botón Ez cierra el diálogo.
-// DOCUMENTACIÓN 0375: El check de cada producto se guarda ahora en Firestore.
-// DOCUMENTACIÓN 0376: El campo checked almacena el estado del check.
-// DOCUMENTACIÓN 0377: Las categorías principales se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0378: Las subcategorías se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0379: Los botones de productos utilizan delegación de eventos.
-// DOCUMENTACIÓN 0380: La delegación evita problemas con muchos botones.
-
-// DOCUMENTACIÓN 0381: La lista se agrupa por secciones del supermercado.
-// DOCUMENTACIÓN 0382: El contador utiliza la variable produktuKopurua.
-// DOCUMENTACIÓN 0383: No debe existir nenhuma referencia a produtoKopurua.
-// DOCUMENTACIÓN 0384: No debe existir uma função chamada produtoKopuruaFix.
-// DOCUMENTACIÓN 0385: El texto visible de autenticación está en euskera.
-// DOCUMENTACIÓN 0386: Los mensajes de consola pueden estar en castellano.
-// DOCUMENTACIÓN 0387: La aplicación está preparada para varios dispositivos.
-// DOCUMENTACIÓN 0388: La sincronización depende de la autenticación actual.
-// DOCUMENTACIÓN 0389: El listener se inicia únicamente cuando hay usuario.
-// DOCUMENTACIÓN 0390: El listener anterior se cancela antes de crear uno nuevo.
-
-// DOCUMENTACIÓN 0391: Bloque de documentación interna del proyecto.
-// DOCUMENTACIÓN 0392: La aplicación utiliza Firebase Authentication.
-// DOCUMENTACIÓN 0393: El proveedor de autenticación es Google.
-// DOCUMENTACIÓN 0394: Firestore almacena la lista compartida de la familia.
-// DOCUMENTACIÓN 0395: La familia activa se identifica mediante familia-andoni.
-// DOCUMENTACIÓN 0396: La colección activa es listaCompra.
-// DOCUMENTACIÓN 0397: La lista se observa con onSnapshot.
-// DOCUMENTACIÓN 0398: Los productos normales aumentan de uno en uno.
-// DOCUMENTACIÓN 0399: Haragi xehatua aumenta de 250 g en 250 g.
-// DOCUMENTACIÓN 0400: Los controles de Nire zerrenda permiten cambiar cantidades.
-// DOCUMENTACIÓN 0401: El botón Ezabatu elimina el producto.
-// DOCUMENTACIÓN 0402: El botón Erosketa eginda abre el diálogo de confirmación.
-// DOCUMENTACIÓN 0403: El botón Bai elimina todos los productos.
-// DOCUMENTACIÓN 0404: El botón Ez cierra el diálogo.
-// DOCUMENTACIÓN 0405: El check de cada producto se guarda ahora en Firestore.
-// DOCUMENTACIÓN 0406: El campo checked almacena el estado del check.
-// DOCUMENTACIÓN 0407: Las categorías principales se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0408: Las subcategorías se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0409: Los botones de productos utilizan delegación de eventos.
-// DOCUMENTACIÓN 0410: La delegación evita problemas con muchos botones.
-
-// DOCUMENTACIÓN 0411: La lista se agrupa por secciones del supermercado.
-// DOCUMENTACIÓN 0412: El contador utiliza la variable produktuKopurua.
-// DOCUMENTACIÓN 0413: No debe existir nenhuma referencia a produtoKopurua.
-// DOCUMENTACIÓN 0414: No debe existir uma função chamada produtoKopuruaFix.
-// DOCUMENTACIÓN 0415: El texto visible de autenticación está en euskera.
-// DOCUMENTACIÓN 0416: Los mensajes de consola pueden estar en castellano.
-// DOCUMENTACIÓN 0417: La aplicación está preparada para varios dispositivos.
-// DOCUMENTACIÓN 0418: La sincronización depende de la autenticación actual.
-// DOCUMENTACIÓN 0419: El listener se inicia únicamente cuando hay usuario.
-// DOCUMENTACIÓN 0420: El listener anterior se cancela antes de crear uno nuevo.
-
-// DOCUMENTACIÓN 0421: Bloque de documentación interna del proyecto.
-// DOCUMENTACIÓN 0422: La aplicación utiliza Firebase Authentication.
-// DOCUMENTACIÓN 0423: El proveedor de autenticación es Google.
-// DOCUMENTACIÓN 0424: Firestore almacena la lista compartida de la familia.
-// DOCUMENTACIÓN 0425: La familia activa se identifica mediante familia-andoni.
-// DOCUMENTACIÓN 0426: La colección activa es listaCompra.
-// DOCUMENTACIÓN 0427: La lista se observa con onSnapshot.
-// DOCUMENTACIÓN 0428: Los productos normales aumentan de uno en uno.
-// DOCUMENTACIÓN 0429: Haragi xehatua aumenta de 250 g en 250 g.
-// DOCUMENTACIÓN 0430: Los controles de Nire zerrenda permiten cambiar cantidades.
-// DOCUMENTACIÓN 0431: El botón Ezabatu elimina el producto.
-// DOCUMENTACIÓN 0432: El botón Erosketa eginda abre el diálogo de confirmación.
-// DOCUMENTACIÓN 0433: El botón Bai elimina todos los productos.
-// DOCUMENTACIÓN 0434: El botón Ez cierra el diálogo.
-// DOCUMENTACIÓN 0435: El check de cada producto se guarda ahora en Firestore.
-// DOCUMENTACIÓN 0436: El campo checked almacena el estado del check.
-// DOCUMENTACIÓN 0437: Las categorías principales se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0438: Las subcategorías se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0439: Los botones de productos utilizan delegación de eventos.
-// DOCUMENTACIÓN 0440: La delegación evita problemas con muchos botones.
-
-// DOCUMENTACIÓN 0441: La lista se agrupa por secciones del supermercado.
-// DOCUMENTACIÓN 0442: El contador utiliza la variable produktuKopurua.
-// DOCUMENTACIÓN 0443: No debe existir nenhuma referencia a produtoKopurua.
-// DOCUMENTACIÓN 0444: No debe existir uma função chamada produtoKopuruaFix.
-// DOCUMENTACIÓN 0445: El texto visible de autenticación está en euskera.
-// DOCUMENTACIÓN 0446: Los mensajes de consola pueden estar en castellano.
-// DOCUMENTACIÓN 0447: La aplicación está preparada para varios dispositivos.
-// DOCUMENTACIÓN 0448: La sincronización depende de la autenticación actual.
-// DOCUMENTACIÓN 0449: El listener se inicia únicamente cuando hay usuario.
-// DOCUMENTACIÓN 0450: El listener anterior se cancela antes de crear uno nuevo.
-
-// DOCUMENTACIÓN 0451: Bloque de documentación interna del proyecto.
-// DOCUMENTACIÓN 0452: La aplicación utiliza Firebase Authentication.
-// DOCUMENTACIÓN 0453: El proveedor de autenticación es Google.
-// DOCUMENTACIÓN 0454: Firestore almacena la lista compartida de la familia.
-// DOCUMENTACIÓN 0455: La familia activa se identifica mediante familia-andoni.
-// DOCUMENTACIÓN 0456: La colección activa es listaCompra.
-// DOCUMENTACIÓN 0457: La lista se observa con onSnapshot.
-// DOCUMENTACIÓN 0458: Los productos normales aumentan de uno en uno.
-// DOCUMENTACIÓN 0459: Haragi xehatua aumenta de 250 g en 250 g.
-// DOCUMENTACIÓN 0460: Los controles de Nire zerrenda permiten cambiar cantidades.
-// DOCUMENTACIÓN 0461: El botón Ezabatu elimina el producto.
-// DOCUMENTACIÓN 0462: El botón Erosketa eginda abre el diálogo de confirmación.
-// DOCUMENTACIÓN 0463: El botón Bai elimina todos los productos.
-// DOCUMENTACIÓN 0464: El botón Ez cierra el diálogo.
-// DOCUMENTACIÓN 0465: El check de cada producto se guarda ahora en Firestore.
-// DOCUMENTACIÓN 0466: El campo checked almacena el estado del check.
-// DOCUMENTACIÓN 0467: Las categorías principales se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0468: Las subcategorías se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0469: Los botones de productos utilizan delegación de eventos.
-// DOCUMENTACIÓN 0470: La delegación evita problemas con muchos botones.
-
-// DOCUMENTACIÓN 0471: La lista se agrupa por secciones del supermercado.
-// DOCUMENTACIÓN 0472: El contador utiliza la variable produktuKopurua.
-// DOCUMENTACIÓN 0473: No debe existir nenhuma referencia a produtoKopurua.
-// DOCUMENTACIÓN 0474: No debe existir uma função chamada produtoKopuruaFix.
-// DOCUMENTACIÓN 0475: El texto visible de autenticación está en euskera.
-// DOCUMENTACIÓN 0476: Los mensajes de consola pueden estar en castellano.
-// DOCUMENTACIÓN 0477: La aplicación está preparada para varios dispositivos.
-// DOCUMENTACIÓN 0478: La sincronización depende de la autenticación actual.
-// DOCUMENTACIÓN 0479: El listener se inicia únicamente cuando hay usuario.
-// DOCUMENTACIÓN 0480: El listener anterior se cancela antes de crear uno nuevo.
-
-// DOCUMENTACIÓN 0481: Bloque de documentación interna del proyecto.
-// DOCUMENTACIÓN 0482: La aplicación utiliza Firebase Authentication.
-// DOCUMENTACIÓN 0483: El proveedor de autenticación es Google.
-// DOCUMENTACIÓN 0484: Firestore almacena la lista compartida de la familia.
-// DOCUMENTACIÓN 0485: La familia activa se identifica mediante familia-andoni.
-// DOCUMENTACIÓN 0486: La colección activa es listaCompra.
-// DOCUMENTACIÓN 0487: La lista se observa con onSnapshot.
-// DOCUMENTACIÓN 0488: Los productos normales aumentan de uno en uno.
-// DOCUMENTACIÓN 0489: Haragi xehatua aumenta de 250 g en 250 g.
-// DOCUMENTACIÓN 0490: Los controles de Nire zerrenda permiten cambiar cantidades.
-// DOCUMENTACIÓN 0491: El botón Ezabatu elimina el producto.
-// DOCUMENTACIÓN 0492: El botón Erosketa eginda abre el diálogo de confirmación.
-// DOCUMENTACIÓN 0493: El botón Bai elimina todos los productos.
-// DOCUMENTACIÓN 0494: El botón Ez cierra el diálogo.
-// DOCUMENTACIÓN 0495: El check de cada producto se guarda ahora en Firestore.
-// DOCUMENTACIÓN 0496: El campo checked almacena el estado del check.
-// DOCUMENTACIÓN 0497: Las categorías principales se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0498: Las subcategorías se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0499: Los botones de productos utilizan delegación de eventos.
-// DOCUMENTACIÓN 0500: La delegación evita problemas con muchos botones.
-
-// DOCUMENTACIÓN 0501: La lista se agrupa por secciones del supermercado.
-// DOCUMENTACIÓN 0502: El contador utiliza la variable produktuKopurua.
-// DOCUMENTACIÓN 0503: No debe existir nenhuma referencia a produtoKopurua.
-// DOCUMENTACIÓN 0504: No debe existir uma função chamada produtoKopuruaFix.
-// DOCUMENTACIÓN 0505: El texto visible de autenticación está en euskera.
-// DOCUMENTACIÓN 0506: Los mensajes de consola pueden estar en castellano.
-// DOCUMENTACIÓN 0507: La aplicación está preparada para varios dispositivos.
-// DOCUMENTACIÓN 0508: La sincronización depende de la autenticación actual.
-// DOCUMENTACIÓN 0509: El listener se inicia únicamente cuando hay usuario.
-// DOCUMENTACIÓN 0510: El listener anterior se cancela antes de crear uno nuevo.
-
-// DOCUMENTACIÓN 0511: Bloque de documentación interna del proyecto.
-// DOCUMENTACIÓN 0512: La aplicación utiliza Firebase Authentication.
-// DOCUMENTACIÓN 0513: El proveedor de autenticación es Google.
-// DOCUMENTACIÓN 0514: Firestore almacena la lista compartida de la familia.
-// DOCUMENTACIÓN 0515: La familia activa se identifica mediante familia-andoni.
-// DOCUMENTACIÓN 0516: La colección activa es listaCompra.
-// DOCUMENTACIÓN 0517: La lista se observa con onSnapshot.
-// DOCUMENTACIÓN 0518: Los productos normales aumentan de uno en uno.
-// DOCUMENTACIÓN 0519: Haragi xehatua aumenta de 250 g en 250 g.
-// DOCUMENTACIÓN 0520: Los controles de Nire zerrenda permiten cambiar cantidades.
-// DOCUMENTACIÓN 0521: El botón Ezabatu elimina el producto.
-// DOCUMENTACIÓN 0522: El botón Erosketa eginda abre el diálogo de confirmación.
-// DOCUMENTACIÓN 0523: El botón Bai elimina todos los productos.
-// DOCUMENTACIÓN 0524: El botón Ez cierra el diálogo.
-// DOCUMENTACIÓN 0525: El check de cada producto se guarda ahora en Firestore.
-// DOCUMENTACIÓN 0526: El campo checked almacena el estado del check.
-// DOCUMENTACIÓN 0527: Las categorías principales se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0528: Las subcategorías se despliegan al pulsarlas.
-// DOCUMENTACIÓN 0529: Los botones de productos utilizan delegación de eventos.
-// DOCUMENTACIÓN 0530: La delegación evita problemas con muchos botones.
-
-// DOCUMENTACIÓN 0531: La lista se agrupa por secciones del supermercado.
-// DOCUMENTACIÓN 0532: El contador utiliza la variable produktuKopurua.
-// DOCUMENTACIÓN 0533: No debe existir nenhuma referencia a produtoKopurua.
-// DOCUMENTACIÓN 0534: No debe existir uma função chamada produtoKopuruaFix.
-// DOCUMENTACIÓN 0535: El texto visible de autenticación está en euskera.
-// DOCUMENTACIÓN 0536: Los mensajes de consola pueden estar en castellano.
-// DOCUMENTACIÓN 0537: La aplicación está preparada para varios dispositivos.
-// DOCUMENTACIÓN 0538: La sincronización depende de la autenticación actual.
-// DOCUMENTACIÓN 0539: El listener se inicia únicamente cuando hay usuario.
-// DOCUMENTACIÓN 0540: El listener anterior se cancela antes de crear uno nuevo.
-
-// DOCUMENTACIÓN 0541: Bloque de documentación interna del proyecto.
-// DOCUMENTACIÓN 0542: La aplicación utiliza Firebase Authentication.
-// DOCUMENTACIÓN 0543: El proveedor de autenticación es Google.
-// DOCUMENTACIÓN 0544: Firestore almacena la lista compartida de la familia.
-// DOCUMENTACIÓN 0545: La familia activa se identifica mediante familia-andoni.
-// DOCUMENTACIÓN 0546: La colección activa es listaCompra.
-// DOCUMENTACIÓN 0547: La lista se observa con onSnapshot.
-// DOCUMENTACIÓN 0548: Los productos normales aumentan de uno en uno.
-// DOCUMENTACIÓN 0549: Haragi xehatua aumenta de 250 g en 250 g.
-// DOCUMENTACIÓN 0550: Los controles de Nire zerrenda permiten cambiar cantidades.
-// DOCUMENTACIÓN 0551: El botón Ezabatu elimina el producto.
-// DOCUMENTACIÓN 0552: El botón Erosketa eginda abre el diálogo de confirmación.
-// DOCUMENTACIÓN 0553: El botón Bai elimina todos los productos.
-// DOCUMENTACIÓN 0554: El botón Ez cierra el diálogo.
-// DOCUMENTACIÓN 0555: El check de cada producto se guarda ahora en Firestore.
-// DOCUMENTACIÓN 0556: El campo checked almacena el estado del check.
-// DOCUMENTACIÓN 0557: Las categorías principales se despliegan al pulsarlas.
+console.log(
+    "Preservación de checked al añadir productos: ACTIVA"
+);
