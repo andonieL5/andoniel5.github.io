@@ -1,7 +1,3 @@
-/* ==========================================
-   GENERAL
-========================================== */
-
 * {
     box-sizing: border-box;
 }
@@ -70,7 +66,6 @@ h1 {
 .konexio-lerroa {
     display: flex;
     align-items: center;
-
     gap: 8px;
 
     margin-bottom: 12px;
@@ -144,13 +139,12 @@ h1 {
 
 .login-btn:disabled {
     opacity: .65;
-
     cursor: default;
 }
 
 
 /* ==========================================
-   CATEGORÍAS PRINCIPALES
+   CATEGORÍAS
 ========================================== */
 
 .kategoria {
@@ -214,7 +208,6 @@ h1 {
 
 .kategoria-izena {
     display: block;
-
     margin-bottom: 3px;
 
     font-size: 16px;
@@ -225,7 +218,6 @@ h1 {
     display: block;
 
     color: #999;
-
     font-size: 11px;
 }
 
@@ -440,7 +432,7 @@ h1 {
 
 
 /* ==========================================
-   HARAGI XEHATUA
+   +250 G
 ========================================== */
 
 .producto-gramos {
@@ -505,7 +497,6 @@ h1 {
 
 .nire-zerrenda-section {
     margin-top: 42px;
-
     padding-bottom: 20px;
 }
 
@@ -534,16 +525,9 @@ h1 {
     font-weight: 700;
 }
 
-
-/* ==========================================
-   LISTA
-========================================== */
-
 #miLista {
     display: flex;
-
     flex-direction: column;
-
     gap: 18px;
 }
 
@@ -552,10 +536,7 @@ h1 {
 }
 
 .lista-sekzioa-tituloa {
-    margin:
-        0
-        4px
-        7px;
+    margin: 0 4px 7px;
 
     color: #999;
 
@@ -631,20 +612,14 @@ h1 {
     transform: scale(.9);
 }
 
-
-/* Producto marcado */
-
 .lista-produktua.eginda {
     opacity: .72;
-
     background: #fafaf8;
 }
 
 .lista-produktua.eginda .lista-check {
     background: #35b65b;
-
     border-color: #35b65b;
-
     color: white;
 }
 
@@ -657,7 +632,7 @@ h1 {
 
 
 /* ==========================================
-   LISTA EMOJI
+   LISTA
 ========================================== */
 
 .lista-emoji {
@@ -679,7 +654,6 @@ h1 {
 
 .lista-info {
     flex: 1;
-
     min-width: 0;
 }
 
@@ -692,8 +666,7 @@ h1 {
     font-weight: 600;
 
     transition:
-        color .15s ease,
-        text-decoration .15s ease;
+        color .15s ease;
 }
 
 .lista-kantitatea {
@@ -709,7 +682,7 @@ h1 {
 
 
 /* ==========================================
-   LISTA + / -
+   + / -
 ========================================== */
 
 .lista-kontrola {
@@ -772,7 +745,7 @@ h1 {
 
 
 /* ==========================================
-   ZERRENDA HUTSIK
+   LISTA VACÍA
 ========================================== */
 
 .zerrenda-hutsa {
@@ -955,13 +928,11 @@ h1 {
 
 .modal-ez {
     background: #eeeeec;
-
     color: #333;
 }
 
 .modal-bai {
     background: #222;
-
     color: white;
 }
 
@@ -970,9 +941,7 @@ h1 {
    MÓVIL
 ========================================== */
 
-@media (
-    max-width: 520px
-) {
+@media (max-width: 520px) {
 
     body {
         padding:
@@ -996,10 +965,7 @@ h1 {
 
     .lista-ezabatu {
         min-width: 54px;
-
-        padding:
-            0
-            7px;
+        padding: 0 7px;
     }
 
 }
